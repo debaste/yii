@@ -20,12 +20,12 @@ class CComponentTest extends CTestCase
 	 */
 	protected $component;
 
-	public function setUp()
+	protected function setUp(): void
 	{
 		$this->component = new NewComponent();
 	}
 
-	public function tearDown()
+	protected function tearDown(): void
 	{
 		$this->component = null;
 	}

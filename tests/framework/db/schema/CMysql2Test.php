@@ -11,7 +11,7 @@ class CMysql2Test extends CTestCase
 	 */
 	private $db;
 
-	public function setUp()
+	protected function setUp(): void
 	{
 		if(!extension_loaded('pdo') || !extension_loaded('pdo_mysql'))
 			$this->markTestSkipped('PDO and MySQL extensions are required.');
@@ -40,7 +40,7 @@ class CMysql2Test extends CTestCase
 		}
 	}
 
-	public function tearDown()
+	protected function tearDown(): void
 	{
 		$this->db->active=false;
 	}

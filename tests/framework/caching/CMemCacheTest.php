@@ -25,7 +25,7 @@ class CMemCacheTest extends CTestCase
 
 	];
 
-	public function setUp()
+	protected function setUp(): void
 	{
 		if(!extension_loaded('memcache') && !extension_loaded('memcached'))
 			$this->markTestSkipped('Memcache or memcached extensions are required.');

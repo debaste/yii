@@ -10,7 +10,7 @@ class CMssqlCommandBuilderTest extends CTestCase
 	/**
 	 * Mock a CDbConection, with a CMssqlSchema and CMssqlTableSchema
 	 */
-	public function setUp()
+	protected function setUp(): void
 	{
 		/*
 		 * Disable the constructor and mock `open` so that CDbConnection does not

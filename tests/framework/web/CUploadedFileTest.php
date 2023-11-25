@@ -8,7 +8,7 @@ Yii::import('system.web.CUploadedFile');
  */
 class CUploadedFileTest extends CTestCase
 {
-	public function setUp()
+	protected function setUp(): void
 	{
 		$_FILES=[];
 		CUploadedFile::reset();

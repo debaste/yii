@@ -2,7 +2,7 @@
 
 class CSecurityManagerTest extends CTestCase
 {
-	public function setUp()
+	protected function setUp(): void
 	{
 		// clean up runtime directory
 		$app=new TestApplication;

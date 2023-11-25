@@ -6,7 +6,7 @@ class CUrlRuleTest extends CTestCase
 {
 	private $app;
 
-	public function setUp()
+	protected function setUp(): void
 	{
 		$config=[
 			'basePath'=>dirname(__FILE__),

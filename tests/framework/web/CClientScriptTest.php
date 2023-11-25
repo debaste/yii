@@ -12,7 +12,7 @@ class CClientScriptTest extends CTestCase
 	 */
 	private $_clientScript;
 	
-	public function setUp()
+	protected function setUp(): void
 	{
 		$this->_clientScript = new CClientScript();
 		$this->_clientScript->setCoreScriptUrl("assets/12345");

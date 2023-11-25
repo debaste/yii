@@ -8,12 +8,12 @@ class CModuleTest extends CTestCase {
 	protected $mod;
 	protected $d;
 
-	public function setUp() {
+	protected function setUp(): void {
 		$this->parent = new NewModule('root',NULL);
 		$this->mod = new NewModule('foo',$this->parent);
 		$this->d = dirname(__FILE__);
 	}
-	public function tearDown() {
+	protected function tearDown(): void {
 		unset($this->parent);
 		unset($this->mod);
 	}

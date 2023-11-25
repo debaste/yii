@@ -20,7 +20,7 @@ class COciTest extends CTestCase
 	 */
 	private $db;
 
-	public function setUp()
+	protected function setUp(): void
 	{
 		if((!extension_loaded('oci8') && !extension_loaded('oci8_11g')) || !extension_loaded('pdo') || !extension_loaded('pdo_oci'))
 			$this->markTestSkipped('PDO and OCI extensions are required.');
@@ -90,7 +90,7 @@ EOD;
 		}
 	}
 
-	public function tearDown()
+	protected function tearDown(): void
 	{
 		$this->db->active=false;
 	}

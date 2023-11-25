@@ -4,7 +4,7 @@ require_once(dirname(__FILE__).'/AuthManagerTestBase.php');
 
 class CPhpAuthManagerTest extends AuthManagerTestBase
 {
-	public function setUp()
+	protected function setUp(): void
 	{
 		$authFile=Yii::app()->getRuntimePath().'/CPhpAuthManagerTest_auth.php';
 		@unlink($authFile);
@@ -14,7 +14,7 @@ class CPhpAuthManagerTest extends AuthManagerTestBase
 		$this->prepareData();
 	}
 
-	public function tearDown()
+	protected function tearDown(): void
 	{
 		@unlink($this->auth->authFile);
 	}

@@ -7,7 +7,7 @@ class CSqlDataProviderTest extends CTestCase
 	 */
 	private $db;
 
-	public function setUp()
+	protected function setUp(): void
 	{
 		if(!extension_loaded('pdo') || !extension_loaded('pdo_sqlite'))
 			$this->markTestSkipped('PDO and SQLite extensions are required.');
@@ -18,7 +18,7 @@ class CSqlDataProviderTest extends CTestCase
 		CActiveRecord::$db=$this->db;
 	}
 
-	public function tearDown()
+	protected function tearDown(): void
 	{
 		$this->db->active=false;
 	}
