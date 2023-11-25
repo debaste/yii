@@ -1,5 +1,5 @@
 <?php
-return array(
+return [
 	'oranges' => 'апельсины',
 	'{brand} bags' => 'сумочки {brand}',
 	'in the cart: {n}' => 'в корзине: {n}',
@@ -12,4 +12,4 @@ return array(
 	'syn1|syn2|syn3' => 'син1|син2',
 	'n==1#one book|n>1#many books' => 'n==1#одна книга|n>1#много книг',
 	'1#one book|n>1#many books' => '1#одна книга|n>1#много книг',
-);
+];

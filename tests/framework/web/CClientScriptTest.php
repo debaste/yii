@@ -30,10 +30,10 @@ class CClientScriptTest extends CTestCase
 	
 	public function providerGetPackageBaseUrl()
 	{
-		return array(
-			array('jquery', 'assets/12345'),
-			array('yii', 'assets/12345')
-		);
+		return [
+			['jquery', 'assets/12345'],
+			['yii', 'assets/12345']
+		];
 	}	
 	
 	/**
@@ -51,12 +51,12 @@ class CClientScriptTest extends CTestCase
 	
 	public function providerCoreScripts()
 	{
-		return array(
-			array('jquery', array('js'=>array('jquery.js'))),
-			array('yiitab', array('js'=>array('jquery.yiitab.js'), 'depends'=>array('jquery'))),
-			array('yiiactiveform', array('js'=>array('jquery.yiiactiveform.js'), 'depends'=>array('jquery')))
+		return [
+			['jquery', ['js'=>['jquery.js']]],
+			['yiitab', ['js'=>['jquery.yiitab.js'], 'depends'=>['jquery']]],
+			['yiiactiveform', ['js'=>['jquery.yiiactiveform.js'], 'depends'=>['jquery']]]
 
-		);
+		];
 	}
 	/**
 	 * @dataProvider providerCoreScripts
@@ -84,11 +84,11 @@ class CClientScriptTest extends CTestCase
 
 	public function providerScriptFiles()
 	{
-		return array(
-			array('/some/script.js', CClientScript::POS_HEAD, '/some/script.js'),
-			array('http://some/script.js', CClientScript::POS_BEGIN, 'http://some/script.js'),
-			array('/some/script.js', CClientScript::POS_END, '/some/script.js'),
-		);
+		return [
+			['/some/script.js', CClientScript::POS_HEAD, '/some/script.js'],
+			['http://some/script.js', CClientScript::POS_BEGIN, 'http://some/script.js'],
+			['/some/script.js', CClientScript::POS_END, '/some/script.js'],
+		];
 	}
 
 	public function testHasPackage()
@@ -113,17 +113,17 @@ class CClientScriptTest extends CTestCase
 
 	public function providerScriptFilesWithHtmlOptions()
 	{
-		return array(
-			array(
+		return [
+			[
 				'/some/script.js',
 				CClientScript::POS_HEAD,
-				array('defer'=>true),
-				array(
+				['defer'=>true],
+				[
 					'src'=>'/some/script.js',
 					'defer'=>true
-				)
-			),
-		);
+				]
+			],
+		];
 	}
 
 	/**
@@ -143,10 +143,10 @@ class CClientScriptTest extends CTestCase
 
 	public function providerScripts()
 	{
-		return array(
-			array('jsId', "function() {alert('alert')}", CClientScript::POS_HEAD, "function() {alert('alert')}"),
-			array('jsId', "function() {alert('alert')}", CClientScript::POS_BEGIN, "function() {alert('alert')}"),
-		);
+		return [
+			['jsId', "function() {alert('alert')}", CClientScript::POS_HEAD, "function() {alert('alert')}"],
+			['jsId', "function() {alert('alert')}", CClientScript::POS_BEGIN, "function() {alert('alert')}"],
+		];
 	}
 
 	/**
@@ -164,18 +164,18 @@ class CClientScriptTest extends CTestCase
 
 	public function providerScriptsWithHtmlOptions()
 	{
-		return array(
-			array(
+		return [
+			[
 				'jsId',
 				"function() {alert('alert')}",
 				CClientScript::POS_HEAD,
-				array('defer'=>true),
-				array(
+				['defer'=>true],
+				[
 					'content'=>"function() {alert('alert')}",
 					'defer'=>true,
-				)
-			),
-		);
+				]
+			],
+		];
 	}
 
 	/**
@@ -194,10 +194,10 @@ class CClientScriptTest extends CTestCase
 	
 	public function providerRegisterCss()
 	{
-		return array(
-			array('myCssDiv', 'float:right;', '', array('myCssDiv'=>array('float:right;', ''))),
-			array('myCssDiv', 'float:right;', 'screen', array('myCssDiv'=>array('float:right;', 'screen')))
-		);
+		return [
+			['myCssDiv', 'float:right;', '', ['myCssDiv'=>['float:right;', '']]],
+			['myCssDiv', 'float:right;', 'screen', ['myCssDiv'=>['float:right;', 'screen']]]
+		];
 	}
 	
 	/**
@@ -216,29 +216,29 @@ class CClientScriptTest extends CTestCase
 
 	public function providerRegisterMetaTag()
 	{
-		$data = array();
+		$data = [];
 
 		// Simple:
-		$metaTagData = array(
+		$metaTagData = [
 			'name'=>'testMetaTagName',
 			'http-equiv'=>false,
 			'content'=>'testMetaTagContent',
-		);
-		$assertion = array(
+		];
+		$assertion = [
 			$metaTagData
-		);
-		$data[] = array($metaTagData['content'],$metaTagData['name'],$metaTagData['http-equiv'],array(),$assertion);
+		];
+		$data[] = [$metaTagData['content'],$metaTagData['name'],$metaTagData['http-equiv'],[],$assertion];
 
 		// Http Equiv:
-		$metaTagData = array(
+		$metaTagData = [
 			'name'=>'testMetaTagHttpEquiv',
 			'http-equiv'=>true,
 			'content'=>'testMetaTagHttpEquivContent',
-		);
-		$assertion = array(
+		];
+		$assertion = [
 			$metaTagData
-		);
-		$data[] = array($metaTagData['content'],$metaTagData['name'],$metaTagData['http-equiv'],array(),$assertion);
+		];
+		$data[] = [$metaTagData['content'],$metaTagData['name'],$metaTagData['http-equiv'],[],$assertion];
 
 		return $data;
 	}
@@ -267,14 +267,14 @@ class CClientScriptTest extends CTestCase
 		$this->_clientScript->registerMetaTag($content,$name);
 		$this->_clientScript->registerMetaTag($content,$name);
 
-		$metaTagData=array(
+		$metaTagData=[
 			'name'=>$name,
 			'content'=>$content,
-		);
-		$assertion=array(
+		];
+		$assertion=[
 			$metaTagData,
 			$metaTagData
-		);
+		];
 		$this->assertAttributeEquals($assertion, 'metaTags', $this->_clientScript);
 	}
 
@@ -282,44 +282,44 @@ class CClientScriptTest extends CTestCase
 	
 	public function providerRenderScriptFiles()
 	{
-		return array(
-			array(
+		return [
+			[
 				'/some/script.js',
 				CClientScript::POS_HEAD,
-				array(),
+				[],
 				'<script type="text/javascript" src="/some/script.js"></script>'
-			),
-			array(
+			],
+			[
 				'/some/script.js',
 				CClientScript::POS_BEGIN,
-				array(),
+				[],
 				'<script type="text/javascript" src="/some/script.js"></script>'
-			),
-			array(
+			],
+			[
 				'/some/script.js',
 				CClientScript::POS_END,
-				array(),
+				[],
 				'<script type="text/javascript" src="/some/script.js"></script>'
-			),
-			array(
+			],
+			[
 				'/options/script.js',
 				CClientScript::POS_HEAD,
-				array('defer'=>true),
+				['defer'=>true],
 				'<script type="text/javascript" src="/options/script.js" defer="defer"></script>'
-			),
-			array(
+			],
+			[
 				'/options/script.js',
 				CClientScript::POS_BEGIN,
-				array('defer'=>true),
+				['defer'=>true],
 				'<script type="text/javascript" src="/options/script.js" defer="defer"></script>'
-			),
-			array(
+			],
+			[
 				'/options/script.js',
 				CClientScript::POS_END,
-				array('defer'=>true),
+				['defer'=>true],
 				'<script type="text/javascript" src="/options/script.js" defer="defer"></script>'
-			),
-		);
+			],
+		];
 	}
 
 	/**
@@ -343,65 +343,65 @@ class CClientScriptTest extends CTestCase
 
 	public function providerRenderScripts()
 	{
-		return array(
-			array(
+		return [
+			[
 				'some_js_id',
 				"function() {alert('script')}",
 				CClientScript::POS_HEAD,
-				array(),
+				[],
 				CHtml::script("function() {alert('script')}")
-			),
-			array(
+			],
+			[
 				'some_js_id',
 				"function() {alert('script')}",
 				CClientScript::POS_BEGIN,
-				array(),
+				[],
 				CHtml::script("function() {alert('script')}")
-			),
-			array(
+			],
+			[
 				'some_js_id',
 				"function() {alert('script')}",
 				CClientScript::POS_END,
-				array(),
+				[],
 				CHtml::script("function() {alert('script')}")
-			),
-			array(
+			],
+			[
 				'some_js_id',
 				"function() {alert('script')}",
 				CClientScript::POS_LOAD,
-				array(),
+				[],
 				CHtml::script("function() {alert('script')}")
-			),
-			array(
+			],
+			[
 				'some_js_id',
 				"function() {alert('script')}",
 				CClientScript::POS_READY,
-				array(),
+				[],
 				CHtml::script("function() {alert('script')}")
-			),
+			],
 			// With HTML options
-			array(
+			[
 				'option_js_id',
 				"function() {alert('script')}",
 				CClientScript::POS_HEAD,
-				array('defer'=>true),
-				CHtml::script("function() {alert('script')}",array('defer'=>true))
-			),
-			array(
+				['defer'=>true],
+				CHtml::script("function() {alert('script')}",['defer'=>true])
+			],
+			[
 				'option_js_id',
 				"function() {alert('script')}",
 				CClientScript::POS_BEGIN,
-				array('defer'=>true),
-				CHtml::script("function() {alert('script')}",array('defer'=>true))
-			),
-			array(
+				['defer'=>true],
+				CHtml::script("function() {alert('script')}",['defer'=>true])
+			],
+			[
 				'option_js_id',
 				"function() {alert('script')}",
 				CClientScript::POS_END,
-				array('defer'=>true),
-				CHtml::script("function() {alert('script')}",array('defer'=>true))
-			),
-		);
+				['defer'=>true],
+				CHtml::script("function() {alert('script')}",['defer'=>true])
+			],
+		];
 	}
 
 	/**
@@ -425,44 +425,44 @@ class CClientScriptTest extends CTestCase
 
 	public function providerRenderScriptsBatch()
 	{
-		return array(
-			array(
-				array(
-					array(
+		return [
+			[
+				[
+					[
 						'id' => 'js_id_1',
 						'script' => "function() {alert('script1')}",
 						'position' => CClientScript::POS_HEAD,
-						'htmlOptions' => array(),
-					),
-					array(
+						'htmlOptions' => [],
+					],
+					[
 						'id' => 'js_id_2',
 						'script' => "function() {alert('script2')}",
 						'position' => CClientScript::POS_HEAD,
-						'htmlOptions' => array(),
-					),
-				),
+						'htmlOptions' => [],
+					],
+				],
 				1
-			),
-			array(
-				array(
-					array(
+			],
+			[
+				[
+					[
 						'id' => 'js_id_1',
 						'script' => "function() {alert('script1')}",
 						'position' => CClientScript::POS_HEAD,
-						'htmlOptions' => array(),
-					),
-					array(
+						'htmlOptions' => [],
+					],
+					[
 						'id' => 'js_id_2',
 						'script' => "function() {alert('script2')}",
 						'position' => CClientScript::POS_HEAD,
-						'htmlOptions' => array(
+						'htmlOptions' => [
 							'defer' => true
-						),
-					),
-				),
+						],
+					],
+				],
 				2
-			),
-		);
+			],
+		];
 	}
 
 	/**

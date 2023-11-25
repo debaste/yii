@@ -6,7 +6,7 @@ class CUrlManagerTest extends CTestCase
 {
 	public function testParseUrlWithPathFormat()
 	{
-		$rules=array(
+		$rules=[
 			'article/<id:\d+>'=>'article/read',
 			'article/<year:\d{4}>/<title>/*'=>'article/read',
 			'a/<_a>/*'=>'article',
@@ -21,138 +21,138 @@ class CUrlManagerTest extends CTestCase
 			'url*with+special.symbols'=>'controller1/action',
 			'<name:\w+>.<ext:\w+>'=>'controller2/action',
 			'<name:\w+>*<ext:\w+>'=>'controller3/action',
-		);
-		$entries=array(
-			array(
+		];
+		$entries=[
+			[
 				'pathInfo'=>'article/123',
 				'route'=>'article/read',
-				'params'=>array('id'=>'123'),
-			),
-			array(
+				'params'=>['id'=>'123'],
+			],
+			[
 				'pathInfo'=>'article/123/name/value',
 				'route'=>'article/123/name/value',
-				'params'=>array(),
-			),
-			array(
+				'params'=>[],
+			],
+			[
 				'pathInfo'=>'article/2000/title goes here',
 				'route'=>'article/read',
-				'params'=>array('year'=>'2000','title'=>'title goes here'),
-			),
-			array(
+				'params'=>['year'=>'2000','title'=>'title goes here'],
+			],
+			[
 				'pathInfo'=>'article/2000/title goes here/name/value',
 				'route'=>'article/read',
-				'params'=>array('year'=>'2000','title'=>'title goes here','name'=>'value'),
-			),
-			array(
+				'params'=>['year'=>'2000','title'=>'title goes here','name'=>'value'],
+			],
+			[
 				'pathInfo'=>'register/username/admin',
 				'route'=>'user',
-				'params'=>array('username'=>'admin'),
-			),
-			array(
+				'params'=>['username'=>'admin'],
+			],
+			[
 				'pathInfo'=>'home/name/value/name1/value1',
 				'route'=>'',
-				'params'=>array('name'=>'value','name1'=>'value1'),
-			),
-			array(
+				'params'=>['name'=>'value','name1'=>'value1'],
+			],
+			[
 				'pathInfo'=>'home2/name/value/name1/value1',
 				'route'=>'home2/name/value/name1/value1',
-				'params'=>array(),
-			),
-			array(
+				'params'=>[],
+			],
+			[
 				'pathInfo'=>'post',
 				'route'=>'post',
-				'params'=>array(),
-			),
-			array(
+				'params'=>[],
+			],
+			[
 				'pathInfo'=>'post/read',
 				'route'=>'post/read',
-				'params'=>array(),
-			),
-			array(
+				'params'=>[],
+			],
+			[
 				'pathInfo'=>'post/read/id/100',
 				'route'=>'post/read/id/100',
-				'params'=>array(),
-			),
-			array(
+				'params'=>[],
+			],
+			[
 				'pathInfo'=>'',
 				'route'=>'',
-				'params'=>array(),
-			),
-			array(
+				'params'=>[],
+			],
+			[
 				'pathInfo'=>'ad/name/value',
 				'route'=>'admin/index/list',
-				'params'=>array('name'=>'value'),
-			),
-			array(
+				'params'=>['name'=>'value'],
+			],
+			[
 				'pathInfo'=>'admin/name/value',
 				'route'=>'admin/name/value',
-				'params'=>array(),
-			),
-			array(
+				'params'=>[],
+			],
+			[
 				'pathInfo'=>'posts',
 				'route'=>'post/list',
-				'params'=>array(),
-			),
-			array(
+				'params'=>[],
+			],
+			[
 				'pathInfo'=>'posts/page/3',
 				'route'=>'post/list',
-				'params'=>array('page'=>3),
-			),
-			array(
+				'params'=>['page'=>3],
+			],
+			[
 				'pathInfo'=>'post/3',
 				'route'=>'post/view',
-				'params'=>array('id'=>3),
-			),
-			array(
+				'params'=>['id'=>3],
+			],
+			[
 				'pathInfo'=>'post/3/delete',
 				'route'=>'post/delete',
-				'params'=>array('id'=>3),
-			),
-			array(
+				'params'=>['id'=>3],
+			],
+			[
 				'pathInfo'=>'post/3/delete/a',
 				'route'=>'post/3/delete/a',
-				'params'=>array(),
-			),
-			array(
+				'params'=>[],
+			],
+			[
 				'pathInfo'=>'en/profile',
 				'route'=>'user/profile',
-				'params'=>array('user'=>'admin','lang'=>'en'),
-			),
-			array(
+				'params'=>['user'=>'admin','lang'=>'en'],
+			],
+			[
 				'pathInfo'=>'currency/＄',
 				'route'=>'currency/info',
-				'params'=>array('c'=>'＄'),
-			),
-			array(
+				'params'=>['c'=>'＄'],
+			],
+			[
 				'pathInfo'=>'url*with+special.symbols',
 				'route'=>'controller1/action',
-				'params'=>array(),
-			),
-			array(
+				'params'=>[],
+			],
+			[
 				'pathInfo'=>'picture.jpg',
 				'route'=>'controller2/action',
-				'params'=>array('name'=>'picture','ext'=>'jpg'),
-			),
-			array(
+				'params'=>['name'=>'picture','ext'=>'jpg'],
+			],
+			[
 				'pathInfo'=>'urlwithoutadot',
 				'route'=>'urlwithoutadot',
-				'params'=>array(),
-			),
-			array(
+				'params'=>[],
+			],
+			[
 				'pathInfo'=>'picture*jpg',
 				'route'=>'controller3/action',
-				'params'=>array('name'=>'picture','ext'=>'jpg'),
-			),
-		);
-		$config=array(
+				'params'=>['name'=>'picture','ext'=>'jpg'],
+			],
+		];
+		$config=[
 			'basePath'=>dirname(__FILE__),
-			'components'=>array(
-				'request'=>array(
+			'components'=>[
+				'request'=>[
 					'class'=>'TestHttpRequest',
 					'scriptUrl'=>'/app/index.php',
-				),
-			),
-		);
+				],
+			],
+		];
 		$app=new TestApplication($config);
 		$app->controllerPath=dirname(__FILE__).DIRECTORY_SEPARATOR.'controllers';
 		$request=$app->request;
@@ -165,13 +165,13 @@ class CUrlManagerTest extends CTestCase
 		foreach($entries as $entry)
 		{
 			$request->pathInfo=$entry['pathInfo'];
-			$_GET=array();
+			$_GET=[];
 			$route=$um->parseUrl($request);
 			$this->assertEquals($entry['route'],$route);
 			$this->assertEquals($entry['params'],$_GET);
 			// test the .html version
 			$request->pathInfo=$entry['pathInfo'].'.html';
-			$_GET=array();
+			$_GET=[];
 			$route=$um->parseUrl($request);
 			$this->assertEquals($entry['route'],$route);
 			$this->assertEquals($entry['params'],$_GET);
@@ -180,7 +180,7 @@ class CUrlManagerTest extends CTestCase
 
 	public function testcreateUrlWithPathFormat()
 	{
-		$rules=array(
+		$rules=[
 			'<name:\w+>.<ext:\w+>'=>'controller2/action',
 			'article/<id:\d+>'=>'article/read',
 			'article/<year:\d{4}>/<title>/*'=>'article/read',
@@ -194,164 +194,164 @@ class CUrlManagerTest extends CTestCase
 			'currency/<c:\p{Sc}>'=>'currency/info',
 			'url*with+special.symbols'=>'controller1/action',
 			'<name:\w+>*<ext:\w+>'=>'controller3/action',
-		);
-		$config=array(
+		];
+		$config=[
 			'basePath'=>dirname(__FILE__),
-			'components'=>array(
-				'request'=>array(
+			'components'=>[
+				'request'=>[
 					'class'=>'TestHttpRequest',
-				),
-			),
-		);
+				],
+			],
+		];
 		$_SERVER['HTTP_HOST']='user.example.com';
 		$app=new TestApplication($config);
-		$entries=array(
-			array(
+		$entries=[
+			[
 				'scriptUrl'=>'/apps/index.php',
 				'url'=>'/apps/index.php/post/123?name1=value1',
 				'url2'=>'/apps/post/123?name1=value1',
 				'url3'=>'/apps/post/123.html?name1=value1',
 				'route'=>'post/view',
-				'params'=>array(
+				'params'=>[
 					'id'=>'123',
 					'name1'=>'value1',
-				),
-			),
-			array(
+				],
+			],
+			[
 				'scriptUrl'=>'/apps/index.php',
 				'url'=>'/apps/index.php/post/123/update?name1=value1',
 				'url2'=>'/apps/post/123/update?name1=value1',
 				'url3'=>'/apps/post/123/update.html?name1=value1',
 				'route'=>'post/update',
-				'params'=>array(
+				'params'=>[
 					'id'=>'123',
 					'name1'=>'value1',
-				),
-			),
-			array(
+				],
+			],
+			[
 				'scriptUrl'=>'/apps/index.php',
 				'url'=>'/apps/index.php/posts/page/123',
 				'url2'=>'/apps/posts/page/123',
 				'url3'=>'/apps/posts/page/123.html',
 				'route'=>'post/list',
-				'params'=>array(
+				'params'=>[
 					'page'=>'123',
-				),
-			),
-			array(
+				],
+			],
+			[
 				'scriptUrl'=>'/apps/index.php',
 				'url'=>'/apps/index.php/article/123?name1=value1',
 				'url2'=>'/apps/article/123?name1=value1',
 				'url3'=>'/apps/article/123.html?name1=value1',
 				'route'=>'article/read',
-				'params'=>array(
+				'params'=>[
 					'id'=>'123',
 					'name1'=>'value1',
-				),
-			),
-			array(
+				],
+			],
+			[
 				'scriptUrl'=>'/index.php',
 				'url'=>'/index.php/article/123?name1=value1',
 				'url2'=>'/article/123?name1=value1',
 				'url3'=>'/article/123.html?name1=value1',
 				'route'=>'article/read',
-				'params'=>array(
+				'params'=>[
 					'id'=>'123',
 					'name1'=>'value1',
-				),
-			),
-			array(
+				],
+			],
+			[
 				'scriptUrl'=>'/apps/index.php',
 				'url'=>'/apps/index.php/article/2000/the_title/name1/value1',
 				'url2'=>'/apps/article/2000/the_title/name1/value1',
 				'url3'=>'/apps/article/2000/the_title/name1/value1.html',
 				'route'=>'article/read',
-				'params'=>array(
+				'params'=>[
 					'year'=>'2000',
 					'title'=>'the_title',
 					'name1'=>'value1',
-				),
-			),
-			array(
+				],
+			],
+			[
 				'scriptUrl'=>'/index.php',
 				'url'=>'/index.php/article/2000/the_title/name1/value1',
 				'url2'=>'/article/2000/the_title/name1/value1',
 				'url3'=>'/article/2000/the_title/name1/value1.html',
 				'route'=>'article/read',
-				'params'=>array(
+				'params'=>[
 					'year'=>'2000',
 					'title'=>'the_title',
 					'name1'=>'value1',
-				),
-			),
-			array(
+				],
+			],
+			[
 				'scriptUrl'=>'/apps/index.php',
 				'url'=>'/apps/index.php/post/edit/id/123/name1/value1',
 				'url2'=>'/apps/post/edit/id/123/name1/value1',
 				'url3'=>'/apps/post/edit/id/123/name1/value1.html',
 				'route'=>'post/edit',
-				'params'=>array(
+				'params'=>[
 					'id'=>'123',
 					'name1'=>'value1',
-				),
-			),
-			array(
+				],
+			],
+			[
 				'scriptUrl'=>'/index.php',
 				'url'=>'http://admin.example.com/en/profile',
 				'url2'=>'http://admin.example.com/en/profile',
 				'url3'=>'http://admin.example.com/en/profile.html',
 				'route'=>'user/profile',
-				'params'=>array(
+				'params'=>[
 					'user'=>'admin',
 					'lang'=>'en',
-				),
-			),
-			array(
+				],
+			],
+			[
 				'scriptUrl'=>'/index.php',
 				'url'=>'/en/profile',
 				'url2'=>'/en/profile',
 				'url3'=>'/en/profile.html',
 				'route'=>'user/profile',
-				'params'=>array(
+				'params'=>[
 					'user'=>'user',
 					'lang'=>'en',
-				),
-			),
-			array(
+				],
+			],
+			[
 				'scriptUrl'=>'/index.php',
 				'url'=>'/index.php/currency/%EF%BC%84',
 				'url2'=>'/currency/%EF%BC%84',
 				'url3'=>'/currency/%EF%BC%84.html',
 				'route'=>'currency/info',
-				'params'=>array(
+				'params'=>[
 					'c'=>'＄',
-				),
-			),
-			array(
+				],
+			],
+			[
 				'scriptUrl'=>'/index.php',
 				'route'=>'controller1/action',
-				'params'=>array(),
+				'params'=>[],
 				'url'=>'/index.php/url*with+special.symbols',
 				'url2'=>'/url*with+special.symbols',
 				'url3'=>'/url*with+special.symbols.html',
-			),
-			array(
+			],
+			[
 				'scriptUrl'=>'/index.php',
 				'route'=>'controller2/action',
-				'params'=>array('name'=>'picture','ext'=>'jpg'),
+				'params'=>['name'=>'picture','ext'=>'jpg'],
 				'url'=>'/index.php/picture.jpg',
 				'url2'=>'/picture.jpg',
 				'url3'=>'/picture.jpg.html',
-			),
-			array(
+			],
+			[
 				'scriptUrl'=>'/index.php',
 				'route'=>'controller3/action',
-				'params'=>array('name'=>'picture','ext'=>'jpg'),
+				'params'=>['name'=>'picture','ext'=>'jpg'],
 				'url'=>'/index.php/picture*jpg',
 				'url2'=>'/picture*jpg',
 				'url3'=>'/picture*jpg.html',
-			),
-		);
+			],
+		];
 		foreach($entries as $entry)
 		{
 			$app->request->baseUrl=null; // reset so that it can be determined based on scriptUrl
@@ -384,21 +384,21 @@ class CUrlManagerTest extends CTestCase
 
 	public function testParseUrlWithGetFormat()
 	{
-		$config=array(
+		$config=[
 			'basePath'=>dirname(__FILE__),
-			'components'=>array(
-				'request'=>array(
+			'components'=>[
+				'request'=>[
 					'class'=>'TestHttpRequest',
 					'scriptUrl'=>'/app/index.php',
-				),
-			),
-		);
-		$entries=array(
-			array(
+				],
+			],
+		];
+		$entries=[
+			[
 				'route'=>'article/read',
 				'name'=>'value',
-			),
-		);
+			],
+		];
 		$app=new TestApplication($config);
 		$request=$app->request;
 		$um=new CUrlManager;
@@ -416,37 +416,37 @@ class CUrlManagerTest extends CTestCase
 
 	public function testCreateUrlWithGetFormat()
 	{
-		$config=array(
+		$config=[
 			'basePath'=>dirname(__FILE__),
-			'components'=>array(
-				'request'=>array(
+			'components'=>[
+				'request'=>[
 					'class'=>'TestHttpRequest',
-				),
-			),
-		);
+				],
+			],
+		];
 		$app=new TestApplication($config);
-		$entries=array(
-			array(
+		$entries=[
+			[
 				'scriptUrl'=>'/apps/index.php',
 				'url'=>'/apps/index.php?route=article/read&name=value&name1=value1',
 				'url2'=>'/apps/?route=article/read&name=value&name1=value1',
 				'route'=>'article/read',
-				'params'=>array(
+				'params'=>[
 					'name'=>'value',
 					'name1'=>'value1',
-				),
-			),
-			array(
+				],
+			],
+			[
 				'scriptUrl'=>'/index.php',
 				'url'=>'/index.php?route=article/read&name=value&name1=value1',
 				'url2'=>'/?route=article/read&name=value&name1=value1',
 				'route'=>'article/read',
-				'params'=>array(
+				'params'=>[
 					'name'=>'value',
 					'name1'=>'value1',
-				),
-			),
-		);
+				],
+			],
+		];
 		foreach($entries as $entry)
 		{
 			$app->request->baseUrl=null;
@@ -470,88 +470,88 @@ class CUrlManagerTest extends CTestCase
 
 	public function testDefaultParams()
 	{
-		$config=array(
+		$config=[
 			'basePath'=>dirname(__FILE__),
-			'components'=>array(
-				'request'=>array(
+			'components'=>[
+				'request'=>[
 					'class'=>'TestHttpRequest',
-				),
-			),
-		);
+				],
+			],
+		];
 		$app=new TestApplication($config);
 
 		$app->request->baseUrl=null; // reset so that it can be determined based on scriptUrl
 		$app->request->scriptUrl='/apps/index.php';
 		$um=new CUrlManager;
 		$um->urlFormat='path';
-		$um->rules=array(
-			''=>array('site/page', 'defaultParams'=>array('view'=>'about')),
-			'posts'=>array('post/index', 'defaultParams'=>array('page'=>1)),
-			'<slug:[0-9a-z-]+>' => array('news/list', 'defaultParams' => array('page' => 1)),
-		);
+		$um->rules=[
+			''=>['site/page', 'defaultParams'=>['view'=>'about']],
+			'posts'=>['post/index', 'defaultParams'=>['page'=>1]],
+			'<slug:[0-9a-z-]+>' => ['news/list', 'defaultParams' => ['page' => 1]],
+		];
 		$um->init($app);
 
-		$url=$um->createUrl('site/page',array('view'=>'about'));
+		$url=$um->createUrl('site/page',['view'=>'about']);
 		$this->assertEquals('/apps/index.php/',$url);
 		$app->request->pathInfo='';
-		$_GET=array();
+		$_GET=[];
 		$route=$um->parseUrl($app->request);
 		$this->assertEquals('site/page',$route);
-		$this->assertEquals(array('view'=>'about'),$_GET);
+		$this->assertEquals(['view'=>'about'],$_GET);
 
-		$url=$um->createUrl('post/index',array('page'=>1));
+		$url=$um->createUrl('post/index',['page'=>1]);
 		$this->assertEquals('/apps/index.php/posts',$url);
 		$app->request->pathInfo='posts';
-		$_GET=array();
+		$_GET=[];
 		$route=$um->parseUrl($app->request);
 		$this->assertEquals('post/index',$route);
-		$this->assertEquals(array('page'=>'1'),$_GET);
+		$this->assertEquals(['page'=>'1'],$_GET);
 
-		$url=$um->createUrl('news/list', array('slug' => 'example', 'page' => 1));
+		$url=$um->createUrl('news/list', ['slug' => 'example', 'page' => 1]);
 		$this->assertEquals('/apps/index.php/example',$url);
 		$app->request->pathInfo='example';
-		$_GET=array();
+		$_GET=[];
 		$route=$um->parseUrl($app->request);
 		$this->assertEquals('news/list',$route);
-		$this->assertEquals(array('slug'=>'example', 'page'=>'1'),$_GET);
+		$this->assertEquals(['slug'=>'example', 'page'=>'1'],$_GET);
 	}
 
 	public function testVerb()
 	{
-		$config=array(
+		$config=[
 			'basePath'=>dirname(__FILE__),
-			'components'=>array(
-				'request'=>array(
+			'components'=>[
+				'request'=>[
 					'class'=>'TestHttpRequest',
-				),
-			),
-		);
-		$rules=array(
-			'article/<id:\d+>'=>array('article/read', 'verb'=>'GET'),
-			'article/update/<id:\d+>'=>array('article/update', 'verb'=>'POST'),
+				],
+			],
+		];
+		$rules=[
+			'article/<id:\d+>'=>['article/read', 'verb'=>'GET'],
+			'article/update/<id:\d+>'=>['article/update', 'verb'=>'POST'],
 			'article/update/*'=>'article/admin',
-		);
+		];
 
-		$entries=array(
-			array(
+		$entries=[
+			[
 				'scriptUrl'=>'/apps/index.php',
 				'url'=>'article/123',
 				'verb'=>'GET',
 				'route'=>'article/read',
-			),
-			array(
+			],
+			[
 				'scriptUrl'=>'/apps/index.php',
 				'url'=>'article/update/123',
 				'verb'=>'POST',
 				'route'=>'article/update',
-			),
-			array(
+			],
+			[
 				'scriptUrl'=>'/apps/index.php',
 				'url'=>'article/update/123',
 				'verb'=>'GET',
 				'route'=>'article/admin',
-			),
-		);
+			],
+		];
 
 		foreach($entries as $entry)
 		{
@@ -571,18 +571,18 @@ class CUrlManagerTest extends CTestCase
 
 	public function testParsingOnly()
 	{
-		$config=array(
+		$config=[
 			'basePath'=>dirname(__FILE__),
-			'components'=>array(
-				'request'=>array(
+			'components'=>[
+				'request'=>[
 					'class'=>'TestHttpRequest',
-				),
-			),
-		);
-		$rules=array(
-			'(articles|article)/<id:\d+>'=>array('article/read', 'parsingOnly'=>true),
-			'article/<id:\d+>'=>array('article/read', 'verb'=>'GET'),
-		);
+				],
+			],
+		];
+		$rules=[
+			'(articles|article)/<id:\d+>'=>['article/read', 'parsingOnly'=>true],
+			'article/<id:\d+>'=>['article/read', 'verb'=>'GET'],
+		];
 
 		$_SERVER['REQUEST_METHOD']='GET';
 		$app=new TestApplication($config);
@@ -597,7 +597,7 @@ class CUrlManagerTest extends CTestCase
 		$route=$um->parseUrl($app->request);
 		$this->assertEquals('article/read',$route);
 
-		$url=$um->createUrl('article/read', array('id'=>345));
+		$url=$um->createUrl('article/read', ['id'=>345]);
 		$this->assertEquals('/apps/index.php/article/345',$url);
 	}
 }

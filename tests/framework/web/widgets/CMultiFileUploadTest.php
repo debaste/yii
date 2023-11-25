@@ -20,7 +20,7 @@ class CMultiFileUploadTest extends CTestCase
 
 	private function getWidgetScript($callback)
 	{
-		Yii::app()->clientScript->scripts = array();
+		Yii::app()->clientScript->scripts = [];
 		ob_start();
 		$widget = new CMultiFileUpload(null);
 		$widget->name = 'test';

@@ -16,10 +16,10 @@ class CDateValidatorTest extends CTestCase
      */
     public function testAllowEmptyOption()
     {
-        $model = $this->getModelMock(array('allowEmpty' => true));
+        $model = $this->getModelMock(['allowEmpty' => true]);
         $this->assertTrue($model->validate());
 
-        $model = $this->getModelMock(array('allowEmpty' => false));
+        $model = $this->getModelMock(['allowEmpty' => false]);
         $this->assertFalse($model->validate());
         $this->assertTrue($model->hasErrors('foo'));
     }
@@ -39,14 +39,14 @@ class CDateValidatorTest extends CTestCase
         $this->assertFalse($model->validate());
 
         // custom format
-        $model = $this->getModelMock(array('format' => 'dd-MM-yyyy'));
+        $model = $this->getModelMock(['format' => 'dd-MM-yyyy']);
         $model->foo = '01-01-2011';
         $this->assertTrue($model->validate());
         $model->foo = '01-24-2011';
         $this->assertFalse($model->validate());
 
         // array value, https://github.com/yiisoft/yii/issues/1955
-        $model->foo = array('01-01-2011');
+        $model->foo = ['01-01-2011'];
         $this->assertFalse($model->validate());
     }
 
@@ -57,7 +57,7 @@ class CDateValidatorTest extends CTestCase
      */
     public function testTimestampOption()
     {
-        $model = $this->getModelMock(array('timestampAttribute' => 'bar'));
+        $model = $this->getModelMock(['timestampAttribute' => 'bar']);
         $model->foo = '01/01/2011';
         $this->assertTrue($model->validate());
         $this->assertInternalType('integer', $model->bar);
@@ -71,17 +71,17 @@ class CDateValidatorTest extends CTestCase
      *
      * @return null
      */
-    protected function getModelMock($params=array())
+    protected function getModelMock($params=[])
     {
-        $rules = array(
-            array('foo', 'date')
-        );
+        $rules = [
+            ['foo', 'date']
+        ];
 
         foreach ($params as $rule => $value) {
             $rules[0][$rule] = $value;
         }
 
-        $stub = $this->getMock('ModelMock', array('rules'));
+        $stub = $this->getMock('ModelMock', ['rules']);
         $stub->expects($this->any())
              ->method('rules')
              ->will($this->returnValue($rules));

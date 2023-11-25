@@ -13,7 +13,7 @@ class CStatePersisterTest extends CTestCase
 	{
 		$app=new TestApplication;
 		$sp=$app->statePersister;
-		$data=array('123','456','a'=>443);
+		$data=['123','456','a'=>443];
 		$sp->save($data);
 		$this->assertEquals($sp->load(),$data);
 		// TODO: test with cache on

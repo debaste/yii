@@ -4,16 +4,16 @@ class CCookieCollectionTest extends CTestCase
 {
 	protected $request;
 	protected $cookies;
-	protected $testCookies=array(
+	protected $testCookies=[
 		'testCookieOne'=>'testValue',
 		'someEmptyCookie'=>'',
 		'IntegerValue'=>1242,
-		'cookieWithOptions'=>array(
+		'cookieWithOptions'=>[
 			'value'=>'options',
 			'httpOnly'=>true,
 			'expire'=>12422,
-		),
-	);
+		],
+	];
 	protected $cookieBefore;
 	public function setUp()
 	{

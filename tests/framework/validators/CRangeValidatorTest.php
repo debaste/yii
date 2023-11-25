@@ -8,7 +8,7 @@ class CRangeValidatorTest extends CTestCase
 		$model = new ValidatorTestModel('CRangeValidatorTest');
 		$model->string1 = '';
 		$model->string2 = '';
-		$model->validate(array('string1','string2'));
+		$model->validate(['string1','string2']);
 		$this->assertArrayHasKey('string1', $model->getErrors());
 		$this->assertArrayNotHasKey('string2', $model->getErrors());
 	}
@@ -18,7 +18,7 @@ class CRangeValidatorTest extends CTestCase
 		$model = new ValidatorTestModel('CRangeValidatorTest');
 		$model->string1 = '0';
 		$model->string2 = '0';
-		$model->validate(array('string1','string2'));
+		$model->validate(['string1','string2']);
 		$this->assertArrayNotHasKey('string1', $model->getErrors());
 		$this->assertArrayHasKey('string2', $model->getErrors());
 	}
@@ -28,7 +28,7 @@ class CRangeValidatorTest extends CTestCase
 		$model = new ValidatorTestModel('CRangeValidatorTest');
 		$model->string1 = 0;
 		$model->string2 = 0;
-		$model->validate(array('string1','string2'));
+		$model->validate(['string1','string2']);
 		$this->assertArrayNotHasKey('string1', $model->getErrors());
 		$this->assertArrayHasKey('string2', $model->getErrors());
 	}
@@ -38,19 +38,19 @@ class CRangeValidatorTest extends CTestCase
 	 */
 	public function testNonStrict()
 	{
-		$comparisons = array(
-			array(1, true),
-			array('1', true),
-			array(' 1', true),
-			array('1 ', true),
-			array(2, false),
-			array(12, false),
-		);
+		$comparisons = [
+			[1, true],
+			['1', true],
+			[' 1', true],
+			['1 ', true],
+			[2, false],
+			[12, false],
+		];
 
 		foreach ($comparisons as $comparison) {
 			$model = new ValidatorTestModel('CRangeValidatorTest');
 			$model->string3 = $comparison[0];
-			$model->validate(array('string3'));
+			$model->validate(['string3']);
 
 			if ($comparison[1]) {
 				$this->assertArrayNotHasKey('string3', $model->getErrors(), var_export($comparison[0], true) . ' should be valid but it is not.');

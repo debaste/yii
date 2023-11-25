@@ -36,13 +36,13 @@ class CSortTest extends CTestCase {
 		$criteria->with = 'comments';
 
 		$sort = new CSort('TestPost');
-		$sort->attributes = array(
+		$sort->attributes = [
 			'id',
-			'comments.id' => array(
+			'comments.id' => [
 			  'asc'=>'comments.id',
 			  'desc'=>'comments.id desc',
-			),
-		);
+			],
+		];
 		$sort->applyOrder($criteria);
 		$directions = $sort->getDirections();
 
@@ -62,13 +62,13 @@ class CSortTest extends CTestCase {
 		$criteria->with = 'comments';
 
 		$sort = new CSort('TestPost');
-		$sort->attributes = array(
+		$sort->attributes = [
 			'id',
-			'comments.id' => array(
-			  'asc'=>array('comments.id', 'id'),
-			  'desc'=>array('comments.id desc', 'id desc'),
-			),
-		);
+			'comments.id' => [
+			  'asc'=>['comments.id', 'id'],
+			  'desc'=>['comments.id desc', 'id desc'],
+			],
+		];
 		$sort->applyOrder($criteria);
 		$directions = $sort->getDirections();
 
@@ -87,9 +87,9 @@ class TestPost extends CActiveRecord {
     }
 
 	public function relations() {
-        return array(
-           'comments'=>array(self::HAS_MANY, 'TestComment', 'post_id'),
-        );
+        return [
+           'comments'=>[self::HAS_MANY, 'TestComment', 'post_id'],
+        ];
     }
 }
 
@@ -103,8 +103,8 @@ class TestComment extends CActiveRecord {
     }
 
 	public function relations() {
-        return array(
-           'post'=>array(self::BELONGS_TO, 'TestPost', 'post_id'),
-        );
+        return [
+           'post'=>[self::BELONGS_TO, 'TestPost', 'post_id'],
+        ];
     }
 }

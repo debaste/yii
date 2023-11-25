@@ -9,26 +9,26 @@ if(!defined('DBCACHE_TEST_DB'))
 
 class CDbCacheTest extends CTestCase
 {
-	private $_config1=array(
+	private $_config1=[
 		'id'=>'testApp',
-		'components'=>array(
-			'cache'=>array(
+		'components'=>[
+			'cache'=>[
 				'class'=>'CDbCache',
-			),
-		),
-	);
-	private $_config2=array(
+			],
+		],
+	];
+	private $_config2=[
 		'id'=>'testApp',
-		'components'=>array(
-			'db'=>array(
+		'components'=>[
+			'db'=>[
 				'connectionString'=>DBCACHE_TEST_DB,
-			),
-			'cache'=>array(
+			],
+			'cache'=>[
 				'class'=>'system.caching.CDbCache',
 				'connectionID'=>'db',
-			),
-		),
-	);
+			],
+		],
+	];
 
 	public function setUp()
 	{
@@ -55,7 +55,7 @@ class CDbCacheTest extends CTestCase
 		$app->reset();
 		$cache=$app->cache;
 
-		$data=array('abc'=>1,2=>'def');
+		$data=['abc'=>1,2=>'def'];
 		$key='data1';
 
 		$this->assertFalse($cache->get($key));
@@ -77,12 +77,12 @@ class CDbCacheTest extends CTestCase
 		$key2='multidata2';
 		$data2=34;
 
-		$this->assertEquals($cache->mget(array($key1,$key2)), array($key1=>false,$key2=>false));
+		$this->assertEquals($cache->mget([$key1,$key2]), [$key1=>false,$key2=>false]);
 		$cache->set($key1,$data1);
 		$cache->set($key2,$data2);
-		$this->assertEquals($cache->mget(array($key1,$key2)), array($key1=>$data1,$key2=>$data2));
+		$this->assertEquals($cache->mget([$key1,$key2]), [$key1=>$data1,$key2=>$data2]);
 		$app2=new TestApplication($this->_config1);
-		$this->assertEquals($app2->cache->mget(array($key1,$key2)), array($key1=>$data1,$key2=>$data2));
+		$this->assertEquals($app2->cache->mget([$key1,$key2]), [$key1=>$data1,$key2=>$data2]);
 	}
 
 	public function testArrayAccess()
@@ -90,7 +90,7 @@ class CDbCacheTest extends CTestCase
 		$app=new TestApplication($this->_config1);
 		$app->reset();
 		$cache=$app->cache;
-		$data=array('abc'=>1,2=>'def');
+		$data=['abc'=>1,2=>'def'];
 		$key='data2';
 		$cache[$key]=$data;
 		$this->assertTrue($cache->get($key)===$data);
@@ -104,7 +104,7 @@ class CDbCacheTest extends CTestCase
 		$app=new TestApplication($this->_config1);
 		$app->reset();
 		$cache=$app->cache;
-		$data=array('abc'=>1,2=>'def');
+		$data=['abc'=>1,2=>'def'];
 		$key='data3';
 		$cache->set($key,$data,2);
 		$this->assertTrue($cache->get($key)===$data);
@@ -119,7 +119,7 @@ class CDbCacheTest extends CTestCase
 		$app=new TestApplication($this->_config2);
 		$cache=$app->cache;
 
-		$data=array('abc'=>1,2=>'def');
+		$data=['abc'=>1,2=>'def'];
 		$key='data4';
 		$this->assertFalse($cache->get($key));
 		$cache->set($key,$data);
@@ -135,7 +135,7 @@ class CDbCacheTest extends CTestCase
 		$app=new TestApplication($this->_config2);
 		$cache=$app->cache;
 
-		$data=array('abc'=>1,2=>'def');
+		$data=['abc'=>1,2=>'def'];
 		$key='data5';
 
 		$cache->set($key,$data,0,new CFileCacheDependency(__FILE__));
@@ -157,7 +157,7 @@ class CDbCacheTest extends CTestCase
 		$app=new TestApplication($this->_config2);
 		$cache=$app->cache;
 
-		$data=array('abc'=>1,2=>'def');
+		$data=['abc'=>1,2=>'def'];
 		$key='data8';
 
 		$cache->set($key,$data);
@@ -172,7 +172,7 @@ class CDbCacheTest extends CTestCase
 		$app=new TestApplication($this->_config2);
 		$cache=$app->cache;
 
-		$data=array('abc'=>1,2=>'def');
+		$data=['abc'=>1,2=>'def'];
 		$key='data10';
 		$cache->set($key,$data);
 		$cache->delete($key);
@@ -185,7 +185,7 @@ class CDbCacheTest extends CTestCase
 		$app=new TestApplication($this->_config2);
 		$cache=$app->cache;
 
-		$data=array('abc'=>1,2=>'def');
+		$data=['abc'=>1,2=>'def'];
 		$key1='data11';
 		$key2='data12';
 		$cache->set($key1,$data);

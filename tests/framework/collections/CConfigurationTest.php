@@ -44,7 +44,7 @@ class CConfigurationTest extends CTestCase
 	public function testLoadFromFile()
 	{
 		$config=new CConfiguration;
-		$this->assertTrue($config->toArray()===array());
+		$this->assertTrue($config->toArray()===[]);
 		$config->loadFromFile($this->configFile);
 		$data=include($this->configFile);
 		$this->assertTrue($config->toArray()===$data);
@@ -76,7 +76,7 @@ class CConfigurationTest extends CTestCase
 
 	public function testException()
 	{
-		$config=new CConfiguration(array('invalid'=>'value'));
+		$config=new CConfiguration(['invalid'=>'value']);
 		$object=new MyClass;
 		$this->setExpectedException('CException');
 		$config->applyTo($object);
@@ -84,7 +84,7 @@ class CConfigurationTest extends CTestCase
 
 	public function testCreateComponent()
 	{
-		$obj=Yii::createComponent(array('class'=>'MyClass','param2'=>3));
+		$obj=Yii::createComponent(['class'=>'MyClass','param2'=>3]);
 		$this->assertEquals(get_class($obj),'MyClass');
 		$this->assertEquals($obj->param2,3);
 	}

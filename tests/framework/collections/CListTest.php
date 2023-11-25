@@ -32,7 +32,7 @@ class CListTest extends CTestCase
 
 	public function testConstruct()
 	{
-		$a=array(1,2,3);
+		$a=[1,2,3];
 		$list=new CList($a);
 		$this->assertEquals(3,$list->getCount());
 		$list2=new CList($this->list);
@@ -74,7 +74,7 @@ class CListTest extends CTestCase
 
 	public function testCanNotInsertWhenReadOnly()
 	{
-		$list = new CList(array(), true);
+		$list = new CList([], true);
 		$this->setExpectedException('CException');
 		$list->insertAt(1, 2);
 	}
@@ -103,7 +103,7 @@ class CListTest extends CTestCase
 
 	public function testCanNotRemoveWhenReadOnly()
 	{
-		$list = new CList(array(1, 2, 3), true);
+		$list = new CList([1, 2, 3], true);
 		$this->setExpectedException('CException');
 		$list->removeAt(2);
 	}
@@ -132,7 +132,7 @@ class CListTest extends CTestCase
 
 	public function testCopyFrom()
 	{
-		$array=array($this->item3,$this->item1);
+		$array=[$this->item3,$this->item1];
 		$this->list->copyFrom($array);
 		$this->assertTrue(count($array)==2 && $this->list[0]===$this->item3 && $this->list[1]===$this->item1);
 		$this->setExpectedException('CException');
@@ -141,7 +141,7 @@ class CListTest extends CTestCase
 
 	public function testMergeWith()
 	{
-		$array=array($this->item3,$this->item1);
+		$array=[$this->item3,$this->item1];
 		$this->list->mergeWith($array);
 		$this->assertTrue($this->list->getCount()==4 && $this->list[0]===$this->item1 && $this->list[3]===$this->item1);
 		$this->setExpectedException('CException');
@@ -187,28 +187,28 @@ class CListTest extends CTestCase
 
 	public function testOffsetSetAdd()
 	{
-		$list = new CList(array(1, 2, 3));
+		$list = new CList([1, 2, 3]);
 		$list->offsetSet(null, 4);
-		$this->assertEquals(array(1, 2, 3, 4), $list->toArray());
+		$this->assertEquals([1, 2, 3, 4], $list->toArray());
 	}
 
 	public function testOffsetSetReplace()
 	{
-		$list = new CList(array(1, 2, 3));
+		$list = new CList([1, 2, 3]);
 		$list->offsetSet(1, 4);
-		$this->assertEquals(array(1, 4, 3), $list->toArray());
+		$this->assertEquals([1, 4, 3], $list->toArray());
 	}
 
 	public function testOffsetUnset()
 	{
-		$list = new CList(array(1, 2, 3));
+		$list = new CList([1, 2, 3]);
 		$list->offsetUnset(1);
-		$this->assertEquals(array(1, 3), $list->toArray());
+		$this->assertEquals([1, 3], $list->toArray());
 	}
 
 	public function testIteratorCurrent()
 	{
-		$list = new CList(array('value1', 'value2'));
+		$list = new CList(['value1', 'value2']);
 		$val = $list->getIterator()->current();
 		$this->assertEquals('value1', $val);
 	}

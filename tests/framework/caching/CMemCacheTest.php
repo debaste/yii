@@ -11,19 +11,19 @@ if (!defined('MEMCACHE_USE_MEMCACHED'))
 
 class CMemCacheTest extends CTestCase
 {
-	private $_config=array(
+	private $_config=[
 		'id'=>'testApp',
-		'components'=>array(
-			'cache'=>array(
+		'components'=>[
+			'cache'=>[
 	            'class'=>'CMemCache',
 		    'useMemcached' => MEMCACHE_USE_MEMCACHED,
-	            'servers'=>array(
-	                array('host'=>MEMCACHE_TEST_HOST, 'port'=>MEMCACHE_TEST_PORT, 'weight'=>100),
-	    		),
-            ),
-        ),
+	            'servers'=>[
+	                ['host'=>MEMCACHE_TEST_HOST, 'port'=>MEMCACHE_TEST_PORT, 'weight'=>100],
+	    		],
+            ],
+        ],
 
-	);
+	];
 
 	public function setUp()
 	{
@@ -37,9 +37,9 @@ class CMemCacheTest extends CTestCase
 		$app->reset();
 		$cache=$app->cache;
 
-		$data1=array('abc'=>1,2=>'def');
+		$data1=['abc'=>1,2=>'def'];
 		$key1='data1';
-		$data2=array('xyz'=>3,4=>'whn');
+		$data2=['xyz'=>3,4=>'whn'];
 		$key2='data2';
 		
 		$cache->delete($key1);
@@ -53,19 +53,19 @@ class CMemCacheTest extends CTestCase
 		$this->assertTrue($cache->get($key1)===$data1);
 		$this->assertTrue($cache->get($key2)===$data2);
 		
-		$mgetResult = $cache->mget(array($key1, $key2));
+		$mgetResult = $cache->mget([$key1, $key2]);
 		$this->assertTrue(is_array($mgetResult));
 		$this->assertEquals($mgetResult[$key1],$data1);
 		$this->assertEquals($mgetResult[$key2],$data2);
 
 		$cache->delete($key2);
-		$mgetResult = $cache->mget(array($key1, $key2));
+		$mgetResult = $cache->mget([$key1, $key2]);
 		$this->assertTrue(is_array($mgetResult));
 		$this->assertEquals($mgetResult[$key1],$data1);
 		$this->assertFalse($mgetResult[$key2]); // data2 is removed from cache
 
 		$cache->delete($key1);
-		$mgetResult = $cache->mget(array($key1, $key2));
+		$mgetResult = $cache->mget([$key1, $key2]);
 		$this->assertTrue(is_array($mgetResult));
 		$this->assertFalse($mgetResult[$key1]); // data1 is removed from cache
 		$this->assertFalse($mgetResult[$key2]); // data2 is removed from cache
@@ -90,7 +90,7 @@ class CMemCacheTest extends CTestCase
 		$app->reset();
 		$cache=$app->cache;
 
-		$data=array('abc'=>1,2=>'def');
+		$data=['abc'=>1,2=>'def'];
 		$key='data1';
 		$cache->delete($key);
 
@@ -107,7 +107,7 @@ class CMemCacheTest extends CTestCase
 		$app=new TestApplication($this->_config);
 		$app->reset();
 		$cache=$app->cache;
-		$data=array('abc'=>1,2=>'def');
+		$data=['abc'=>1,2=>'def'];
 		$key='data2';
 		$cache[$key]=$data;
 		$this->assertTrue($cache->get($key)===$data);
@@ -121,7 +121,7 @@ class CMemCacheTest extends CTestCase
 		$app=new TestApplication($this->_config);
 		$app->reset();
 		$cache=$app->cache;
-		$data=array('xyz'=>3,4=>'mnp');
+		$data=['xyz'=>3,4=>'mnp'];
 		$key='data3_2';
 		$cache->set($key,$data,20);
 		$this->assertTrue($cache->get($key)===$data);
@@ -135,7 +135,7 @@ class CMemCacheTest extends CTestCase
 		$app=new TestApplication($this->_config);
 		$cache=$app->cache;
 
-		$data=array('abc'=>1,2=>'def');
+		$data=['abc'=>1,2=>'def'];
 		$key='data10';
 		$cache->set($key,$data);
 		$cache->delete($key);

@@ -8,61 +8,61 @@ class CUrlRuleTest extends CTestCase
 
 	public function setUp()
 	{
-		$config=array(
+		$config=[
 			'basePath'=>dirname(__FILE__),
-			'components'=>array(
-				'request'=>array(
+			'components'=>[
+				'request'=>[
 					'class'=>'TestHttpRequest',
-				),
-			),
-		);
+				],
+			],
+		];
 		$_SERVER['HTTP_HOST']='user.example.com';
 		$this->app=new TestApplication($config);
 	}
 
 	public function testParseUrlMatchValue()
 	{
-		$rules=array(
-			array(
+		$rules=[
+			[
 				'route'=>'article/read',
 				'pattern'=>'article/<id:\d+>',
 				'scriptUrl'=>'/apps/index.php',
-				'entries'=>array(
-					array(
+				'entries'=>[
+					[
 						'route'=>'article/read',
-						'params'=>array(
+						'params'=>[
 							'id'=>'123',
 							'name1'=>'value1',
-						),
+						],
 						'url'=>'article/123?name1=value1',
-					),
-					array(
+					],
+					[
 						'route'=>'article/read',
-						'params'=>array(
+						'params'=>[
 							'id'=>'abc',
 							'name1'=>'value1',
-						),
+						],
 						'url'=>false,
-					),
-					array(
+					],
+					[
 						'route'=>'article/read',
-						'params'=>array(
+						'params'=>[
 							'id'=>"123\n",
 							'name1'=>'value1',
-						),
+						],
 						'url'=>false,
-					),
-					array(
+					],
+					[
 						'route'=>'article/read',
-						'params'=>array(
+						'params'=>[
 							'id'=>'0x1',
 							'name1'=>'value1',
-						),
+						],
 						'url'=>false,
-					),
-				),
-			),
-		);
+					],
+				],
+			],
+		];
 		$um=new CUrlManager;
 		foreach($rules as $rule)
 		{

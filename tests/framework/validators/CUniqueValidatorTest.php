@@ -22,10 +22,10 @@ class CUniqueValidatorTest extends CTestCase
 
 		$this->_connection=new CDbConnection('sqlite::memory:');
 		$this->_connection->active=true;
-		$columns = array(
+		$columns = [
 			'id'=>'pk',
 			'name'=>'string',
-		);
+		];
 		$this->_connection->createCommand()->createTable($this->_tableName, $columns);
 
 		CActiveRecord::$db=$this->_connection;
@@ -138,7 +138,7 @@ EOD;
 	{
 		$modelClassName = $this->_arModelName;
 		$model = new $modelClassName('simple');
-		$model->name = array('test_name');
+		$model->name = ['test_name'];
 		$this->assertFalse($model->validate());
 		$this->assertTrue($model->hasErrors('name'));
 	}

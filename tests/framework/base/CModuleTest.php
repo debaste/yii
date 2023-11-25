@@ -38,7 +38,7 @@ class CModuleTest extends CTestCase {
 		$this->assertEquals($expected,$this->mod->getParams());
 	}
 	public function testSetParams() {
-		$expected = array('foo' => 'bar');
+		$expected = ['foo' => 'bar'];
 		$this->mod->setParams($expected);
 		$this->assertEquals($expected,$this->mod->getParams()->toArray());
 	}
@@ -59,65 +59,65 @@ class CModuleTest extends CTestCase {
 	public function testGetModule() {
 		$p = $this->parent;
 		$p->setModulePath($this->d);
-		$p->setModules(array('foo' => array('class' => 'NewModule')));
+		$p->setModules(['foo' => ['class' => 'NewModule']]);
 		$this->assertEquals('root/foo',$p->getModule('foo')->getId());
 	}
 	public function testGetModules() {
 		$p = $this->parent;
 		$p->setModulePath($this->d);
-		$expected = array('foo' => array('class' => 'NewModule'),'bar');
+		$expected = ['foo' => ['class' => 'NewModule'],'bar'];
 		$p->setModules($expected);
-		$expected['bar'] = array('class' => 'bar.BarModule');
+		$expected['bar'] = ['class' => 'bar.BarModule'];
 		unset($expected[0]);
 		$this->assertEquals($expected,$p->getModules());
 	}
 	public function testGetComponents() {
 		$c = new NewApplicationComponent;
 		$this->mod->setComponent('foo',$c);
-		$this->assertSame(array('foo' => $c),$this->mod->getComponents());
+		$this->assertSame(['foo' => $c],$this->mod->getComponents());
 	}
 	public function testSetComponents() {
-		$expected = array('foo' => new NewApplicationComponent);
+		$expected = ['foo' => new NewApplicationComponent];
 		$this->mod->setComponents($expected);
 		$this->assertSame($expected,$this->mod->getComponents());
 	}
 	public function testSetComponentsViaConfig() {
-		$this->mod = new NewModule('foo',$this->parent,array(
-			'components' => array(
-				'bar' => array('class' => 'NewApplicationComponent'),
-			),
-		));
+		$this->mod = new NewModule('foo',$this->parent,[
+			'components' => [
+				'bar' => ['class' => 'NewApplicationComponent'],
+			],
+		]);
 		$this->assertEquals('hello world',$this->mod->bar->getText('hello world'));
-		$this->mod->setComponents(array(
-			'bar' => array('text' => 'test'),
-		));
+		$this->mod->setComponents([
+			'bar' => ['text' => 'test'],
+		]);
 		$this->assertEquals('test',$this->mod->bar->getText());
 		$this->mod->setComponent('bar',null);
 		$this->assertEquals('test',$this->mod->bar->getText());
-		$this->mod->setComponents(array(
-			'bar' => array('class' => 'NewApplicationComponent'),
-		));
+		$this->mod->setComponents([
+			'bar' => ['class' => 'NewApplicationComponent'],
+		]);
 		$this->assertEquals('test',$this->mod->bar->getText());
-		$this->mod->setComponents(array(
-			'bar' => array('class' => 'AnotherNewApplicationComponent'),
-		));
+		$this->mod->setComponents([
+			'bar' => ['class' => 'AnotherNewApplicationComponent'],
+		]);
 		$this->assertEquals('new',$this->mod->bar->getText());
 		$this->mod->setComponent('bar',null);
 		$this->assertEquals('new',$this->mod->bar->getText());
 		$this->mod->setComponent('bar',null);
-		$this->mod->setComponents(array(
-			'bar' => array(
+		$this->mod->setComponents([
+			'bar' => [
 				'class' => 'NewApplicationComponent',
 				'text' => 'test',
-			),
-		));
-		$this->mod->setComponents(array(
-			'bar' => array('class' => 'AnotherNewApplicationComponent'),
-		));
+			],
+		]);
+		$this->mod->setComponents([
+			'bar' => ['class' => 'AnotherNewApplicationComponent'],
+		]);
 		$this->assertEquals('new',$this->mod->bar->getText());
 	}
 	public function testSetAliases() {
-		$this->mod->setAliases(array('modules' => $this->d));
+		$this->mod->setAliases(['modules' => $this->d]);
 		$this->assertEquals($this->d,Yii::getPathOfAlias('modules'));
 	}
 }

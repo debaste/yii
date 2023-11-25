@@ -18,13 +18,13 @@ class CHttpSessionTest extends CTestCase {
 	 * @runInSeparateProcess
 	 */
 	public function testSetGet() {
-		Yii::app()->setComponents(array('session' => array(
+		Yii::app()->setComponents(['session' => [
 			'class' => 'CHttpSession',
 			'cookieMode' => 'none',
 			'savePath' => sys_get_temp_dir(),
 			'sessionName' => 'CHttpSessionTest',
 			'timeout' => 5,
-		)));
+		]]);
 		/** @var $sm CHttpSession */
 		$this->checkProb(1);
 

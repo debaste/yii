@@ -16,7 +16,7 @@ class CTypeValidatorTest extends CTestCase
 		$this->assertTrue($validator->validateValue('-42'));
 		$this->assertFalse($validator->validateValue('42 is a good number!'));
 		$this->assertFalse($validator->validateValue(3.1415926));
-		$this->assertFalse($validator->validateValue(array(13)));
+		$this->assertFalse($validator->validateValue([13]));
 
 		$this->assertFalse($validator->validateValue(true));
 		$this->assertFalse($validator->validateValue(false));
@@ -36,7 +36,7 @@ class CTypeValidatorTest extends CTestCase
 		$this->assertFalse($validator->validateValue('-42'));
 		$this->assertFalse($validator->validateValue('42 is a good number!'));
 		$this->assertFalse($validator->validateValue(3.1415926));
-		$this->assertFalse($validator->validateValue(array(13)));
+		$this->assertFalse($validator->validateValue([13]));
 
 		$this->assertFalse($validator->validateValue(true));
 		$this->assertFalse($validator->validateValue(false));
@@ -56,7 +56,7 @@ class CTypeValidatorTest extends CTestCase
 		$this->assertTrue($validator->validateValue('+42.2'));
 		$this->assertTrue($validator->validateValue('-42.3'));
 		$this->assertFalse($validator->validateValue('42.3 is a good number!'));
-		$this->assertFalse($validator->validateValue(array(13)));
+		$this->assertFalse($validator->validateValue([13]));
 
 		$this->assertFalse($validator->validateValue(true));
 		$this->assertFalse($validator->validateValue(false));
@@ -77,7 +77,7 @@ class CTypeValidatorTest extends CTestCase
 		$this->assertFalse($validator->validateValue('+42.2'));
 		$this->assertFalse($validator->validateValue('-42.3'));
 		$this->assertFalse($validator->validateValue('42.3 is a good number!'));
-		$this->assertFalse($validator->validateValue(array(13)));
+		$this->assertFalse($validator->validateValue([13]));
 
 		$this->assertFalse($validator->validateValue(true));
 		$this->assertFalse($validator->validateValue(false));
@@ -92,7 +92,7 @@ class CTypeValidatorTest extends CTestCase
 		$this->assertFalse($validator->validateValue(42.0));
 		$this->assertTrue($validator->validateValue('42'));
 		$this->assertTrue($validator->validateValue('42.3 is a good number!'));
-		$this->assertFalse($validator->validateValue(array(13)));
+		$this->assertFalse($validator->validateValue([13]));
 
 		$this->assertFalse($validator->validateValue(true));
 		$this->assertFalse($validator->validateValue(false));
@@ -106,7 +106,7 @@ class CTypeValidatorTest extends CTestCase
 		$this->assertFalse($validator->validateValue(42));
 		$this->assertFalse($validator->validateValue(42.0));
 		$this->assertFalse($validator->validateValue('42.3 is a good number!'));
-		$this->assertTrue($validator->validateValue(array(13)));
+		$this->assertTrue($validator->validateValue([13]));
 
 		$this->assertFalse($validator->validateValue(true));
 		$this->assertFalse($validator->validateValue(false));
@@ -119,7 +119,7 @@ class CTypeValidatorTest extends CTestCase
 	{
 		$validator=new CTypeValidator();
 		$validator->type='date';
-		$this->assertFalse($validator->validateValue(array(13)));
+		$this->assertFalse($validator->validateValue([13]));
 
 		$this->assertFalse($validator->validateValue(42));
 		$this->assertFalse($validator->validateValue(true));
@@ -131,7 +131,7 @@ class CTypeValidatorTest extends CTestCase
 	{
 		$validator=new CTypeValidator();
 		$validator->type='time';
-		$this->assertFalse($validator->validateValue(array(13)));
+		$this->assertFalse($validator->validateValue([13]));
 
 		$this->assertFalse($validator->validateValue(42));
 		$this->assertFalse($validator->validateValue(true));
@@ -143,7 +143,7 @@ class CTypeValidatorTest extends CTestCase
 	{
 		$validator=new CTypeValidator();
 		$validator->type='datetime';
-		$this->assertFalse($validator->validateValue(array(13)));
+		$this->assertFalse($validator->validateValue([13]));
 
 		$this->assertFalse($validator->validateValue(42));
 		$this->assertFalse($validator->validateValue(true));

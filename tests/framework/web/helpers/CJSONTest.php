@@ -43,7 +43,7 @@ class CJSONTest extends CTestCase {
 	 * @return void
 	 */
 	public function testEncodeMultipleARs(){
-		$posts=Post::model()->findAllByPk(array(1, 2));
+		$posts=Post::model()->findAllByPk([1, 2]);
 		$this->assertEquals(
 			'[{"id":"1","title":"post 1","create_time":"100000","author_id":"1","content":"content 1"},{"id":"2","title":"post 2","create_time":"100001","author_id":"2","content":"content 2"}]',
 			CJSON::encode($posts)
@@ -60,10 +60,10 @@ class CJSONTest extends CTestCase {
 	}
 
 	public function testEncodeArray(){
-		$objArr = array('a' => 'b');
-		$arrArr = array('a', 'b');
-		$mixedArr = array('c', 'a' => 'b');
-		$nestedArr = array('a', 'b' => array('a', 'b' => 'c'));
+		$objArr = ['a' => 'b'];
+		$arrArr = ['a', 'b'];
+		$mixedArr = ['c', 'a' => 'b'];
+		$nestedArr = ['a', 'b' => ['a', 'b' => 'c']];
 
 		$this->assertEquals('{"a":"b"}', CJSON::encode($objArr));
 		$this->assertEquals('["a","b"]', CJSON::encode($arrArr));
@@ -72,9 +72,9 @@ class CJSONTest extends CTestCase {
 	}
 
 	public function testDecode(){
-		$this->assertEquals(array('c', 'a' => 'b'), CJSON::decode('{"0":"c","a":"b"}'));
-		$this->assertEquals(array('a', 'b'), CJSON::decode('["a","b"]'));
-		$this->assertEquals(array('a', 'b' => array('a', 'b' => 'c')), CJSON::decode('{"0":"a","b":{"0":"a","b":"c"}}'));
+		$this->assertEquals(['c', 'a' => 'b'], CJSON::decode('{"0":"c","a":"b"}'));
+		$this->assertEquals(['a', 'b'], CJSON::decode('["a","b"]'));
+		$this->assertEquals(['a', 'b' => ['a', 'b' => 'c']], CJSON::decode('{"0":"a","b":{"0":"a","b":"c"}}'));
 	}
 
 	public function testJsonSerializable()

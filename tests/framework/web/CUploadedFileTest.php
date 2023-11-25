@@ -10,20 +10,20 @@ class CUploadedFileTest extends CTestCase
 {
 	public function setUp()
 	{
-		$_FILES=array();
+		$_FILES=[];
 		CUploadedFile::reset();
 	}
 
 	public function testGetInstanceByName()
 	{
 		$inputName='test_name';
-		$_FILES[$inputName]=array(
+		$_FILES[$inputName]=[
 			'name'=>'test_file.dat',
 			'type'=>'somemime/type',
 			'tmp_name'=>'/tmp/test_file',
 			'error'=>UPLOAD_ERR_OK,
 			'size'=>100,
-		);
+		];
 		$uploadedFile=CUploadedFile::getInstanceByName($inputName);
 		$this->assertTrue(is_object($uploadedFile),'Unable to get uploaded file by name!');
 		$this->assertEquals($_FILES[$inputName]['name'],$uploadedFile->getName(),'Wrong name!');
@@ -37,13 +37,13 @@ class CUploadedFileTest extends CTestCase
 	{
 		$inputName='test_name';
 		$inputCount=3;
-		$_FILES[$inputName]=array(
-			'name'=>array(),
-			'type'=>array(),
-			'tmp_name'=>array(),
-			'error'=>array(),
-			'size'=>array(),
-		);
+		$_FILES[$inputName]=[
+			'name'=>[],
+			'type'=>[],
+			'tmp_name'=>[],
+			'error'=>[],
+			'size'=>[],
+		];
 		for($i=0;$i<$inputCount;$i++)
 		{
 			$_FILES[$inputName]['name'][$i]='test_file_'.$i.'.dat';
@@ -69,23 +69,23 @@ class CUploadedFileTest extends CTestCase
 	{
 		$baseInputName='SomeModel';
 		$subInputName='test_name';
-		$_FILES[$baseInputName]=array(
-			'name'=>array(
+		$_FILES[$baseInputName]=[
+			'name'=>[
 				$subInputName=>'test_file.dat'
-			),
-			'type'=>array(
+			],
+			'type'=>[
 				$subInputName=>'somemime/type'
-			),
-			'tmp_name'=>array(
+			],
+			'tmp_name'=>[
 				$subInputName=>'/tmp/test_file'
-			),
-			'error'=>array(
+			],
+			'error'=>[
 				$subInputName=>UPLOAD_ERR_OK
-			),
-			'size'=>array(
+			],
+			'size'=>[
 				$subInputName=>100
-			),
-		);
+			],
+		];
 		$uploadedFile=CUploadedFile::getInstanceByName("{$baseInputName}[{$subInputName}]");
 		$this->assertTrue(is_object($uploadedFile),'Unable to get uploaded file by nested name!');
 		$this->assertEquals($_FILES[$baseInputName]['name'][$subInputName],$uploadedFile->getName(),'Wrong name!');
@@ -105,20 +105,20 @@ class CUploadedFileTest extends CTestCase
 		$baseInputName='base_name';
 		$tailedInputName=$baseInputName.'_tail';
 
-		$_FILES[$baseInputName]=array(
+		$_FILES[$baseInputName]=[
 			'name'=>$baseInputName.'.dat',
 			'type'=>'somemime/'.$baseInputName,
 			'tmp_name'=>'/tmp/'.$baseInputName,
 			'error'=>UPLOAD_ERR_OK,
 			'size'=>100,
-		);
-		$_FILES[$tailedInputName]=array(
+		];
+		$_FILES[$tailedInputName]=[
 			'name'=>$tailedInputName.'.dat',
 			'type'=>'somemime/'.$tailedInputName,
 			'tmp_name'=>'/tmp/'.$tailedInputName,
 			'error'=>UPLOAD_ERR_OK,
 			'size'=>100,
-		);
+		];
 
 		$uploadedFiles=CUploadedFile::getInstancesByName($baseInputName);
 		foreach($uploadedFiles as $uploadedFile)
@@ -128,13 +128,13 @@ class CUploadedFileTest extends CTestCase
     public function testGetExtensionName()
     {
         $inputName='test_name';
-        $_FILES[$inputName]=array(
+        $_FILES[$inputName]=[
             'name'=>'test_file.dat',
             'type'=>'somemime/type',
             'tmp_name'=>'/tmp/test_file',
             'error'=>UPLOAD_ERR_OK,
             'size'=>100,
-        );
+        ];
         $uploadedFile=CUploadedFile::getInstanceByName($inputName);
         $this->assertEquals("dat",$uploadedFile->getExtensionName(),'Wrong extension name!');
 

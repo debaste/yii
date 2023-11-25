@@ -32,7 +32,7 @@ class CMapTest extends CTestCase
 
 	public function testConstruct()
 	{
-		$a=array(1,2,'key3'=>3);
+		$a=[1,2,'key3'=>3];
 		$map=new CMap($a);
 		$this->assertEquals(3,$map->getCount());
 		$map2=new CMap($this->map);
@@ -67,7 +67,7 @@ class CMapTest extends CTestCase
 
 	public function testCanNotAddWhenReadOnly()
 	{
-		$map = new CMap(array(), true);
+		$map = new CMap([], true);
 		$this->setExpectedException('CException');
 		$map->add('key', 'value');
 	}
@@ -82,7 +82,7 @@ class CMapTest extends CTestCase
 
 	public function testCanNotRemoveWhenReadOnly()
 	{
-		$map = new CMap(array('key' => 'value'), true);
+		$map = new CMap(['key' => 'value'], true);
 		$this->setExpectedException('CException');
 		$map->remove('key');
 	}
@@ -103,7 +103,7 @@ class CMapTest extends CTestCase
 
 	public function testCopyFrom()
 	{
-		$array=array('key3'=>$this->item3,'key4'=>$this->item1);
+		$array=['key3'=>$this->item3,'key4'=>$this->item1];
 		$this->map->copyFrom($array);
 
 		$this->assertEquals(2, $this->map->getCount());
@@ -116,15 +116,15 @@ class CMapTest extends CTestCase
 
 	public function testMergeWith()
 	{
-		$a=array('a'=>'v1','v2',array('2'),'c'=>array('3','c'=>'a'));
-		$b=array('v22','a'=>'v11',array('2'),'c'=>array('c'=>'3','a'));
-		$c=array('a'=>'v11','v2',array('2'),'c'=>array('3','c'=>'3','a'),'v22',array('2'));
+		$a=['a'=>'v1','v2',['2'],'c'=>['3','c'=>'a']];
+		$b=['v22','a'=>'v11',['2'],'c'=>['c'=>'3','a']];
+		$c=['a'=>'v11','v2',['2'],'c'=>['3','c'=>'3','a'],'v22',['2']];
 		$map=new CMap($a);
 		$map2=new CMap($b);
 		$map->mergeWith($map2);
 		$this->assertTrue($map->toArray()===$c);
 
-		$array=array('key2'=>$this->item1,'key3'=>$this->item3);
+		$array=['key2'=>$this->item1,'key3'=>$this->item3];
 		$this->map->mergeWith($array,false);
 		$this->assertEquals(3,$this->map->getCount());
 		$this->assertEquals($this->item1,$this->map['key2']);
@@ -135,13 +135,13 @@ class CMapTest extends CTestCase
 
 	public function testRecursiveMergeWithTraversable(){
 		$map = new CMap();
-		$obj = new ArrayObject(array(
+		$obj = new ArrayObject([
 			'k1' => $this->item1,
 			'k2' => $this->item2,
-			'k3' => new ArrayObject(array(
+			'k3' => new ArrayObject([
 				'k4' => $this->item3,
-			))
-		));
+			])
+		]);
 		$map->mergeWith($obj,true);
 
 		$this->assertEquals(3, $map->getCount());
@@ -198,13 +198,13 @@ class CMapTest extends CTestCase
 
 	public function testToArray()
 	{
-		$map = new CMap(array('key' => 'value'));
-		$this->assertEquals(array('key' => 'value'), $map->toArray());
+		$map = new CMap(['key' => 'value']);
+		$this->assertEquals(['key' => 'value'], $map->toArray());
 	}
 
 	public function testIteratorCurrent()
 	{
-		$map = new CMap(array('key1' => 'value1', 'key2' => 'value2'));
+		$map = new CMap(['key1' => 'value1', 'key2' => 'value2']);
 		$val = $map->getIterator()->current();
 		$this->assertEquals('value1', $val);
 	}

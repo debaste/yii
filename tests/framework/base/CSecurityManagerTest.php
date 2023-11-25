@@ -115,32 +115,32 @@ class CSecurityManagerTest extends CTestCase
 
 	public function providerComputeHMAC()
 	{
-		return array(
-			array(
+		return [
+			[
 				'7638cbf5b66f451a5dab87fa26f45025fa661f82',
 				'data1',
 				'123456',
 				'sha1',
-			),
-			array(
+			],
+			[
 				'7e9a30dd2e3c568499a0786ca776d29ee9fb00f6',
 				'data2',
 				'123456',
 				'SHA1',
-			),
-			array(
+			],
+			[
 				'289beb389d31d327eb87fd8f102970d1',
 				'data1',
 				'123456',
 				'md5',
-			),
-			array(
+			],
+			[
 				'4fb0dd0081ce2681f479d42ec8db5537',
 				'data2',
 				'123456',
 				'MD5',
-			),
-		);
+			],
+		];
 	}
 
 	/**
@@ -213,28 +213,28 @@ class CSecurityManagerTest extends CTestCase
 
 	public function dataProviderCompareStrings()
 	{
-		return array(
-			array("",""),
-			array(false,""),
-			array(null,""),
-			array(0,""),
-			array(0.00,""),
-			array("",null),
-			array("",false),
-			array("",0),
-			array("","\0"),
-			array("\0",""),
-			array("\0","\0"),
-			array("0","\0"),
-			array(0,"\0"),
-			array("user","User"),
-			array("password","password"),
-			array("password","passwordpassword"),
-			array("password1","password"),
-			array("password","password2"),
-			array("","password"),
-			array("password",""),
-		);
+		return [
+			["",""],
+			[false,""],
+			[null,""],
+			[0,""],
+			[0.00,""],
+			["",null],
+			["",false],
+			["",0],
+			["","\0"],
+			["\0",""],
+			["\0","\0"],
+			["0","\0"],
+			[0,"\0"],
+			["user","User"],
+			["password","password"],
+			["password","passwordpassword"],
+			["password1","password"],
+			["password","password2"],
+			["","password"],
+			["password",""],
+		];
 	}
 
 	/**
@@ -263,10 +263,10 @@ class CSecurityManagerTest extends CTestCase
 	 */
 	public function maskProvider()
 	{
-		return array(
-			array('SimpleToken'),
-			array('Token with special characters: %d1    5"'),
-			array('Token with UTF8 character: †'),
-		);
+		return [
+			['SimpleToken'],
+			['Token with special characters: %d1    5"'],
+			['Token with UTF8 character: †'],
+		];
 	}
 }

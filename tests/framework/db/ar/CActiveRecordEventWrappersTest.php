@@ -38,11 +38,11 @@ class CActiveRecordEventWrappersTest extends CTestCase
 	 */
 	public function userCriteriaProvider()
 	{
-		return array(
-			array(new CDbCriteria(array('limit'=>1)), 1, array()),
-			array(new CDbCriteria(array('select'=>"'MisterX' AS username")), 4, array('username'=>'MisterX')),
-			array(new CDbCriteria(array('with'=>'posts')), 4, array()),
-		);
+		return [
+			[new CDbCriteria(['limit'=>1]), 1, []],
+			[new CDbCriteria(['select'=>"'MisterX' AS username"]), 4, ['username'=>'MisterX']],
+			[new CDbCriteria(['with'=>'posts']), 4, []],
+		];
 	}
 
 	/**
@@ -51,13 +51,13 @@ class CActiveRecordEventWrappersTest extends CTestCase
 	 */
 	public function postCriteriaProvider()
 	{
-		return array(
-			array('', 3, array()),
-			array(new CDbCriteria(array('select'=>"'changedTitle' AS title")), 3, array('title'=>'changedTitle')),
-			array(new CDbCriteria(array('condition'=>"title='post 2'")), 1, array()),
-			array(new CDbCriteria(array('with'=>'comments')), 3, array()),
-			array(new CDbCriteria(array('scopes'=>'rename')), 3, array('title'=>'renamed post')),
-		);
+		return [
+			['', 3, []],
+			[new CDbCriteria(['select'=>"'changedTitle' AS title"]), 3, ['title'=>'changedTitle']],
+			[new CDbCriteria(['condition'=>"title='post 2'"]), 1, []],
+			[new CDbCriteria(['with'=>'comments']), 3, []],
+			[new CDbCriteria(['scopes'=>'rename']), 3, ['title'=>'renamed post']],
+		];
 	}
 
 	/**
@@ -66,9 +66,9 @@ class CActiveRecordEventWrappersTest extends CTestCase
 	 */
 	public function postCriteriaProviderLazy()
 	{
-		return array_merge($this->postCriteriaProvider(), array(
-			array(new CDbCriteria(array('limit'=>1)), 1, array()),
-		));
+		return array_merge($this->postCriteriaProvider(), [
+			[new CDbCriteria(['limit'=>1]), 1, []],
+		]);
 	}
 
 	/**
@@ -105,7 +105,7 @@ class CActiveRecordEventWrappersTest extends CTestCase
 		UserWithWrappers::model()->find();
 		$this->assertEquals(UserWithWrappers::getCounter('beforeFind'),1);
 
-		UserWithWrappers::model()->findByAttributes(array('username'=>'user1'));
+		UserWithWrappers::model()->findByAttributes(['username'=>'user1']);
 		$this->assertEquals(UserWithWrappers::getCounter('beforeFind'),1);
 
 		UserWithWrappers::model()->findByPk(1);
@@ -117,7 +117,7 @@ class CActiveRecordEventWrappersTest extends CTestCase
 		UserWithWrappers::model()->findAll();
 		$this->assertEquals(UserWithWrappers::getCounter('beforeFind'),1);
 
-		UserWithWrappers::model()->findAllByAttributes(array('username'=>'user1'));
+		UserWithWrappers::model()->findAllByAttributes(['username'=>'user1']);
 		$this->assertEquals(UserWithWrappers::getCounter('beforeFind'),1);
 
 		UserWithWrappers::model()->findAllByPk(1);
@@ -130,7 +130,7 @@ class CActiveRecordEventWrappersTest extends CTestCase
 		$this->assertEmpty(UserWithWrappers::model()->find('1=0'));
 		$this->assertEquals(UserWithWrappers::getCounter('beforeFind'),1);
 
-		$this->assertEmpty(UserWithWrappers::model()->findByAttributes(array('username'=>'notExistingUser')));
+		$this->assertEmpty(UserWithWrappers::model()->findByAttributes(['username'=>'notExistingUser']));
 		$this->assertEquals(UserWithWrappers::getCounter('beforeFind'),1);
 
 		$this->assertEmpty(UserWithWrappers::model()->findByPk(1000));
@@ -142,10 +142,10 @@ class CActiveRecordEventWrappersTest extends CTestCase
 		$this->assertEmpty(UserWithWrappers::model()->findAll('1=0'));
 		$this->assertEquals(UserWithWrappers::getCounter('beforeFind'),1);
 
-		$this->assertEmpty(UserWithWrappers::model()->findAllByAttributes(array('username'=>'notExistingUser')));
+		$this->assertEmpty(UserWithWrappers::model()->findAllByAttributes(['username'=>'notExistingUser']));
 		$this->assertEquals(UserWithWrappers::getCounter('beforeFind'),1);
 
-		$this->assertEmpty(UserWithWrappers::model()->findAllByPk(array(1000,1001)));
+		$this->assertEmpty(UserWithWrappers::model()->findAllByPk([1000,1001]));
 		$this->assertEquals(UserWithWrappers::getCounter('beforeFind'),1);
 
 		$this->assertEmpty(UserWithWrappers::model()->findAllBySql('SELECT * FROM users WHERE 1=0'));
@@ -159,9 +159,9 @@ class CActiveRecordEventWrappersTest extends CTestCase
 	 */
 	public function testBeforeFindStatSelect()
 	{
-		PostWithWrappers::setBeforeFindCriteria(new CDbCriteria(array(
+		PostWithWrappers::setBeforeFindCriteria(new CDbCriteria([
 			'select' => 'id, content',
-		)));
+		]));
 
 		$user1 = UserWithWrappers::model()->findByPk(1);
 		$this->assertEquals(1, $user1->postCount);
@@ -179,28 +179,28 @@ class CActiveRecordEventWrappersTest extends CTestCase
 		UserWithWrappers::setBeforeFindCriteria($criteria);
 
 		$user = UserWithWrappers::model()->find();
-		$this->assertCriteriaApplied(array($user), $criteria, 1, $assertations);
+		$this->assertCriteriaApplied([$user], $criteria, 1, $assertations);
 
-		$user = UserWithWrappers::model()->findByAttributes(array('username'=>'user1'));
-		$this->assertCriteriaApplied(array($user), $criteria, 1, $assertations);
+		$user = UserWithWrappers::model()->findByAttributes(['username'=>'user1']);
+		$this->assertCriteriaApplied([$user], $criteria, 1, $assertations);
 
 		$user = UserWithWrappers::model()->findByPk(1);
-		$this->assertCriteriaApplied(array($user), $criteria, 1, $assertations);
+		$this->assertCriteriaApplied([$user], $criteria, 1, $assertations);
 
 		$user = UserWithWrappers::model()->findBySql('SELECT * FROM users');
-		$this->assertCriteriaApplied(array($user), $criteria, 1, array());
+		$this->assertCriteriaApplied([$user], $criteria, 1, []);
 
 		$users = UserWithWrappers::model()->findAll();
 		$this->assertCriteriaApplied($users, $criteria, $count, $assertations);
 
-		$users = UserWithWrappers::model()->findAllByAttributes(array('username'=>array('user1','user2','user3','user4')));
+		$users = UserWithWrappers::model()->findAllByAttributes(['username'=>['user1','user2','user3','user4']]);
 		$this->assertCriteriaApplied($users, $criteria, $count, $assertations);
 
-		$users = UserWithWrappers::model()->findAllByPk(array(1,2,3,4));
+		$users = UserWithWrappers::model()->findAllByPk([1,2,3,4]);
 		$this->assertCriteriaApplied($users, $criteria, $count, $assertations);
 
 		$users = UserWithWrappers::model()->findAllBySql('SELECT * FROM users');
-		$this->assertCriteriaApplied($users, $criteria, 4, array());
+		$this->assertCriteriaApplied($users, $criteria, 4, []);
 	}
 
 	/**
@@ -213,7 +213,7 @@ class CActiveRecordEventWrappersTest extends CTestCase
 		$this->assertEquals(PostWithWrappers::getCounter('beforeFind'),1);
 		$this->assertEquals(CommentWithWrappers::getCounter('beforeFind'),1);
 
-		UserWithWrappers::model()->with('posts.comments')->findByAttributes(array('username'=>'user1'));
+		UserWithWrappers::model()->with('posts.comments')->findByAttributes(['username'=>'user1']);
 		$this->assertEquals(UserWithWrappers::getCounter('beforeFind'),1);
 		$this->assertEquals(PostWithWrappers::getCounter('beforeFind'),1);
 		$this->assertEquals(CommentWithWrappers::getCounter('beforeFind'),1);
@@ -233,7 +233,7 @@ class CActiveRecordEventWrappersTest extends CTestCase
 		$this->assertEquals(PostWithWrappers::getCounter('beforeFind'),1);
 		$this->assertEquals(CommentWithWrappers::getCounter('beforeFind'),1);
 
-		UserWithWrappers::model()->with('posts.comments')->findAllByAttributes(array('username'=>'user1'));
+		UserWithWrappers::model()->with('posts.comments')->findAllByAttributes(['username'=>'user1']);
 		$this->assertEquals(UserWithWrappers::getCounter('beforeFind'),1);
 		$this->assertEquals(PostWithWrappers::getCounter('beforeFind'),1);
 		$this->assertEquals(CommentWithWrappers::getCounter('beforeFind'),1);
@@ -254,7 +254,7 @@ class CActiveRecordEventWrappersTest extends CTestCase
 		$this->assertEquals(PostWithWrappers::getCounter('beforeFind'),1);
 		$this->assertEquals(CommentWithWrappers::getCounter('beforeFind'),1);
 
-		$this->assertEmpty(UserWithWrappers::model()->with('posts.comments')->findByAttributes(array('username'=>'notExistingUser')));
+		$this->assertEmpty(UserWithWrappers::model()->with('posts.comments')->findByAttributes(['username'=>'notExistingUser']));
 		$this->assertEquals(UserWithWrappers::getCounter('beforeFind'),1);
 		$this->assertEquals(PostWithWrappers::getCounter('beforeFind'),1);
 		$this->assertEquals(CommentWithWrappers::getCounter('beforeFind'),1);
@@ -274,12 +274,12 @@ class CActiveRecordEventWrappersTest extends CTestCase
 		$this->assertEquals(PostWithWrappers::getCounter('beforeFind'),1);
 		$this->assertEquals(CommentWithWrappers::getCounter('beforeFind'),1);
 
-		$this->assertEmpty(UserWithWrappers::model()->with('posts.comments')->findAllByAttributes(array('username'=>'notExistingUser')));
+		$this->assertEmpty(UserWithWrappers::model()->with('posts.comments')->findAllByAttributes(['username'=>'notExistingUser']));
 		$this->assertEquals(UserWithWrappers::getCounter('beforeFind'),1);
 		$this->assertEquals(PostWithWrappers::getCounter('beforeFind'),1);
 		$this->assertEquals(CommentWithWrappers::getCounter('beforeFind'),1);
 
-		$this->assertEmpty(UserWithWrappers::model()->with('posts.comments')->findAllByPk(array(1000, 1001)));
+		$this->assertEmpty(UserWithWrappers::model()->with('posts.comments')->findAllByPk([1000, 1001]));
 		$this->assertEquals(UserWithWrappers::getCounter('beforeFind'),1);
 		$this->assertEquals(PostWithWrappers::getCounter('beforeFind'),1);
 		$this->assertEquals(CommentWithWrappers::getCounter('beforeFind'),1);
@@ -302,7 +302,7 @@ class CActiveRecordEventWrappersTest extends CTestCase
 		$this->assertTrue($user->hasRelated('posts'));
 		$this->assertCriteriaApplied($user->posts, $criteria, $count, $assertations);
 
-		$user = UserWithWrappers::model()->with('posts.comments')->findByAttributes(array('username'=>'user2'));
+		$user = UserWithWrappers::model()->with('posts.comments')->findByAttributes(['username'=>'user2']);
 		$this->assertTrue($user->hasRelated('posts'));
 		$this->assertCriteriaApplied($user->posts, $criteria, $count, $assertations);
 
@@ -319,7 +319,7 @@ class CActiveRecordEventWrappersTest extends CTestCase
 		$this->assertTrue($user->hasRelated('posts'));
 		$this->assertCriteriaApplied($user->posts, $criteria, $count, $assertations);
 
-		$users = UserWithWrappers::model()->with('posts.comments')->findAllByAttributes(array('username'=>'user2'));
+		$users = UserWithWrappers::model()->with('posts.comments')->findAllByAttributes(['username'=>'user2']);
 		$user = reset($users);
 		$this->assertTrue($user->hasRelated('posts'));
 		$this->assertCriteriaApplied($user->posts, $criteria, $count, $assertations);
@@ -348,7 +348,7 @@ class CActiveRecordEventWrappersTest extends CTestCase
 
 		$user=UserWithWrappers::model()->find();
 		$this->assertEquals(UserWithWrappers::getCounter('beforeFind'),1);
-		$user->posts(array('with'=>'comments'));
+		$user->posts(['with'=>'comments']);
 		$this->assertEquals(UserWithWrappers::getCounter('beforeFind'),0);
 		$this->assertEquals(PostWithWrappers::getCounter('beforeFind'),1);
 		$this->assertEquals(CommentWithWrappers::getCounter('beforeFind'),1);
@@ -367,7 +367,7 @@ class CActiveRecordEventWrappersTest extends CTestCase
 		$this->assertCriteriaApplied($posts, $criteria, $count, $assertations);
 
 		$user=UserWithWrappers::model()->findByPk(2);
-		$posts = $user->posts(array('with'=>'comments'));
+		$posts = $user->posts(['with'=>'comments']);
 		$this->assertCriteriaApplied($posts, $criteria, $count, $assertations);
 		foreach($posts as $post) {
 			$this->assertTrue($post->hasRelated('comments'));
@@ -390,7 +390,7 @@ class CActiveRecordEventWrappersTest extends CTestCase
 		}
 
 		$user=UserWithWrappers::model()->findByPk(2);
-		$posts = $user->posts(array('with'=>'comments','scopes'=>array('replaceContent')));
+		$posts = $user->posts(['with'=>'comments','scopes'=>['replaceContent']]);
 		$this->assertCriteriaApplied($posts, $criteria, $count, $assertations);
 		foreach($posts as $post) {
 			$this->assertTrue($post->hasRelated('comments'));
@@ -406,7 +406,7 @@ class CActiveRecordEventWrappersTest extends CTestCase
 		UserWithWrappers::model()->find();
 		$this->assertEquals(UserWithWrappers::getCounter('afterFind'),1);
 
-		UserWithWrappers::model()->findByAttributes(array('username'=>'user1'));
+		UserWithWrappers::model()->findByAttributes(['username'=>'user1']);
 		$this->assertEquals(UserWithWrappers::getCounter('afterFind'),1);
 
 		UserWithWrappers::model()->findByPk(1);
@@ -418,7 +418,7 @@ class CActiveRecordEventWrappersTest extends CTestCase
 		UserWithWrappers::model()->findAll();
 		$this->assertEquals(UserWithWrappers::getCounter('afterFind'),4);
 
-		UserWithWrappers::model()->findAllByAttributes(array('username'=>'user1'));
+		UserWithWrappers::model()->findAllByAttributes(['username'=>'user1']);
 		$this->assertEquals(UserWithWrappers::getCounter('afterFind'),1);
 
 		UserWithWrappers::model()->findAllByPk(1);
@@ -431,7 +431,7 @@ class CActiveRecordEventWrappersTest extends CTestCase
 		UserWithWrappers::model()->find('1=0');
 		$this->assertEquals(UserWithWrappers::getCounter('afterFind'),0);
 
-		UserWithWrappers::model()->findByAttributes(array('username'=>'notExistingUser'));
+		UserWithWrappers::model()->findByAttributes(['username'=>'notExistingUser']);
 		$this->assertEquals(UserWithWrappers::getCounter('afterFind'),0);
 
 		UserWithWrappers::model()->findByPk(1000);
@@ -443,10 +443,10 @@ class CActiveRecordEventWrappersTest extends CTestCase
 		UserWithWrappers::model()->findAll('1=0');
 		$this->assertEquals(UserWithWrappers::getCounter('afterFind'),0);
 
-		UserWithWrappers::model()->findAllByAttributes(array('username'=>'notExistingUser'));
+		UserWithWrappers::model()->findAllByAttributes(['username'=>'notExistingUser']);
 		$this->assertEquals(UserWithWrappers::getCounter('afterFind'),0);
 
-		UserWithWrappers::model()->findAllByPk(array(1000,1001));
+		UserWithWrappers::model()->findAllByPk([1000,1001]);
 		$this->assertEquals(UserWithWrappers::getCounter('afterFind'),0);
 
 		UserWithWrappers::model()->findAllBySql('SELECT * FROM users WHERE 1=0');
@@ -463,7 +463,7 @@ class CActiveRecordEventWrappersTest extends CTestCase
 		$this->assertEquals(PostWithWrappers::getCounter('afterFind'),5);
 		$this->assertEquals(CommentWithWrappers::getCounter('afterFind'),10);
 
-		UserWithWrappers::model()->with('posts.comments')->findByAttributes(array('username'=>'user2'));
+		UserWithWrappers::model()->with('posts.comments')->findByAttributes(['username'=>'user2']);
 		$this->assertEquals(UserWithWrappers::getCounter('afterFind'),1);
 		$this->assertEquals(PostWithWrappers::getCounter('afterFind'),3);
 		$this->assertEquals(CommentWithWrappers::getCounter('afterFind'),6);
@@ -483,7 +483,7 @@ class CActiveRecordEventWrappersTest extends CTestCase
 		$this->assertEquals(PostWithWrappers::getCounter('afterFind'),5);
 		$this->assertEquals(CommentWithWrappers::getCounter('afterFind'),10);
 
-		UserWithWrappers::model()->with('posts.comments')->findAllByAttributes(array('username'=>'user2'));
+		UserWithWrappers::model()->with('posts.comments')->findAllByAttributes(['username'=>'user2']);
 		$this->assertEquals(UserWithWrappers::getCounter('afterFind'),1);
 		$this->assertEquals(PostWithWrappers::getCounter('afterFind'),3);
 		$this->assertEquals(CommentWithWrappers::getCounter('afterFind'),6);
@@ -504,7 +504,7 @@ class CActiveRecordEventWrappersTest extends CTestCase
 		$this->assertEquals(PostWithWrappers::getCounter('afterFind'),0);
 		$this->assertEquals(CommentWithWrappers::getCounter('afterFind'),0);
 
-		UserWithWrappers::model()->with('posts.comments')->findByAttributes(array('username'=>'notExistingUser'));
+		UserWithWrappers::model()->with('posts.comments')->findByAttributes(['username'=>'notExistingUser']);
 		$this->assertEquals(UserWithWrappers::getCounter('afterFind'),0);
 		$this->assertEquals(PostWithWrappers::getCounter('afterFind'),0);
 		$this->assertEquals(CommentWithWrappers::getCounter('afterFind'),0);
@@ -524,12 +524,12 @@ class CActiveRecordEventWrappersTest extends CTestCase
 		$this->assertEquals(PostWithWrappers::getCounter('afterFind'),0);
 		$this->assertEquals(CommentWithWrappers::getCounter('afterFind'),0);
 
-		UserWithWrappers::model()->with('posts.comments')->findAllByAttributes(array('username'=>'notExistingUser'));
+		UserWithWrappers::model()->with('posts.comments')->findAllByAttributes(['username'=>'notExistingUser']);
 		$this->assertEquals(UserWithWrappers::getCounter('afterFind'),0);
 		$this->assertEquals(PostWithWrappers::getCounter('afterFind'),0);
 		$this->assertEquals(CommentWithWrappers::getCounter('afterFind'),0);
 
-		UserWithWrappers::model()->with('posts.comments')->findAllByPk(array(1000, 1001));
+		UserWithWrappers::model()->with('posts.comments')->findAllByPk([1000, 1001]);
 		$this->assertEquals(UserWithWrappers::getCounter('afterFind'),0);
 		$this->assertEquals(PostWithWrappers::getCounter('afterFind'),0);
 		$this->assertEquals(CommentWithWrappers::getCounter('afterFind'),0);

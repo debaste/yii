@@ -21,7 +21,7 @@ class CJuiButtonTest extends CTestCase
 	private function getWidgetScript($callback)
 	{
 		Yii::import('zii.widgets.jui.CJuiButton');
-		Yii::app()->clientScript->scripts = array();
+		Yii::app()->clientScript->scripts = [];
 		ob_start();
 		$widget = new CJuiButton(null);
 		$widget->name = 'test';

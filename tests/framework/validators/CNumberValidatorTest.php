@@ -5,28 +5,28 @@ class CNumberValidatorTest extends CTestCase
 {
 	public function providerIssue1669()
 	{
-		return array(
+		return [
 			// boolean
-			array(false, array('number' => array('Number must be a number.'))),
-			array(true, array('number' => array('Number must be a number.'))),
+			[false, ['number' => ['Number must be a number.']]],
+			[true, ['number' => ['Number must be a number.']]],
 			// integer
-			array(20, array('number' => array('Number is too big (maximum is 15).'))),
-			array(1, array('number' => array('Number is too small (minimum is 5).'))),
+			[20, ['number' => ['Number is too big (maximum is 15).']]],
+			[1, ['number' => ['Number is too small (minimum is 5).']]],
 			// float
-			array(20.5, array('number' => array('Number must be an integer.','Number is too big (maximum is 15).'))),
-			array(1.5, array('number' => array('Number must be an integer.','Number is too small (minimum is 5).'))),
+			[20.5, ['number' => ['Number must be an integer.','Number is too big (maximum is 15).']]],
+			[1.5, ['number' => ['Number must be an integer.','Number is too small (minimum is 5).']]],
 			// string
-			array('20', array('number' => array('Number is too big (maximum is 15).'))),
-			array('20.5', array('number' => array('Number must be an integer.','Number is too big (maximum is 15).'))),
-			array('1', array('number' => array('Number is too small (minimum is 5).'))),
-			array('1.5', array('number' => array('Number must be an integer.','Number is too small (minimum is 5).'))),
-			array('abc', array('number' => array('Number must be a number.'))),
-			array('a100', array('number' => array('Number must be a number.'))),
+			['20', ['number' => ['Number is too big (maximum is 15).']]],
+			['20.5', ['number' => ['Number must be an integer.','Number is too big (maximum is 15).']]],
+			['1', ['number' => ['Number is too small (minimum is 5).']]],
+			['1.5', ['number' => ['Number must be an integer.','Number is too small (minimum is 5).']]],
+			['abc', ['number' => ['Number must be a number.']]],
+			['a100', ['number' => ['Number must be a number.']]],
 			// array
-			array(array(1,2), array('number' => array('Number must be a number.'))),
+			[[1,2], ['number' => ['Number must be a number.']]],
 			// object
-			array((object)array('a'=>1,'b'=>2), array('number' => array('Number must be a number.'))),
-		);
+			[(object)['a'=>1,'b'=>2], ['number' => ['Number must be a number.']]],
+		];
 	}
 
 	/**
@@ -37,7 +37,7 @@ class CNumberValidatorTest extends CTestCase
 	{
 		$model = new ValidatorTestModel('CNumberValidatorTest');
 		$model->number = $value;
-		$model->validate(array('number'));
+		$model->validate(['number']);
 		$this->assertSame($assertion, $model->getErrors());
 	}
 }

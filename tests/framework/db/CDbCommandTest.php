@@ -167,7 +167,7 @@ class CDbCommandTest extends CTestCase
 		$this->assertEquals($row['title'],'post 3');
 
 		$rows=$this->_connection->createCommand('SELECT * FROM posts WHERE id=10')->queryAll();
-		$this->assertEquals($rows,array());
+		$this->assertEquals($rows,[]);
 	}
 
 	public function testQueryRow()
@@ -200,7 +200,7 @@ class CDbCommandTest extends CTestCase
 		$this->assertEquals($column,range(1,5));
 
 		$command=$this->_connection->createCommand('SELECT id FROM posts WHERE id=10');
-		$this->assertEquals($command->queryColumn(),array());
+		$this->assertEquals($command->queryColumn(),[]);
 
 		$command=$this->_connection->createCommand('bad SQL');
 		$this->setExpectedException('CException');

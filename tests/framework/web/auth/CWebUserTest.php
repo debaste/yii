@@ -26,7 +26,7 @@ class CWebUserTest extends CTestCase
 
 	public function booleanProvider()
 	{
-		return array(array(true), array(false));
+		return [[true], [false]];
 	}
 
 	/**

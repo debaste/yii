@@ -16,7 +16,7 @@ class CBooleanValidatorTest extends CTestCase
      */
     public function testValidationUsingCustomFalseTrueValues()
     {
-        $model = $this->getModelMock(array('falseValue' => 'false', 'trueValue' => 'true'));
+        $model = $this->getModelMock(['falseValue' => 'false', 'trueValue' => 'true']);
         $model->foo = 'blah';
         $this->assertFalse($model->hasErrors('foo'));
 
@@ -38,11 +38,11 @@ class CBooleanValidatorTest extends CTestCase
      */
     public function testValidateAndAllowEmpty()
     {
-        $model = $this->getModelMock(array('allowEmpty' => false));
+        $model = $this->getModelMock(['allowEmpty' => false]);
         $this->assertFalse($model->validate());
         $this->assertTrue($model->hasErrors('foo'));
 
-        $model = $this->getModelMock(array('allowEmpty' => true));
+        $model = $this->getModelMock(['allowEmpty' => true]);
         $this->assertTrue($model->validate());
     }
 
@@ -53,7 +53,7 @@ class CBooleanValidatorTest extends CTestCase
      */
     public function testValidationUsingStrict()
     {
-        $model = $this->getModelMock(array('strict' => true));
+        $model = $this->getModelMock(['strict' => true]);
         $model->foo = 1;
         $this->assertFalse($model->validate());
         $this->assertTrue($model->hasErrors('foo'));
@@ -94,10 +94,10 @@ class CBooleanValidatorTest extends CTestCase
     public function testValidateArrayValue()
     {
         $model = $this->getModelMock();
-        $model->foo = array(1);
+        $model->foo = [1];
         $this->assertFalse($model->validate());
         $this->assertTrue($model->hasErrors('foo'));
-        $this->assertSame(array('Foo must be either 1 or 0.'), $model->getErrors('foo'));
+        $this->assertSame(['Foo must be either 1 or 0.'], $model->getErrors('foo'));
     }
     
     /**
@@ -107,17 +107,17 @@ class CBooleanValidatorTest extends CTestCase
      *
      * @return null
      */
-    protected function getModelMock($params=array())
+    protected function getModelMock($params=[])
     {
-        $rules = array(
-            array('foo', 'boolean')
-        );
+        $rules = [
+            ['foo', 'boolean']
+        ];
 
         foreach ($params as $rule => $value) {
             $rules[0][$rule] = $value;
         }
         
-        $stub = $this->getMock('ModelMock', array('rules'));
+        $stub = $this->getMock('ModelMock', ['rules']);
         $stub->expects($this->any())
              ->method('rules')
              ->will($this->returnValue($rules));

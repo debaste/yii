@@ -24,7 +24,7 @@ class CCubrid2Test extends CTestCase
 			$this->markTestSkipped("Please read $schemaFile for details on setting up the test environment for CUBRID test case.");
 		}
 
-		$tables=array('comments','post_category','posts','categories','profiles','users','items','orders','types');
+		$tables=['comments','post_category','posts','categories','profiles','users','items','orders','types'];
 		foreach($tables as $table)
 			$this->db->createCommand("DROP TABLE IF EXISTS $table")->execute();
 
@@ -43,12 +43,12 @@ class CCubrid2Test extends CTestCase
 
 	public function testCreateTable()
 	{
-		$sql=$this->db->schema->createTable('test',array(
+		$sql=$this->db->schema->createTable('test',[
 			'id'=>'pk',
 			'name'=>'string not null',
 			'desc'=>'text',
 			'primary key (id, name)',
-		));
+		]);
 		$expect="CREATE TABLE `test` (\n"
 			. "\t`id` INTEGER NOT NULL AUTO_INCREMENT PRIMARY KEY,\n"
 			. "\t`name` VARCHAR(255) not null,\n"

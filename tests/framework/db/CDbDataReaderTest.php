@@ -73,7 +73,7 @@ class CDbDataReaderTest extends CTestCase
 	public function testReadObject()
 	{
 		$reader=$this->_connection->createCommand('SELECT * FROM posts')->query();
-		$object=$reader->readObject('PostRecord',array(null,'v2'));
+		$object=$reader->readObject('PostRecord',[null,'v2']);
 		$this->assertEquals($object->id,1);
 		$this->assertEquals($object->title,'post 1');
 		$this->assertEquals($object->param1,null);
@@ -90,7 +90,7 @@ class CDbDataReaderTest extends CTestCase
 		$this->assertEquals($row['title'],'post 3');
 
 		$reader=$this->_connection->createCommand('SELECT * FROM posts WHERE id=10')->query();
-		$this->assertEquals($reader->readAll(),array());
+		$this->assertEquals($reader->readAll(),[]);
 	}
 
 	public function testClose()
@@ -119,7 +119,7 @@ class CDbDataReaderTest extends CTestCase
 
 	public function testForeach()
 	{
-		$ids=array();
+		$ids=[];
 		$reader=$this->_connection->createCommand('SELECT * FROM posts')->query();
 		foreach($reader as $row)
 			$ids[]=$row['id'];

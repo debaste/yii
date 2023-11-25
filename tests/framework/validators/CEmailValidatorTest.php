@@ -24,31 +24,31 @@ class CEmailValidatorTest extends CTestCase
 
 	public function providerIDNEmail()
 	{
-		return array(
+		return [
 			// IDN validation enabled
-			array('test@президент.рф', true, true),
-			array('test@bücher.de', true, true),
-			array('test@检查域.cn', true, true),
-			array('☃-⌘@mañana.com', true, false),
-			array('test@google.com', true, true),
-			array('test@yiiframework.com', true, true),
-			array('bad-email', true, false),
-			array('without@tld', true, false),
-			array('without.at-mark.com', true, false),
-			array('检查域', true, false),
+			['test@президент.рф', true, true],
+			['test@bücher.de', true, true],
+			['test@检查域.cn', true, true],
+			['☃-⌘@mañana.com', true, false],
+			['test@google.com', true, true],
+			['test@yiiframework.com', true, true],
+			['bad-email', true, false],
+			['without@tld', true, false],
+			['without.at-mark.com', true, false],
+			['检查域', true, false],
 
 			// IDN validation disabled
-			array('test@президент.рф', false, false),
-			array('test@bücher.de', false, false),
-			array('test@检查域.cn', false, false),
-			array('☃-⌘@mañana.com', false, false),
-			array('test@google.com', false, true),
-			array('test@yiiframework.com', false, true),
-			array('bad-email', false, false),
-			array('without@tld', false, false),
-			array('without.at-mark.com', false, false),
-			array('检查域', false, false),
-		);
+			['test@президент.рф', false, false],
+			['test@bücher.de', false, false],
+			['test@检查域.cn', false, false],
+			['☃-⌘@mañana.com', false, false],
+			['test@google.com', false, true],
+			['test@yiiframework.com', false, true],
+			['bad-email', false, false],
+			['without@tld', false, false],
+			['without.at-mark.com', false, false],
+			['检查域', false, false],
+		];
 	}
 
 	/**
@@ -72,10 +72,10 @@ class CEmailValidatorTest extends CTestCase
 	public function testArrayValue()
 	{
 		$model=new ValidatorTestModel('CEmailValidatorTest');
-		$model->email=array('user@domain.tld');
-		$model->validate(array('email'));
+		$model->email=['user@domain.tld'];
+		$model->validate(['email']);
 		$this->assertTrue($model->hasErrors('email'));
-		$this->assertEquals(array('Email is not a valid email address.'),$model->getErrors('email'));
+		$this->assertEquals(['Email is not a valid email address.'],$model->getErrors('email'));
 	}
 
 	public function testMxPortDomainWithNoMXRecord()

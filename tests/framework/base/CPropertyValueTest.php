@@ -10,27 +10,27 @@ class CPropertyValueTest extends CTestCase
 {
 	public function testEnsureBoolean()
 	{
-		$entries=array
-		(
-			array(true,true),
-			array(false,false),
-			array(null,false),
-			array(0,false),
-			array(1,true),
-			array(-1,true),
-			array(2.1,true),
-			array('',false),
-			array('abc',false),
-			array('0',false),
-			array('1',true),
-			array('123',true),
-			array('false',false),
-			array('true',true),
-			array('tRue',true),
-			array(array(),false),
-			array(array(0),true),
-			array(array(1),true),
-		);
+		$entries=
+		[
+			[true,true],
+			[false,false],
+			[null,false],
+			[0,false],
+			[1,true],
+			[-1,true],
+			[2.1,true],
+			['',false],
+			['abc',false],
+			['0',false],
+			['1',true],
+			['123',true],
+			['false',false],
+			['true',true],
+			['tRue',true],
+			[[],false],
+			[[0],true],
+			[[1],true],
+		];
 		foreach($entries as $index=>$entry)
 			$this->assertTrue(CPropertyValue::ensureBoolean($entry[0])===$entry[1],
 				"Comparison $index: {$this->varToString($entry[0])}=={$this->varToString($entry[1])}");
@@ -38,24 +38,24 @@ class CPropertyValueTest extends CTestCase
 
 	public function testEnsureString()
 	{
-		$entries=array
-		(
-			array('',''),
-			array('abc','abc'),
-			array(null,''),
-			array(0,'0'),
-			array(1,'1'),
-			array(-1.1,'-1.1'),
-			array(true,'true'),
-			array(false,'false'),
-		);
+		$entries=
+		[
+			['',''],
+			['abc','abc'],
+			[null,''],
+			[0,'0'],
+			[1,'1'],
+			[-1.1,'-1.1'],
+			[true,'true'],
+			[false,'false'],
+		];
 
 		if(version_compare(PHP_VERSION, '5.4.0', '<'))
 		{
-			$entries = array_merge($entries, array(
-				array(array(),'Array'),
-				array(array(0),'Array'),
-			));
+			$entries = array_merge($entries, [
+				[[],'Array'],
+				[[0],'Array'],
+			]);
 		}
 
 		foreach($entries as $index=>$entry)
@@ -65,23 +65,23 @@ class CPropertyValueTest extends CTestCase
 
 	public function testEnsureInteger()
 	{
-		$entries=array
-		(
-			array(123,123),
-			array(1.23,1),
-			array(null,0),
-			array('',0),
-			array('abc',0),
-			array('123',123),
-			array('1.23',1),
-			array(' 1.23',1),
-			array(' 1.23abc',1),
-			array('abc1.23abc',0),
-			array(true,1),
-			array(false,0),
-			array(array(),0),
-			array(array(0),1),
-		);
+		$entries=
+		[
+			[123,123],
+			[1.23,1],
+			[null,0],
+			['',0],
+			['abc',0],
+			['123',123],
+			['1.23',1],
+			[' 1.23',1],
+			[' 1.23abc',1],
+			['abc1.23abc',0],
+			[true,1],
+			[false,0],
+			[[],0],
+			[[0],1],
+		];
 		foreach($entries as $index=>$entry)
 			$this->assertTrue(CPropertyValue::ensureInteger($entry[0])===$entry[1],
 				"Comparison $index: {$this->varToString($entry[0])}=={$this->varToString($entry[1])}");
@@ -89,23 +89,23 @@ class CPropertyValueTest extends CTestCase
 
 	public function testEnsureFloat()
 	{
-		$entries=array
-		(
-			array(123,123.0),
-			array(1.23,1.23),
-			array(null,0.0),
-			array('',0.0),
-			array('abc',0.0),
-			array('123',123.0),
-			array('1.23',1.23),
-			array(' 1.23',1.23),
-			array(' 1.23abc',1.23),
-			array('abc1.23abc',0.0),
-			array(true,1.0),
-			array(false,0.0),
-			array(array(),0.0),
-			array(array(0),1.0),
-		);
+		$entries=
+		[
+			[123,123.0],
+			[1.23,1.23],
+			[null,0.0],
+			['',0.0],
+			['abc',0.0],
+			['123',123.0],
+			['1.23',1.23],
+			[' 1.23',1.23],
+			[' 1.23abc',1.23],
+			['abc1.23abc',0.0],
+			[true,1.0],
+			[false,0.0],
+			[[],0.0],
+			[[0],1.0],
+		];
 		foreach($entries as $index=>$entry)
 			$this->assertTrue(CPropertyValue::ensureFloat($entry[0])===$entry[1],
 				"Comparison $index: {$this->varToString($entry[0])}=={$this->varToString($entry[1])}");
@@ -113,18 +113,18 @@ class CPropertyValueTest extends CTestCase
 
 	public function testEnsureArray()
 	{
-		$entries=array
-		(
-			array(123,array(123)),
-			array(null,array()),
-			array('',array()),
-			array('abc',array('abc')),
-			array('(1,2)',array(1,2)),
-			array('("key"=>"value",2=>3)',array("key"=>"value",2=>3)),
-			array(true,array(true)),
-			array(array(),array()),
-			array(array(0),array(0)),
-		);
+		$entries=
+		[
+			[123,[123]],
+			[null,[]],
+			['',[]],
+			['abc',['abc']],
+			['(1,2)',[1,2]],
+			['("key"=>"value",2=>3)',["key"=>"value",2=>3]],
+			[true,[true]],
+			[[],[]],
+			[[0],[0]],
+		];
 		foreach($entries as $index=>$entry)
 			$this->assertTrue(CPropertyValue::ensureArray($entry[0])===$entry[1],
 				"Comparison $index: {$this->varToString($entry[0])}=={$this->varToString($entry[1])}");

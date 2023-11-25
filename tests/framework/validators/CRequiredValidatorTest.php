@@ -6,7 +6,7 @@ class CRequiredValidatorTest extends CTestCase
 	public function testEmpty()
 	{
 		$model = new ValidatorTestModel('CRequiredValidatorTest');
-		$model->validate(array('username'));
+		$model->validate(['username']);
 		$this->assertArrayHasKey('username', $model->getErrors());
 	}
 
@@ -14,7 +14,7 @@ class CRequiredValidatorTest extends CTestCase
 	{
 		$model = new ValidatorTestModel('CRequiredValidatorTest');
 		$model->username = ' ';
-		$model->validate(array('username'));
+		$model->validate(['username']);
 		$this->assertArrayNotHasKey('username', $model->getErrors());
 	}
 
@@ -22,7 +22,7 @@ class CRequiredValidatorTest extends CTestCase
 	{
 		$model = new ValidatorTestModel('CRequiredValidatorTest');
 		$model->address = ' ';
-		$model->validate(array('address'));
+		$model->validate(['address']);
 		$this->assertArrayHasKey('address', $model->getErrors());
 	}
 

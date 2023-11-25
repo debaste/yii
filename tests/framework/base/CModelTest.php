@@ -24,7 +24,7 @@ class CModelTest extends CTestCase
 		$model->attr1=4;
 		$this->assertTrue($model->validate());
 
-		$model->onBeforeValidate = array($this, 'beforeValidate');
+		$model->onBeforeValidate = [$this, 'beforeValidate'];
 		$this->assertFalse($model->validate());
 	}
 
@@ -58,7 +58,7 @@ class CModelTest extends CTestCase
 		$model->attr1=2;
 		$model->attr2=2;
 		$this->assertTrue($model->validate());
-		$model->validatorList->insertAt(0,CValidator::createValidator('numerical',$model,'attr1,attr2',array('min'=>3)));
+		$model->validatorList->insertAt(0,CValidator::createValidator('numerical',$model,'attr1,attr2',['min'=>3]));
 		$this->assertFalse($model->validate());
 		$model->attr1=6;
 		$model->attr2=6;
@@ -68,7 +68,7 @@ class CModelTest extends CTestCase
 		$this->assertTrue($model->validate());
 		$model=new NewModel;
 		$model->attr1=3;
-		$model->validatorList->add(CValidator::createValidator('required',$model,'attr2',array()));
+		$model->validatorList->add(CValidator::createValidator('required',$model,'attr2',[]));
 		$this->assertFalse($model->validate());
 		$model->attr2=3;
 		$this->assertTrue($model->validate());
@@ -77,8 +77,8 @@ class CModelTest extends CTestCase
 	function testErrors(){
 		$model=new NewModel;
 		$model->attr1=3;
-		$model->validatorList->add(CValidator::createValidator('required',$model,'attr2',array()));
-		$model->validatorList->add(CValidator::createValidator('required',$model,'attr4',array()));
+		$model->validatorList->add(CValidator::createValidator('required',$model,'attr2',[]));
+		$model->validatorList->add(CValidator::createValidator('required',$model,'attr4',[]));
 		$model->validate();
 
 		$this->assertTrue($model->hasErrors());
@@ -101,7 +101,7 @@ class CModelTest extends CTestCase
 		$this->assertEquals(1, $attributes['attr1']);
 		$this->assertEquals(2, $attributes['attr2']);
 
-		$attributes = $model->getAttributes(array('attr1', 'non_existing'));
+		$attributes = $model->getAttributes(['attr1', 'non_existing']);
 		$this->assertEquals(1, $attributes['attr1']);
 		$this->assertNull($attributes['non_existing']);
 	}
@@ -111,7 +111,7 @@ class CModelTest extends CTestCase
 		$model->attr1 = 1;
 		$model->attr2 = 2;
 
-		$model->unsetAttributes(array('attr1'));
+		$model->unsetAttributes(['attr1']);
 		$this->assertNull($model->attr1);
 		$this->assertEquals(2, $model->attr2);
 
@@ -157,7 +157,7 @@ class CModelTest extends CTestCase
 		$model = new NewModel();
 		$model->validate();
 		$model->clearErrors();
-		$model->addErrors(array('firstName' => 'This field is required'));
+		$model->addErrors(['firstName' => 'This field is required']);
 		$this->assertSame(1, count($model->getErrors('firstName')));
 	}
 
@@ -166,10 +166,10 @@ class CModelTest extends CTestCase
 		$model = new NewModel();
 		$model->validate();
 		$model->clearErrors();
-		$model->addErrors(array(
-			'firstName' => array('This attribute is required'),
-			'LastName' => array('This field is required'),
-		));
+		$model->addErrors([
+			'firstName' => ['This attribute is required'],
+			'LastName' => ['This field is required'],
+		]);
 		$this->assertSame(1, count($model->getErrors('firstName')));
 		$this->assertSame(1, count($model->getErrors('LastName')));
 	}
@@ -179,10 +179,10 @@ class CModelTest extends CTestCase
 		$model = new NewModel();
 		$model->validate();
 		$model->clearErrors();
-		$model->addErrors(array('firstName' => array(
+		$model->addErrors(['firstName' => [
 			'This attribute is required',
 			'This field is required',
-		)));
+		]]);
 		$this->assertSame(2, count($model->getErrors('firstName')));
 	}
 
@@ -191,16 +191,16 @@ class CModelTest extends CTestCase
 		$model = new NewModel();
 		$model->validate();
 		$model->clearErrors();
-		$model->addErrors(array(
-			'firstName' => array(
+		$model->addErrors([
+			'firstName' => [
 				'This attribute is required',
 				'This field is required',
-			),
-			'LastName' => array(
+			],
+			'LastName' => [
 				'This attribute is required',
 				'This field is required',
-			),
-		));
+			],
+		]);
 		$this->assertSame(2, count($model->getErrors('firstName')));
 		$this->assertSame(2, count($model->getErrors('LastName')));
 	}
@@ -210,12 +210,12 @@ class CModelTest extends CTestCase
 		$model = new NewModel();
 		$model->validate();
 		$model->clearErrors();
-		$model->addErrors(array(
-			'attr1' => array(
+		$model->addErrors([
+			'attr1' => [
 				'This attribute is required.',
 				'This field is required.',
-			),
-		));
+			],
+		]);
 		$this->assertSame('This attribute is required.', $model->getError('attr1'));
 	}
 

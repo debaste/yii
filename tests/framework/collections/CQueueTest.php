@@ -7,23 +7,23 @@ class CQueueTest extends CTestCase
 	public function testConstruct()
 	{
 		$queue = new CQueue();
-		$this->assertEquals(array(), $queue->toArray());
-		$queue = new CQueue(array(1, 2, 3));
-		$this->assertEquals(array(1, 2, 3), $queue->toArray());
+		$this->assertEquals([], $queue->toArray());
+		$queue = new CQueue([1, 2, 3]);
+		$this->assertEquals([1, 2, 3], $queue->toArray());
 	}
 
 	public function testToArray()
 	{
-		$queue = new CQueue(array(1, 2, 3));
-		$this->assertEquals(array(1, 2, 3), $queue->toArray());
+		$queue = new CQueue([1, 2, 3]);
+		$this->assertEquals([1, 2, 3], $queue->toArray());
 	}
 
 	public function testCopyFrom()
 	{
-		$queue = new CQueue(array(1, 2, 3));
-		$data = array(4, 5, 6);
+		$queue = new CQueue([1, 2, 3]);
+		$data = [4, 5, 6];
 		$queue->copyFrom($data);
-		$this->assertEquals(array(4, 5, 6), $queue->toArray());
+		$this->assertEquals([4, 5, 6], $queue->toArray());
 	}
 
 	public function testCanNotCopyFromNonTraversableTypes()
@@ -36,21 +36,21 @@ class CQueueTest extends CTestCase
 
 	public function testClear()
 	{
-		$queue = new CQueue(array(1, 2, 3));
+		$queue = new CQueue([1, 2, 3]);
 		$queue->clear();
-		$this->assertEquals(array(), $queue->toArray());
+		$this->assertEquals([], $queue->toArray());
 	}
 
 	public function testContains()
 	{
-		$queue = new CQueue(array(1, 2, 3));
+		$queue = new CQueue([1, 2, 3]);
 		$this->assertTrue($queue->contains(2));
 		$this->assertFalse($queue->contains(4));
 	}
 
 	public function testPeek()
 	{
-		$queue = new CQueue(array(1));
+		$queue = new CQueue([1]);
 		$this->assertEquals(1, $queue->peek());
 	}
 
@@ -63,10 +63,10 @@ class CQueueTest extends CTestCase
 
 	public function testDequeue()
 	{
-		$queue = new CQueue(array(1, 2, 3));
+		$queue = new CQueue([1, 2, 3]);
 		$first = $queue->dequeue();
 		$this->assertEquals(1, $first);
-		$this->assertEquals(array(2, 3), $queue->toArray());
+		$this->assertEquals([2, 3], $queue->toArray());
 	}
 
 	public function testCanNotDequeueAnEmptyQueue()
@@ -80,12 +80,12 @@ class CQueueTest extends CTestCase
 	{
 		$queue = new CQueue();
 		$queue->enqueue(1);
-		$this->assertEquals(array(1), $queue->toArray());
+		$this->assertEquals([1], $queue->toArray());
 	}
 
  	public function testGetIterator()
  	{
-		$queue = new CQueue(array(1, 2));
+		$queue = new CQueue([1, 2]);
 		$this->assertInstanceOf('CQueueIterator', $queue->getIterator());
 		$n = 0;
 		$found = 0;
@@ -105,7 +105,7 @@ class CQueueTest extends CTestCase
 	{
     	$queue = new CQueue();
 		$this->assertEquals(0, $queue->getCount());
-		$queue = new CQueue(array(1, 2, 3));
+		$queue = new CQueue([1, 2, 3]);
 		$this->assertEquals(3, $queue->getCount());
 	}
 
@@ -113,7 +113,7 @@ class CQueueTest extends CTestCase
 	{
 		$queue = new CQueue();
 		$this->assertEquals(0, count($queue));
-		$queue = new CQueue(array(1, 2, 3));
+		$queue = new CQueue([1, 2, 3]);
 		$this->assertEquals(3, count($queue));
 	}
 }

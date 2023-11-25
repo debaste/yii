@@ -28,30 +28,30 @@ class CActiveDataProviderTest extends CTestCase
 	public function testCountCriteria()
 	{
 		// 1
-		$dataProvider=new CActiveDataProvider('Post',array(
-			'criteria'=>array(
+		$dataProvider=new CActiveDataProvider('Post',[
+			'criteria'=>[
 				'condition'=>'content LIKE "%content%"',
 				'order'=>'create_time DESC',
-				'with'=>array('author'),
-			),
-			'pagination'=>array(
+				'with'=>['author'],
+			],
+			'pagination'=>[
 				'pageSize'=>5,
-			),
-		));
+			],
+		]);
 		$this->assertSame($dataProvider->countCriteria,$dataProvider->criteria);
 		$this->assertEquals(5,$dataProvider->getTotalItemCount(true));
 
 		// 2
-		$dataProvider->setCountCriteria(array(
+		$dataProvider->setCountCriteria([
 			'condition'=>'content LIKE "%content 1%"',
-		));
+		]);
 		$this->assertNotSame($dataProvider->countCriteria,$dataProvider->criteria);
 		$this->assertEquals(1,$dataProvider->getTotalItemCount(true));
 
 		// 3
-		$dataProvider->setCountCriteria(array(
+		$dataProvider->setCountCriteria([
 			'condition'=>'content LIKE "%content%"',
-		));
+		]);
 		$this->assertNotSame($dataProvider->countCriteria,$dataProvider->criteria);
 		$this->assertEquals(5,$dataProvider->getTotalItemCount(true));
 	}

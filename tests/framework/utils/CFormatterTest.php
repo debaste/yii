@@ -47,15 +47,15 @@ class CFormatterTest extends CTestCase
 
 	public function languages()
 	{
-		return array(
-			array('cs'),
-			array('de'),
-			array('ja'),
-			array('kk'),
-			array('ru'),
-			array('sk'),
-			array('uk'),
-		);
+		return [
+			['cs'],
+			['de'],
+			['ja'],
+			['kk'],
+			['ru'],
+			['sk'],
+			['uk'],
+		];
 	}
 
 	/**
@@ -83,32 +83,32 @@ class CFormatterTest extends CTestCase
 
 	public function providerFormatNtext()
 	{
-		return array(
-			array(
+		return [
+			[
 				"<br/>\nline2\n\nline3\n\n\nline4\n\n\n\nline5",
 				false,
 				false,
 				"&lt;br/&gt;<br />\nline2<br />\n<br />\nline3<br />\n<br />\n<br />\nline4<br />\n<br />\n<br />\n<br />\nline5",
-			),
-			array(
+			],
+			[
 				"<br/>\nline2\n\nline3\n\n\nline4\n\n\n\nline5",
 				false,
 				true,
 				"&lt;br/&gt;<br />\nline2<br />\n<br />\nline3<br />\n<br />\n<br />\nline4<br />\n<br />\n<br />\n<br />\nline5",
-			),
-			array(
+			],
+			[
 				"<br/>\nline2\n\nline3\n\n\nline4\n\n\n\nline5",
 				true,
 				false,
 				'<p>&lt;br/&gt;</p><p>line2</p><p></p><p>line3</p><p></p><p></p><p>line4</p><p></p><p></p><p></p><p>line5</p>',
-			),
-			array(
+			],
+			[
 				"<br/>\nline2\n\nline3\n\n\nline4\n\n\n\nline5",
 				true,
 				true,
 				'<p>&lt;br/&gt;</p><p>line2</p><p>line3</p><p>line4</p><p>line5</p>',
-			),
-		);
+			],
+		];
 	}
 
 	/**
@@ -150,30 +150,30 @@ class CFormatterTest extends CTestCase
 
 	public function providerFormatNumber()
 	{
-		return array(
+		return [
 			// Tests decimals
-			array('1.5',null,null,null,'2'),
-			array('1.5',1,null,null,'1.5'),
-			array('1.55',1,null,null,'1.6'),
-			array('1.44',1,null,null,'1.4'),
-			array('1.01',2,null,null,'1.01'),
+			['1.5',null,null,null,'2'],
+			['1.5',1,null,null,'1.5'],
+			['1.55',1,null,null,'1.6'],
+			['1.44',1,null,null,'1.4'],
+			['1.01',2,null,null,'1.01'],
 
 			// Test decimal separator
-			array('1.5',null, ',', null,'2'),
-			array('1.5',1,',',null,'1,5'),
-			array('1.55',1,',',null,'1,6'),
-			array('1.44',1,',',null,'1,4'),
-			array('1.01',2,',',null,'1,01'),
+			['1.5',null, ',', null,'2'],
+			['1.5',1,',',null,'1,5'],
+			['1.55',1,',',null,'1,6'],
+			['1.44',1,',',null,'1,4'],
+			['1.01',2,',',null,'1,01'],
 
 			// Test thousands seperator
-			array('1000',null,null,'.','1.000'),
-			array('10000',null,null,'.','10.000'),
-			array('100000',null,null,'.','100.000'),
-			array('1000000',null,null,'.','1.000.000'),
+			['1000',null,null,'.','1.000'],
+			['10000',null,null,'.','10.000'],
+			['100000',null,null,'.','100.000'],
+			['1000000',null,null,'.','1.000.000'],
 
 			// Test all at once
-			array('1000.05',2,'D','T','1T000D05'),
-			array('10000.005',2,'D','T','10T000D01'),
-		);
+			['1000.05',2,'D','T','1T000D05'],
+			['10000.005',2,'D','T','10T000D01'],
+		];
 	}
 }

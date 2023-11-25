@@ -18,12 +18,12 @@ class CMssqlCommandBuilderTest extends CTestCase
 		 */
 		$this->db = $this->getMockBuilder('CDbConnection')
 			->disableOriginalConstructor()
-			->setMethods(array('open', 'getServerVersion', 'getSchema'))
+			->setMethods(['open', 'getServerVersion', 'getSchema'])
 			->getMock();
 
 		$schema = $this->getMockBuilder('CMssqlSchema')
-			->setConstructorArgs(array($this->db))
-			->setMethods(array('getTable'))
+			->setConstructorArgs([$this->db])
+			->setMethods(['getTable'])
 			->getMock();
 
 		$tableMetaData = new CMssqlTableSchema();
@@ -43,28 +43,28 @@ class CMssqlCommandBuilderTest extends CTestCase
 	{
 		$this->db->method('getServerVersion')->willReturn('10');
 
-		$command = $this->createFindCommand(array(
+		$command = $this->createFindCommand([
 			'limit'=>3,
-		));
+		]);
 		$this->assertEquals('SELECT TOP 3 * FROM [dbo].[posts] [t]', $command->text);
 
-		$command = $this->createFindCommand(array(
+		$command = $this->createFindCommand([
 			'select'=>'id, title',
 			'order'=>'title',
 			'limit'=>2,
 			'offset'=>3
-		));
+		]);
 		$this->assertEquals('SELECT * FROM (SELECT TOP 2 * FROM (SELECT TOP 5 id, title FROM [dbo].[posts] [t] ORDER BY title) as [__inner__] ORDER BY title DESC) as [__outer__] ORDER BY title ASC', $command->text);
 
-		$command = $this->createFindCommand(array(
+		$command = $this->createFindCommand([
 			'limit'=>2,
 			'offset'=>3
-		));
+		]);
 		$this->assertEquals('SELECT * FROM (SELECT TOP 2 * FROM (SELECT TOP 5 * FROM [dbo].[posts] [t] ORDER BY id) as [__inner__] ORDER BY id DESC) as [__outer__] ORDER BY id ASC', $command->text);
 
-		$command = $this->createFindCommand(array(
+		$command = $this->createFindCommand([
 			'select'=>'title',
-		));
+		]);
 		$this->assertEquals('SELECT title FROM [dbo].[posts] [t]', $command->text);
 	}
 
@@ -72,40 +72,40 @@ class CMssqlCommandBuilderTest extends CTestCase
 	{
 		$this->db->method('getServerVersion')->willReturn('11');
 
-		$command = $this->createFindCommand(array(
+		$command = $this->createFindCommand([
 			'limit'=>3,
-		));
+		]);
 		$this->assertEquals('SELECT TOP 3 * FROM [dbo].[posts] [t]', $command->text);
 
-		$command = $this->createFindCommand(array(
+		$command = $this->createFindCommand([
 			'select'=>'id, title',
 			'order'=>'title',
 			'limit'=>2,
 			'offset'=>3,
-		));
+		]);
 		$this->assertEquals('SELECT id, title FROM [dbo].[posts] [t] ORDER BY title OFFSET 3 ROWS FETCH NEXT 2 ROWS ONLY', $command->text);
 
-		$command = $this->createFindCommand(array(
+		$command = $this->createFindCommand([
 			'limit'=>2,
 			'offset'=>3,
-		));
+		]);
 		$this->assertEquals('SELECT * FROM [dbo].[posts] [t] ORDER BY id OFFSET 3 ROWS FETCH NEXT 2 ROWS ONLY', $command->text);
 
 
-		$command = $this->createFindCommand(array(
+		$command = $this->createFindCommand([
 			'select'=>'title',
 			'offset'=>3,
-		));
+		]);
 		$this->assertEquals('SELECT title FROM [dbo].[posts] [t] ORDER BY id OFFSET 3 ROWS', $command->text);
 
-		$command = $this->createFindCommand(array(
+		$command = $this->createFindCommand([
 			'offset'=>3,
-		));
+		]);
 		$this->assertEquals('SELECT * FROM [dbo].[posts] [t] ORDER BY id OFFSET 3 ROWS', $command->text);
 
-		$command = $this->createFindCommand(array(
+		$command = $this->createFindCommand([
 			'select'=>'title',
-		));
+		]);
 		$this->assertEquals('SELECT title FROM [dbo].[posts] [t]', $command->text);
 	}
 

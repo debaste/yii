@@ -30,10 +30,10 @@ class CSqlDataProviderTest extends CTestCase
 	{
 		$command1=$this->db->createCommand()->select('*')->from('posts')->setFetchMode(PDO::FETCH_ASSOC);
 		$dataProvider1=new CSqlDataProvider($command1);
-		$this->assertSame(array('1','2','3','4','5'),$dataProvider1->keys);
+		$this->assertSame(['1','2','3','4','5'],$dataProvider1->keys);
 
 		$command2=$this->db->createCommand()->select('*')->from('posts')->setFetchMode(PDO::FETCH_OBJ);
 		$dataProvider2=new CSqlDataProvider($command2);
-		$this->assertSame(array('1','2','3','4','5'),$dataProvider2->keys);
+		$this->assertSame(['1','2','3','4','5'],$dataProvider2->keys);
 	}
 }

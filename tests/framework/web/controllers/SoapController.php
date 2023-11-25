@@ -16,15 +16,15 @@ class SoapController extends CController implements IWebServiceProvider
 	const LOGNAME = 'soap';
 	
 	public function actions(){
-        return array(
+        return [
         	// remap default action "index" to be a SOAP action
-            'index'=>array(
+            'index'=>[
                 'class'=>'WebServiceAction',
-                'classMap' => array(
+                'classMap' => [
                 	'SoapPovCalculationInput', 'SoapPovCalculationOutput',
-                ),
-            ),
-        );
+                ],
+            ],
+        ];
     }
 
     /**
@@ -52,7 +52,7 @@ class SoapController extends CController implements IWebServiceProvider
     */
     protected function isAuthorized($user, $passwordHashed, $action) {
     	// load allowed users..
-    	$users = array('tester123' => 'passwordHashed123');
+    	$users = ['tester123' => 'passwordHashed123'];
 
     	if (isset($users[$user]) && $passwordHashed == $users[$user]) {
    			/**

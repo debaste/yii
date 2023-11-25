@@ -10,13 +10,13 @@ class CCacheHttpSessionTest extends CTestCase
 	 */
 	public function testCustomSessionHandler()
 	{
-		$config=array(
-			'components'=>array(
-				'cache'=>array(
+		$config=[
+			'components'=>[
+				'cache'=>[
 					'class'=>'CFileCache',
-				),
-			),
-		);
+				],
+			],
+		];
 		new TestApplication($config);
 
 		$session=new CCacheHttpSession();

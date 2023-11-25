@@ -14,7 +14,7 @@ class CAttributeCollectionTest extends CTestCase
 
 	public function testCanNotGetUndefinedProperty()
 	{
-		$collection = new CAttributeCollection(array(), true);
+		$collection = new CAttributeCollection([], true);
 		$this->assertFalse($collection->canGetProperty('Property'));
 		$this->setExpectedException('CException');
 		$value=$collection->Property;
@@ -30,7 +30,7 @@ class CAttributeCollectionTest extends CTestCase
 
 	public function testCanNotSetPropertyIfReadOnly()
 	{
-		$collection = new CAttributeCollection(array(), true);
+		$collection = new CAttributeCollection([], true);
 		$this->setExpectedException('CException');
 		$collection->Property = 'value';
 	}
@@ -107,7 +107,7 @@ class CAttributeCollectionTest extends CTestCase
   public function testMergeWithCaseSensitive()
   {
     $collection = new CAttributeCollection();
-    $item = array('Test'=>'Uppercase');
+    $item = ['Test'=>'Uppercase'];
     $collection->mergeWith($item);
     $this->assertEquals('Uppercase', $collection->itemAt('test'));
   }
@@ -118,7 +118,7 @@ class CAttributeCollectionTest extends CTestCase
     $collection->caseSensitive = true;
     $collection->add('k1','item');
 
-    $item = array('K1'=>'ITEM');
+    $item = ['K1'=>'ITEM'];
     $collection->mergeWith($item);
     $this->assertEquals('item', $collection->itemAt('k1'));
     $this->assertEquals('ITEM', $collection->itemAt('K1'));

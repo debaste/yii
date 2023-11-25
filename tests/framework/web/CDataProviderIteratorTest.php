@@ -8,12 +8,12 @@ class CDataProviderIteratorTest extends CTestCase
 {
 	public function pageSizes()
 	{
-		return array(
-			array(null),
-			array(1),
-			array(10),
-			array(110),
-		);
+		return [
+			[null],
+			[1],
+			[10],
+			[110],
+		];
 	}
 
 	/**
@@ -45,9 +45,9 @@ class CDataProviderIteratorTest extends CTestCase
 	 */
 	public function testInitWithDisabledPagination($pageSizes)
 	{
-		$dataProvider = new CArrayDataProvider($this->generateData(10), array(
+		$dataProvider = new CArrayDataProvider($this->generateData(10), [
 			'pagination' => false,
-		));
+		]);
 		new CDataProviderIterator($dataProvider, $pageSizes);
 	}
 	
@@ -58,12 +58,12 @@ class CDataProviderIteratorTest extends CTestCase
 	 */
 	protected function generateData($totalItems)
 	{
-		$data = array();
+		$data = [];
 		for($i = 0; $i < $totalItems; $i++) {
-			$data[] = array(
+			$data[] = [
 				"id" => $i,
 				"name" => "Item ".$i,
-			);
+			];
 		}
 		return $data;
 	}

@@ -13,9 +13,9 @@ class CDbStatePersisterTest extends CTestCase
 
 	public function testLoadSave()
 	{
-		$app=new TestApplication(array(
-			'components'=>array(
-				'db'=>array(
+		$app=new TestApplication([
+			'components'=>[
+				'db'=>[
 					'class' => 'CDbConnection',
 					'connectionString' => 'mysql:host=127.0.0.1;port=3306;dbname=yii',
 					'username' => 'test',
@@ -23,14 +23,14 @@ class CDbStatePersisterTest extends CTestCase
 					'emulatePrepare' => true,
 					'charset' => 'utf8',
 					'enableParamLogging' => true,
-				),
-				'statePersister' => array(
+				],
+				'statePersister' => [
 					'class' => 'CDbStatePersister'
-				)
-			)
-		));
+				]
+			]
+		]);
 		$sp=$app->statePersister;
-		$data=array('123','456','a'=>443);
+		$data=['123','456','a'=>443];
 		$sp->save($data);
 		$this->assertEquals($sp->load(),$data);
 	}

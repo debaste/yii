@@ -11,16 +11,16 @@ class YiiTTest extends CTestCase
 {
 	function setUp()
 	{
-		$config = array(
+		$config = [
 			'sourceLanguage' => 'es',
-			'components' => array(
-				'messages' => array(
+			'components' => [
+				'messages' => [
 					'class' => 'CPhpMessageSource',
 					'basePath' => dirname(__FILE__).'/data',
 					//'forceTranslation' => true,
-				),
-			),
-		);
+				],
+			],
+		];
 
 		new TestApplication($config);
 		Yii::app()->configure($config);
@@ -44,7 +44,7 @@ class YiiTTest extends CTestCase
 
 	function testSimplePlaceholders(){
 		Yii::app()->setLanguage('ru');
-		$this->assertEquals('сумочки caviar', Yii::t('test', '{brand} bags', array('{brand}' => 'caviar')));
+		$this->assertEquals('сумочки caviar', Yii::t('test', '{brand} bags', ['{brand}' => 'caviar']));
 		$this->assertEquals('в корзине: 10', Yii::t('test', 'in the cart: {n}', 10));
 	}
 
@@ -59,7 +59,7 @@ class YiiTTest extends CTestCase
 		Yii::app()->setLanguage('ru');
 
 		// array notation
-		$this->assertEquals('огурец', Yii::t('test', 'cucumber|cucumbers', array(1)));
+		$this->assertEquals('огурец', Yii::t('test', 'cucumber|cucumbers', [1]));
 
 		//ru
 		$this->assertEquals('огурец', Yii::t('test', 'cucumber|cucumbers', 1));
@@ -89,7 +89,7 @@ class YiiTTest extends CTestCase
 		$this->assertEquals('огурец', Yii::t('test', 'cucumber|cucumbers', 1));
 
 		// explicit params
-		$this->assertEquals('огурец', Yii::t('test', 'cucumber|cucumbers', array(0 => 1)));
+		$this->assertEquals('огурец', Yii::t('test', 'cucumber|cucumbers', [0 => 1]));
 	}
 
 	function testPluralPlaceholders(){
@@ -100,10 +100,10 @@ class YiiTTest extends CTestCase
 		$this->assertEquals('5 огурцов', Yii::t('test', '{n} cucumber|{n} cucumbers', 5));
 
 		// more placeholders
-		$this->assertEquals('+ 5 огурцов', Yii::t('test', '{sign} {n} cucumber|{sign} {n} cucumbers', array(5, '{sign}' => '+')));
+		$this->assertEquals('+ 5 огурцов', Yii::t('test', '{sign} {n} cucumber|{sign} {n} cucumbers', [5, '{sign}' => '+']));
 
 		// placeholder swapping
-		$this->assertEquals('один огурец', Yii::t('test', '{n} cucumber|{n} cucumbers', array(1, '{n}' => 'один')));
+		$this->assertEquals('один огурец', Yii::t('test', '{n} cucumber|{n} cucumbers', [1, '{n}' => 'один']));
 	}
 
 	/**
@@ -111,7 +111,7 @@ class YiiTTest extends CTestCase
 	 */
 	function testPluralMoreVariants(){
 		Yii::app()->setLanguage('ru');
-		$this->assertEquals('шляпы', Yii::t('test', 'hat|hats', array(2)));
+		$this->assertEquals('шляпы', Yii::t('test', 'hat|hats', [2]));
 	}
 
 	/**

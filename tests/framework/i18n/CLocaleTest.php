@@ -1,16 +1,16 @@
 <?php
 class CLocaleTest extends CTestCase
 {
-	private $noPlurals = array(
+	private $noPlurals = [
 		'az', 'bm', 'fa', 'ig', 'hu', 'ja', 'kde', 'kea', 'ko', 'my', 'ses', 'sg',
 		'to', 'tr', 'vi', 'wo', 'yo', 'zh', 'bo', 'dz', 'id', 'jv', 'ka', 'km',
 		'kn', 'ms', 'th'
-	);
+	];
 
 	/**
 	 * Codes of locales where official guide translation exists
 	 */
-	protected $criticalLocaleCodes = array(
+	protected $criticalLocaleCodes = [
 		'en',
 		'bg',
 		'bs',
@@ -42,13 +42,13 @@ class CLocaleTest extends CTestCase
 		'vi',
 		'zh_cn',
 		'zh_tw',
-	);
+	];
 
 	function setUp()
 	{
-		$config = array(
+		$config = [
 			'language' => 'en',
-		);
+		];
 
 		new TestApplication($config);
 		Yii::app()->configure($config);
@@ -85,7 +85,7 @@ class CLocaleTest extends CTestCase
 			$this->assertNotNull($locale->getDateTimeFormat(), "$localeCode: getDateTimeFormat failed.");
 
 			// ORIENTATION
-			$this->assertTrue(in_array($locale->getOrientation(), array('ltr', 'rtl')), "$localeCode: getOrientation failed.");
+			$this->assertTrue(in_array($locale->getOrientation(), ['ltr', 'rtl']), "$localeCode: getOrientation failed.");
 
 			// plurals
 			$l = explode('_', $localeCode);
@@ -98,23 +98,23 @@ class CLocaleTest extends CTestCase
 
 	public function providerGetLocaleDisplayName()
 	{
-		return array(
-			array('de','en_US','amerikanisches englisch'),
-			array('de','en','englisch'),
-			array('de_DE','en_US','amerikanisches englisch'),
-			array('de_DE','en','englisch'),
+		return [
+			['de','en_US','amerikanisches englisch'],
+			['de','en','englisch'],
+			['de_DE','en_US','amerikanisches englisch'],
+			['de_DE','en','englisch'],
 
-			array('es_MX',null,null),
-			array('es_ES',null,null),
+			['es_MX',null,null],
+			['es_ES',null,null],
 
 			// https://github.com/yiisoft/yii/issues/2087
-			array('en_us','en','english'),
-			array('en_us','en_us','u.s. english'),
-			array('en_us','pt','portuguese'),
-			array('en_us','pt','portuguese'),
-			array('en_us','pt_br','brazilian portuguese'),
-			array('en_us','pt_pt','european portuguese'),
-		);
+			['en_us','en','english'],
+			['en_us','en_us','u.s. english'],
+			['en_us','pt','portuguese'],
+			['en_us','pt','portuguese'],
+			['en_us','pt_br','brazilian portuguese'],
+			['en_us','pt_pt','european portuguese'],
+		];
 	}
 
 	/**
@@ -128,46 +128,46 @@ class CLocaleTest extends CTestCase
 
 	public function providerGetLanguage()
 	{
-		return array(
-			array('en','fr_FR','french'),
-			array('en','fr','french'),
-			array('en_US','fr_FR','french'),
-			array('en_US','fr','french'),
-			array('ru','de_DE','немецкий'),
-			array('ru','de','немецкий'),
-			array('ru_RU','de_DE','немецкий'),
-			array('ru_RU','de','немецкий'),
-			array('de','en_US','englisch'),
-			array('de','en','englisch'),
-			array('de','US',null),
-			array('de_DE','en_US','englisch'),
-			array('de_DE','en','englisch'),
-			array('de_DE','US',null),
+		return [
+			['en','fr_FR','french'],
+			['en','fr','french'],
+			['en_US','fr_FR','french'],
+			['en_US','fr','french'],
+			['ru','de_DE','немецкий'],
+			['ru','de','немецкий'],
+			['ru_RU','de_DE','немецкий'],
+			['ru_RU','de','немецкий'],
+			['de','en_US','englisch'],
+			['de','en','englisch'],
+			['de','US',null],
+			['de_DE','en_US','englisch'],
+			['de_DE','en','englisch'],
+			['de_DE','US',null],
 
-			array('es_MX',null,null),
-			array('es_ES',null,null),
+			['es_MX',null,null],
+			['es_ES',null,null],
 
-			array('ru_RU','zh-Hans-CN','китайский'),
-			array('en_US','zh-Hans-CN','chinese'),
-			array('ru_RU','zh-Hant-HK','китайский'),
-			array('en_US','zh-Hant-HK','chinese'),
-			array('ru','zh-Hant-HK','китайский'),
-			array('en','zh-Hant-HK','chinese'),
-			array('ru','CN',null),
-			array('en','CN',null),
-			array('ru','Hant',null),
-			array('en','Hant',null),
+			['ru_RU','zh-Hans-CN','китайский'],
+			['en_US','zh-Hans-CN','chinese'],
+			['ru_RU','zh-Hant-HK','китайский'],
+			['en_US','zh-Hant-HK','chinese'],
+			['ru','zh-Hant-HK','китайский'],
+			['en','zh-Hant-HK','chinese'],
+			['ru','CN',null],
+			['en','CN',null],
+			['ru','Hant',null],
+			['en','Hant',null],
 
 			// https://github.com/yiisoft/yii/issues/2087
-			array('en_us','en','English'),
-			array('en_us','en_us','English'),
-			array('en_us','us',null),
-			array('en_us','pt','Portuguese'),
-			array('en_us','pt','Portuguese'),
-			array('en_us','pt_br','Portuguese'),
-			array('en_us','br','Breton'),
-			array('en_us','pt_pt','Portuguese'),
-		);
+			['en_us','en','English'],
+			['en_us','en_us','English'],
+			['en_us','us',null],
+			['en_us','pt','Portuguese'],
+			['en_us','pt','Portuguese'],
+			['en_us','pt_br','Portuguese'],
+			['en_us','br','Breton'],
+			['en_us','pt_pt','Portuguese'],
+		];
 	}
 
 	/**
@@ -181,34 +181,34 @@ class CLocaleTest extends CTestCase
 
 	public function providerGetScript()
 	{
-		return array(
-			array('en','fr_FR',null),
-			array('en','fr',null),
-			array('en_US','fr_FR',null),
-			array('en_US','fr',null),
-			array('ru','de_DE',null),
-			array('ru','de',null),
-			array('ru_RU','de_DE',null),
-			array('ru_RU','de',null),
-			array('de','en_US',null),
-			array('de','en',null),
-			array('de','US',null),
-			array('de_DE','en_US',null),
-			array('de_DE','en',null),
-			array('de_DE','US',null),
+		return [
+			['en','fr_FR',null],
+			['en','fr',null],
+			['en_US','fr_FR',null],
+			['en_US','fr',null],
+			['ru','de_DE',null],
+			['ru','de',null],
+			['ru_RU','de_DE',null],
+			['ru_RU','de',null],
+			['de','en_US',null],
+			['de','en',null],
+			['de','US',null],
+			['de_DE','en_US',null],
+			['de_DE','en',null],
+			['de_DE','US',null],
 
-			array('es_MX',null,null),
-			array('es_ES',null,null),
+			['es_MX',null,null],
+			['es_ES',null,null],
 
-			array('ru_RU','zh-Hans-CN','Упрощенный китайский'),
-			array('en_US','zh-Hans-CN','Simplified Han'),
-			array('ru_RU','zh-Hant-HK','Традиционный китайский'),
-			array('en_US','zh-Hant-HK','Traditional Han'),
-			array('ru','zh-Hant-HK','Традиционный китайский'),
-			array('en','zh-Hant-HK','Traditional Han'),
-			array('en','zh-CN',null),
-			array('en','zh-HK',null),
-		);
+			['ru_RU','zh-Hans-CN','Упрощенный китайский'],
+			['en_US','zh-Hans-CN','Simplified Han'],
+			['ru_RU','zh-Hant-HK','Традиционный китайский'],
+			['en_US','zh-Hant-HK','Traditional Han'],
+			['ru','zh-Hant-HK','Традиционный китайский'],
+			['en','zh-Hant-HK','Traditional Han'],
+			['en','zh-CN',null],
+			['en','zh-HK',null],
+		];
 	}
 
 	/**
@@ -222,40 +222,40 @@ class CLocaleTest extends CTestCase
 
 	public function providerGetTerritory()
 	{
-		return array(
-			array('en','fr_FR','France'),
-			array('en','fr','France'),
-			array('en_US','fr_FR','France'),
-			array('en_US','fr','France'),
-			array('ru','de_DE','Германия'),
-			array('ru','de','Германия'),
-			array('ru_RU','de_DE','Германия'),
-			array('ru_RU','de','Германия'),
-			array('de','en_US','Vereinigte Staaten'),
-			array('de','en',null),
-			array('de_DE','en_US','Vereinigte Staaten'),
-			array('de_DE','en',null),
+		return [
+			['en','fr_FR','France'],
+			['en','fr','France'],
+			['en_US','fr_FR','France'],
+			['en_US','fr','France'],
+			['ru','de_DE','Германия'],
+			['ru','de','Германия'],
+			['ru_RU','de_DE','Германия'],
+			['ru_RU','de','Германия'],
+			['de','en_US','Vereinigte Staaten'],
+			['de','en',null],
+			['de_DE','en_US','Vereinigte Staaten'],
+			['de_DE','en',null],
 
-			array('es_MX',null,null),
-			array('es_ES',null,null),
+			['es_MX',null,null],
+			['es_ES',null,null],
 
-			array('ru_RU','zh-Hans-CN','Китай'),
-			array('en_US','zh-Hans-CN','China'),
-			array('ru_RU','zh-CN','Китай'),
-			array('en_US','zh-CN','China'),
-			array('ru_RU','Hans-CN','Китай'),
-			array('en_US','Hans-CN','China'),
-			array('ru_RU','CN','Китай'),
-			array('en_US','CN','China'),
-			array('ru_RU','zh',null),
-			array('en_US','zh',null),
-			array('ru_RU','Hans',null),
-			array('en_US','Hans',null),
+			['ru_RU','zh-Hans-CN','Китай'],
+			['en_US','zh-Hans-CN','China'],
+			['ru_RU','zh-CN','Китай'],
+			['en_US','zh-CN','China'],
+			['ru_RU','Hans-CN','Китай'],
+			['en_US','Hans-CN','China'],
+			['ru_RU','CN','Китай'],
+			['en_US','CN','China'],
+			['ru_RU','zh',null],
+			['en_US','zh',null],
+			['ru_RU','Hans',null],
+			['en_US','Hans',null],
 
-			array('fi_fi','se','Ruotsi'),
-			array('fi_fi','sv_se','Ruotsi'),
-			array('fi_fi','sv','El Salvador'),
-		);
+			['fi_fi','se','Ruotsi'],
+			['fi_fi','sv_se','Ruotsi'],
+			['fi_fi','sv','El Salvador'],
+		];
 	}
 
 	/**

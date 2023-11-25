@@ -16,22 +16,22 @@ class TestController extends CController
 
 	public function filters()
 	{
-		return array(
+		return [
 			'filter1',
 			'filter2 + internal',
-			array(
+			[
 				'TestFilter',
 				'expire'=>300,
-			),
+			],
 			'filter3 - internal',
-		);
+		];
 	}
 
 	public function actions()
 	{
-		return array(
+		return [
 			'external'=>'TestAction',
-		);
+		];
 	}
 
 	public function missingAction($actionName)
@@ -105,8 +105,8 @@ class CControllerTest extends CTestCase
 		$_SERVER['REQUEST_METHOD']='GET';
 		$c=new CController('test/subtest');
 		$this->assertEquals($c->id,'test/subtest');
-		$this->assertEquals($c->filters(),array());
-		$this->assertEquals($c->actions(),array());
+		$this->assertEquals($c->filters(),[]);
+		$this->assertEquals($c->actions(),[]);
 		$this->assertNull($c->action);
 		$this->assertEquals($c->defaultAction,'index');
 		$this->assertEquals($c->viewPath,$app->viewPath.DIRECTORY_SEPARATOR.'test/subtest');
@@ -180,7 +180,7 @@ class CControllerTest extends CTestCase
 	{
 		$app=new TestApplication;
 		$c=new TestController('test');
-		$_GET=array('a'=>1);
+		$_GET=['a'=>1];
 		$this->setExpectedException('CException');
 		$c->run('create');
 	}

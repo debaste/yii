@@ -176,7 +176,7 @@ class CComponentTest extends CTestCase
 	public function testDetachEventHandler()
 	{
 		$this->component->attachEventHandler('OnMyEvent','foo');
-		$this->component->attachEventHandler('OnMyEvent',array($this->component,'myEventHandler'));
+		$this->component->attachEventHandler('OnMyEvent',[$this->component,'myEventHandler']);
 		$this->assertSame($this->component->getEventHandlers('OnMyEvent')->getCount(),2);
 
 		$this->assertTrue($this->component->detachEventHandler('OnMyEvent','foo'));
@@ -185,7 +185,7 @@ class CComponentTest extends CTestCase
 		$this->assertFalse($this->component->detachEventHandler('OnMyEvent','foo'));
 		$this->assertSame($this->component->getEventHandlers('OnMyEvent')->getCount(),1);
 
-		$this->assertTrue($this->component->detachEventHandler('OnMyEvent',array($this->component,'myEventHandler')));
+		$this->assertTrue($this->component->detachEventHandler('OnMyEvent',[$this->component,'myEventHandler']));
 		$this->assertSame($this->component->getEventHandlers('OnMyEvent')->getCount(),0);
 
 		$this->assertFalse($this->component->detachEventHandler('OnMyEvent','foo'));
@@ -196,28 +196,28 @@ class CComponentTest extends CTestCase
 	 */
 	public function testAttachDetachEventHandler()
 	{
-		$this->component->attachEventHandler('OnMyEvent',array($this->component,'handler1'));
+		$this->component->attachEventHandler('OnMyEvent',[$this->component,'handler1']);
 		$this->component->onMyEvent();
-		$this->component->attachEventHandler('OnMyEvent',array($this->component,'handler2'));
+		$this->component->attachEventHandler('OnMyEvent',[$this->component,'handler2']);
 		$this->component->onMyEvent();
-		$this->component->attachEventHandler('OnMyEvent',array($this->component,'handler3'));
-		$this->component->onMyEvent();
-
-		$this->component->detachEventHandler('OnMyEvent',array($this->component,'handler2'));
+		$this->component->attachEventHandler('OnMyEvent',[$this->component,'handler3']);
 		$this->component->onMyEvent();
 
-		$this->component->attachEventHandler('OnMyEvent',array($this->component,'handler2'));
+		$this->component->detachEventHandler('OnMyEvent',[$this->component,'handler2']);
 		$this->component->onMyEvent();
-		$this->component->detachEventHandler('OnMyEvent',array($this->component,'handler1'));
+
+		$this->component->attachEventHandler('OnMyEvent',[$this->component,'handler2']);
 		$this->component->onMyEvent();
-		$this->component->attachEventHandler('OnMyEvent',array($this->component,'handler2'));
+		$this->component->detachEventHandler('OnMyEvent',[$this->component,'handler1']);
+		$this->component->onMyEvent();
+		$this->component->attachEventHandler('OnMyEvent',[$this->component,'handler2']);
 		$this->component->onMyEvent();
 	}
 
 
 	public function testRaiseEvent()
 	{
-		$this->component->attachEventHandler('OnMyEvent',array($this->component,'myEventHandler'));
+		$this->component->attachEventHandler('OnMyEvent',[$this->component,'myEventHandler']);
 		$this->assertFalse($this->component->eventHandled);
 		$this->component->raiseEvent('OnMyEvent',new CEvent($this->component));
 		$this->assertTrue($this->component->eventHandled);
@@ -235,7 +235,7 @@ class CComponentTest extends CTestCase
 		$component=new NewComponent;
 		$this->assertSame($component->onMyEvent->getCount(),0);
 		$component->onMyEvent='globalEventHandler';
-		$component->onMyEvent=array($this->component,'myEventHandler');
+		$component->onMyEvent=[$this->component,'myEventHandler'];
 		$this->assertSame($component->onMyEvent->getCount(),2);
 		$this->assertFalse($component->eventHandled);
 		$this->assertFalse($this->component->eventHandled);
@@ -248,7 +248,7 @@ class CComponentTest extends CTestCase
 	{
 		$component=new NewComponent;
 		$component->onMyEvent='globalEventHandler2';
-		$component->onMyEvent=array($this->component,'myEventHandler');
+		$component->onMyEvent=[$this->component,'myEventHandler'];
 		$component->onMyEvent();
 		$this->assertTrue($component->eventHandled);
 		$this->assertFalse($this->component->eventHandled);
@@ -256,7 +256,7 @@ class CComponentTest extends CTestCase
 
 	public function testInvalidHandler1()
 	{
-		$this->component->onMyEvent = array(1, 2, 3);
+		$this->component->onMyEvent = [1, 2, 3];
 
 		try {
 			$this->component->onMyEvent();
@@ -268,7 +268,7 @@ class CComponentTest extends CTestCase
 
 	public function testInvalidHandler2()
 	{
-		$this->component->onMyEvent = array($this->component, 'nullHandler');
+		$this->component->onMyEvent = [$this->component, 'nullHandler'];
 
 		try {
 			$this->component->onMyEvent();
@@ -340,7 +340,7 @@ class CComponentTest extends CTestCase
 
 	public function testEvaluateExpression()
 	{
-		$this->assertSame('Hello world', $this->component->evaluateExpression('"Hello $who"', array('who' => 'world')));
-		$this->assertSame('Hello world', $this->component->evaluateExpression(array($this->component, 'exprEvaluator'), array('who' => 'world')));
+		$this->assertSame('Hello world', $this->component->evaluateExpression('"Hello $who"', ['who' => 'world']));
+		$this->assertSame('Hello world', $this->component->evaluateExpression([$this->component, 'exprEvaluator'], ['who' => 'world']));
 	}
 }

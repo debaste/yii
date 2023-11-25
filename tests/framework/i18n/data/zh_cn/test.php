@@ -1,4 +1,4 @@
 <?php
-return array(
+return [
 	'kiss|kisses' => 'k-s',
-);
+];
