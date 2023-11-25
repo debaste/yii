@@ -4,7 +4,7 @@ class CTimestampBehaviorTest extends CTestCase
 {
 	private $_connection;
 
-	protected function setUp()
+	protected function setUp(): void
 	{
 		// pdo and pdo_sqlite extensions are obligatory
 		if(!extension_loaded('pdo') || !extension_loaded('pdo_sqlite'))
@@ -17,7 +17,7 @@ class CTimestampBehaviorTest extends CTestCase
 		CActiveRecord::$db=$this->_connection;
 	}
 
-	protected function tearDown()
+	protected function tearDown(): void
 	{
 		// close connection
 		$this->_connection->active=false;
@@ -27,12 +27,12 @@ class CTimestampBehaviorTest extends CTestCase
 	{
 		// behavior changes created_at after inserting
 		$model1=new CTimestampBehaviorTestActiveRecord;
-		$model1->attachBehavior('timestampBehavior', array(
+		$model1->attachBehavior('timestampBehavior', [
 			'class'=>'zii.behaviors.CTimestampBehavior',
 			'createAttribute'=>'created_at',
 			'updateAttribute'=>null,
 			'setUpdateOnCreate'=>false,
-		));
+		]);
 		$model1->title='testing-row-1';
 		$this->assertEquals(0, $model1->created_at);
 		$saveTime=time();
@@ -41,12 +41,12 @@ class CTimestampBehaviorTest extends CTestCase
 
 		// behavior changes created_at after inserting
 		$model2=new CTimestampBehaviorTestActiveRecord;
-		$model2->attachBehavior('timestampBehavior', array(
+		$model2->attachBehavior('timestampBehavior', [
 			'class'=>'zii.behaviors.CTimestampBehavior',
 			'createAttribute'=>'created_at',
 			'updateAttribute'=>null,
 			'setUpdateOnCreate'=>false,
-		));
+		]);
 		$model2->title='testing-row-2';
 		$model2->created_at=123123;
 		$this->assertEquals(123123, $model2->created_at);
@@ -56,12 +56,12 @@ class CTimestampBehaviorTest extends CTestCase
 
 		// behavior does not changes created_at after inserting
 		$model3=new CTimestampBehaviorTestActiveRecord;
-		$model3->attachBehavior('timestampBehavior', array(
+		$model3->attachBehavior('timestampBehavior', [
 			'class'=>'zii.behaviors.CTimestampBehavior',
 			'createAttribute'=>null,
 			'updateAttribute'=>null,
 			'setUpdateOnCreate'=>false,
-		));
+		]);
 		$model3->title='testing-row-3';
 		$model3->created_at=321321;
 		$this->assertEquals(321321, $model3->created_at);
@@ -73,12 +73,12 @@ class CTimestampBehaviorTest extends CTestCase
 	{
 		// behavior changes updated_at after updating
 		$model1=CTimestampBehaviorTestActiveRecord::model()->findByPk(1);
-		$model1->attachBehavior('timestampBehavior', array(
+		$model1->attachBehavior('timestampBehavior', [
 			'class'=>'zii.behaviors.CTimestampBehavior',
 			'createAttribute'=>null,
 			'updateAttribute'=>'updated_at',
 			'setUpdateOnCreate'=>false,
-		));
+		]);
 		$this->assertEquals(1340529410, $model1->updated_at);
 		$saveTime=time();
 		$model1->save();
@@ -86,12 +86,12 @@ class CTimestampBehaviorTest extends CTestCase
 
 		// behavior changes updated_at after updating
 		$model2=CTimestampBehaviorTestActiveRecord::model()->findByPk(2);
-		$model2->attachBehavior('timestampBehavior', array(
+		$model2->attachBehavior('timestampBehavior', [
 			'class'=>'zii.behaviors.CTimestampBehavior',
 			'createAttribute'=>null,
 			'updateAttribute'=>'updated_at',
 			'setUpdateOnCreate'=>true,
-		));
+		]);
 		$this->assertEquals(1340529305, $model2->updated_at);
 		$saveTime=time();
 		$model2->save();
@@ -99,24 +99,24 @@ class CTimestampBehaviorTest extends CTestCase
 
 		// behavior does not changes updated_at after updating
 		$model3=CTimestampBehaviorTestActiveRecord::model()->findByPk(3);
-		$model3->attachBehavior('timestampBehavior', array(
+		$model3->attachBehavior('timestampBehavior', [
 			'class'=>'zii.behaviors.CTimestampBehavior',
 			'createAttribute'=>null,
 			'updateAttribute'=>null,
 			'setUpdateOnCreate'=>false,
-		));
+		]);
 		$this->assertEquals(1340529200, $model3->updated_at);
 		$model3->save();
 		$this->assertEquals(1340529200, $model3->updated_at);
 
 		// behavior does not changes updated_at after inserting
 		$model4=new CTimestampBehaviorTestActiveRecord;
-		$model4->attachBehavior('timestampBehavior', array(
+		$model4->attachBehavior('timestampBehavior', [
 			'class'=>'zii.behaviors.CTimestampBehavior',
 			'createAttribute'=>null,
 			'updateAttribute'=>'updated_at',
 			'setUpdateOnCreate'=>false,
-		));
+		]);
 		$model4->title='testing-row-3';
 		$model4->updated_at=321321321;
 		$this->assertEquals(321321321, $model4->updated_at);
@@ -125,12 +125,12 @@ class CTimestampBehaviorTest extends CTestCase
 
 		// behavior changes updated_at after inserting
 		$model5=new CTimestampBehaviorTestActiveRecord;
-		$model5->attachBehavior('timestampBehavior', array(
+		$model5->attachBehavior('timestampBehavior', [
 			'class'=>'zii.behaviors.CTimestampBehavior',
 			'createAttribute'=>null,
 			'updateAttribute'=>'updated_at',
 			'setUpdateOnCreate'=>true,
-		));
+		]);
 		$model5->title='testing-row-3';
 		$model5->updated_at=123123123;
 		$this->assertEquals(123123123, $model5->updated_at);

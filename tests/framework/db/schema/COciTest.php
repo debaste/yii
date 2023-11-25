@@ -20,7 +20,7 @@ class COciTest extends CTestCase
 	 */
 	private $db;
 
-	public function setUp()
+	protected function setUp(): void
 	{
 		if((!extension_loaded('oci8') && !extension_loaded('oci8_11g')) || !extension_loaded('pdo') || !extension_loaded('pdo_oci'))
 			$this->markTestSkipped('PDO and OCI extensions are required.');
@@ -41,7 +41,7 @@ class COciTest extends CTestCase
 			$this->markTestSkipped("Please read {$schemaFilePath} for details on setting up the test environment for OCI test case.");
 		}
 
-		$tables=array('comments', 'post_category', 'posts', 'categories', 'profiles', 'users', 'items', 'orders', 'types');
+		$tables=['comments', 'post_category', 'posts', 'categories', 'profiles', 'users', 'items', 'orders', 'types'];
 
 		// delete existing sequences
 		foreach($tables as $table)
@@ -90,7 +90,7 @@ EOD;
 		}
 	}
 
-	public function tearDown()
+	protected function tearDown(): void
 	{
 		$this->db->active=false;
 	}
@@ -114,20 +114,20 @@ EOD;
 		$this->assertEquals('posts', $table->name);
 		$this->assertEquals('"posts"', $table->rawName);
 		$this->assertEquals('id', $table->primaryKey);
-		$this->assertEquals(array('author_id'=>array('users', 'id')), $table->foreignKeys);
+		$this->assertEquals(['author_id'=>['users', 'id']], $table->foreignKeys);
 		$this->assertEmpty($table->sequenceName);
 		$this->assertCount(5, $table->columns);
 
 		$this->assertInstanceOf('CDbColumnSchema', $table->getColumn('id'));
 		$this->assertNull($table->getColumn('foo'));
-		$this->assertEquals(array('id', 'title', 'create_time', 'author_id', 'content'), $table->columnNames);
+		$this->assertEquals(['id', 'title', 'create_time', 'author_id', 'content'], $table->columnNames);
 
 		$table=$this->db->schema->getTable('orders');
-		$this->assertEquals(array('key1', 'key2'), $table->primaryKey);
+		$this->assertEquals(['key1', 'key2'], $table->primaryKey);
 
 		$table=$this->db->schema->getTable('items');
 		$this->assertEquals('id', $table->primaryKey);
-		$this->assertEquals(array('col1'=>array('orders', 'key1'), 'col2'=>array('orders', 'key2')), $table->foreignKeys);
+		$this->assertEquals(['col1'=>['orders', 'key1'], 'col2'=>['orders', 'key2']], $table->foreignKeys);
 
 		$table=$this->db->schema->getTable('types');
 		$this->assertInstanceOf('CDbTableSchema', $table);
@@ -143,18 +143,18 @@ EOD;
 
 	public function testColumn()
 	{
-		$values=array(
-			'name'=>array('id', 'title', 'create_time', 'author_id', 'content'),
-			'rawName'=>array('"id"', '"title"', '"create_time"', '"author_id"', '"content"'),
-			'defaultValue'=>array(null, null, null, null, null),
-			'size'=>array(null, 512, 6, null, 4000),
-			'precision'=>array(null, 512, 6, null, 4000),
-			'scale'=>array(null, null, null, null, null),
-			'dbType'=>array('NUMBER','VARCHAR2(512)','TIMESTAMP(6)(11)','NUMBER','CLOB(4000)'),
-			'type'=>array('double','string','string','double','string'),
-			'isPrimaryKey'=>array(true,false,false,false,false),
-			'isForeignKey'=>array(false,false,false,true,false),
-		);
+		$values=[
+			'name'=>['id', 'title', 'create_time', 'author_id', 'content'],
+			'rawName'=>['"id"', '"title"', '"create_time"', '"author_id"', '"content"'],
+			'defaultValue'=>[null, null, null, null, null],
+			'size'=>[null, 512, 6, null, 4000],
+			'precision'=>[null, 512, 6, null, 4000],
+			'scale'=>[null, null, null, null, null],
+			'dbType'=>['NUMBER','VARCHAR2(512)','TIMESTAMP(6)(11)','NUMBER','CLOB(4000)'],
+			'type'=>['double','string','string','double','string'],
+			'isPrimaryKey'=>[true,false,false,false,false],
+			'isForeignKey'=>[false,false,false,true,false],
+		];
 		$this->checkColumns('posts',$values);
 	}
 
@@ -179,7 +179,7 @@ EOD;
 		$this->assertTrue($builder instanceof CDbCommandBuilder);
 		$table=$schema->getTable('posts');
 
-		$c=$builder->createInsertCommand($table,array('title'=>'test post','create_time'=>new CDbExpression('TO_TIMESTAMP(:ts_value, \'YYYY-MM-DD\')', array(':ts_value'=>'2000-01-01')),'author_id'=>1,'content'=>'test content'));
+		$c=$builder->createInsertCommand($table,['title'=>'test post','create_time'=>new CDbExpression('TO_TIMESTAMP(:ts_value, \'YYYY-MM-DD\')', [':ts_value'=>'2000-01-01']),'author_id'=>1,'content'=>'test content']);
 		$this->assertEquals('INSERT INTO "posts" ("title", "create_time", "author_id", "content") VALUES (:yp0, TO_TIMESTAMP(:ts_value, \'YYYY-MM-DD\'), :yp1, :yp2) RETURNING "id" INTO :RETURN_ID',$c->text);
 		$c->execute();
 		$this->assertEquals(6,$builder->getLastInsertId($table));
@@ -188,21 +188,21 @@ EOD;
 		$this->assertEquals('SELECT COUNT(*) FROM "posts" "t"',$c->text);
 		$this->assertEquals(6,$c->queryScalar());
 
-		$c=$builder->createDeleteCommand($table,new CDbCriteria(array(
+		$c=$builder->createDeleteCommand($table,new CDbCriteria([
 			'condition'=>'"id"=:id',
-			'params'=>array('id'=>6))));
+			'params'=>['id'=>6]]));
 		$this->assertEquals('DELETE FROM "posts" WHERE "id"=:id',$c->text);
 		$c->execute();
 		$c=$builder->createCountCommand($table,new CDbCriteria);
 		$this->assertEquals(5,$c->queryScalar());
 
-		$c=$builder->createFindCommand($table,new CDbCriteria(array(
+		$c=$builder->createFindCommand($table,new CDbCriteria([
 			'select'=>'"id", "title"',
 			'condition'=>'"id"=:id',
-			'params'=>array(':id'=>5),
+			'params'=>[':id'=>5],
 			'order'=>'"title"',
 			'limit'=>2,
-			'offset'=>0)));
+			'offset'=>0]));
 		$this->assertEquals('WITH USER_SQL AS (SELECT "id", "title" FROM "posts" "t" WHERE "id"=:id ORDER BY "title"),
 	PAGINATION AS (SELECT USER_SQL.*, rownum as rowNumId FROM USER_SQL)
 SELECT *
@@ -212,20 +212,20 @@ FROM PAGINATION
 		$this->assertEquals(1,count($rows));
 		$this->assertEquals('post 5',$rows[0]['title']);
 
-		$c=$builder->createUpdateCommand($table,array('title'=>'new post 5'),new CDbCriteria(array(
+		$c=$builder->createUpdateCommand($table,['title'=>'new post 5'],new CDbCriteria([
 			'condition'=>'"id"=:id',
-			'params'=>array('id'=>5))));
+			'params'=>['id'=>5]]));
 		$c->execute();
-		$c=$builder->createFindCommand($table,new CDbCriteria(array(
+		$c=$builder->createFindCommand($table,new CDbCriteria([
 			'select'=>'"title"',
 			'condition'=>'"id"=:id',
-			'params'=>array('id'=>5))));
+			'params'=>['id'=>5]]));
 		$this->assertEquals('new post 5',$c->queryScalar());
 
-		$c=$builder->createSqlCommand('SELECT "title" FROM "posts" WHERE "id"=:id',array(':id'=>3));
+		$c=$builder->createSqlCommand('SELECT "title" FROM "posts" WHERE "id"=:id',[':id'=>3]);
 		$this->assertEquals('post 3',$c->queryScalar());
 
-		$c=$builder->createUpdateCounterCommand($table,array('author_id'=>-1),new CDbCriteria(array('condition'=>'"id"=5')));
+		$c=$builder->createUpdateCounterCommand($table,['author_id'=>-1],new CDbCriteria(['condition'=>'"id"=5']));
 		$this->assertEquals('UPDATE "posts" SET "author_id"="author_id"-1 WHERE "id"=5',$c->text);
 		$c->execute();
 		$c=$builder->createSqlCommand('SELECT "author_id" FROM "posts" WHERE "id"=5');
@@ -234,57 +234,57 @@ FROM PAGINATION
 		// Oracle does not support UPDATE with JOINs so there are no tests of them
 
 		// test bind by position
-		$c=$builder->createFindCommand($table,new CDbCriteria(array(
+		$c=$builder->createFindCommand($table,new CDbCriteria([
 			'select'=>'"title"',
 			'condition'=>'"id"=?',
-			'params'=>array(4))));
+			'params'=>[4]]));
 		$this->assertEquals('SELECT "title" FROM "posts" "t" WHERE "id"=?',$c->text);
 		$this->assertEquals('post 4',$c->queryScalar());
 
 		// another bind by position
-		$c=$builder->createUpdateCommand($table,array('title'=>'new post 4'),new CDbCriteria(array(
+		$c=$builder->createUpdateCommand($table,['title'=>'new post 4'],new CDbCriteria([
 			'condition'=>'"id"=?',
-			'params'=>array(4))));
+			'params'=>[4]]));
 		$c->execute();
 		$c=$builder->createSqlCommand('SELECT "title" FROM "posts" WHERE "id"=4');
 		$this->assertEquals('new post 4',$c->queryScalar());
 
 		// testCreateCriteria
-		$c=$builder->createCriteria('column=:value',array(':value'=>'value'));
+		$c=$builder->createCriteria('column=:value',[':value'=>'value']);
 		$this->assertEquals('column=:value',$c->condition);
-		$this->assertEquals(array(':value'=>'value'),$c->params);
+		$this->assertEquals([':value'=>'value'],$c->params);
 
-		$c=$builder->createCriteria(array('condition'=>'column=:value','params'=>array(':value'=>'value')));
+		$c=$builder->createCriteria(['condition'=>'column=:value','params'=>[':value'=>'value']]);
 		$this->assertEquals('column=:value',$c->condition);
-		$this->assertEquals(array(':value'=>'value'),$c->params);
+		$this->assertEquals([':value'=>'value'],$c->params);
 
 		$c2=$builder->createCriteria($c);
 		$this->assertTrue($c2!==$c);
 		$this->assertEquals('column=:value',$c2->condition);
-		$this->assertEquals(array(':value'=>'value'),$c2->params);
+		$this->assertEquals([':value'=>'value'],$c2->params);
 
 		// testCreatePkCriteria
 		$c=$builder->createPkCriteria($table,1,'author_id>1');
 		$this->assertEquals('"posts"."id"=1 AND (author_id>1)',$c->condition);
 
-		$c=$builder->createPkCriteria($table,array(1,2));
+		$c=$builder->createPkCriteria($table,[1,2]);
 		$this->assertEquals('"posts"."id" IN (1, 2)',$c->condition);
 
-		$c=$builder->createPkCriteria($table,array());
+		$c=$builder->createPkCriteria($table,[]);
 		$this->assertEquals('0=1',$c->condition);
 
 		$table2=$schema->getTable('orders');
-		$c=$builder->createPkCriteria($table2,array('key1'=>1,'key2'=>2),'name=""');
+		$c=$builder->createPkCriteria($table2,['key1'=>1,'key2'=>2],'name=""');
 		$this->assertEquals('"orders"."key1"=1 AND "orders"."key2"=2 AND (name="")',$c->condition);
 
-		$c=$builder->createPkCriteria($table2,array(array('key1'=>1,'key2'=>2),array('key1'=>3,'key2'=>4)));
+		$c=$builder->createPkCriteria($table2,[['key1'=>1,'key2'=>2],['key1'=>3,'key2'=>4]]);
 		$this->assertEquals('("orders"."key1", "orders"."key2") IN ((1, 2), (3, 4))',$c->condition);
 
 		// createColumnCriteria
-		$c=$builder->createColumnCriteria($table,array('id'=>1,'author_id'=>2),'title=""');
+		$c=$builder->createColumnCriteria($table,['id'=>1,'author_id'=>2],'title=""');
 		$this->assertEquals('"posts"."id"=:yp0 AND "posts"."author_id"=:yp1 AND (title="")',$c->condition);
 
-		$c=$builder->createPkCriteria($table2,array());
+		$c=$builder->createPkCriteria($table2,[]);
 		$this->assertEquals('0=1',$c->condition);
 	}
 
@@ -344,21 +344,21 @@ FROM PAGINATION
 	{
 		$builder=$this->db->getSchema()->getCommandBuilder();
 		$tableName='types';
-		$data=array(
-			array(
+		$data=[
+			[
 				'int_col'=>1,
 				'char_col'=>'char_col_1',
 				'char_col2'=>'char_col_2_1',
 				'float_col'=>1,
 				'bool_col'=>true,
-			),
-			array(
+			],
+			[
 				'int_col'=>2,
 				'char_col'=>'char_col_2',
 				'float_col'=>2,
 				'bool_col'=>false,
-			),
-		);
+			],
+		];
 		$command=$builder->createMultipleInsertCommand($tableName,$data);
 		$command->execute();
 

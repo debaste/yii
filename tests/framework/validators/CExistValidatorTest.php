@@ -15,24 +15,24 @@ class CExistValidatorTest extends CTestCase
 	 */
 	private $_arModelName = 'TestExistModel';
 
-	protected function setUp()
+	protected function setUp(): void
 	{
 		if(!extension_loaded('pdo') || !extension_loaded('pdo_sqlite'))
 			$this->markTestSkipped('PDO and SQLite extensions are required.');
 
 		$this->_connection=new CDbConnection('sqlite::memory:');
 		$this->_connection->active=true;
-		$columns = array(
+		$columns = [
 			'id'=>'pk',
 			'name'=>'string',
-		);
+		];
 		$this->_connection->createCommand()->createTable($this->_tableName, $columns);
 
 		CActiveRecord::$db=$this->_connection;
 		$this->declareArModelClass();
 	}
 
-	protected function tearDown()
+	protected function tearDown(): void
 	{
 		if($this->_connection instanceof CDbConnection)
 		{
@@ -138,7 +138,7 @@ EOD;
 	{
 		$modelClassName = $this->_arModelName;
 		$model = new $modelClassName('simple');
-		$model->name = array('test_name');
+		$model->name = ['test_name'];
 		$this->assertFalse($model->validate());
 		$this->assertTrue($model->hasErrors('name'));
 	}

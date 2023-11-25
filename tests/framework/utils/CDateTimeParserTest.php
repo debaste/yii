@@ -26,7 +26,7 @@ class CDateTimeParserTest extends CTestCase
 	{
 		$this->assertEquals(
 			'31-12-2011 23:59:59',
-			date('d-m-Y H:i:s', CDateTimeParser::parse('2011-12-31', 'yyyy-MM-dd', array('hour' => 23, 'minute' => 59, 'second' => 59)))
+			date('d-m-Y H:i:s', CDateTimeParser::parse('2011-12-31', 'yyyy-MM-dd', ['hour' => 23, 'minute' => 59, 'second' => 59]))
 		);
 		// test matching with wildcards, this example is mssql timestamp
 		$this->assertEquals(
@@ -196,7 +196,7 @@ class CDateTimeParserTest extends CTestCase
 
 		// accidently mixed up arguments
 		$this->assertFalse(CDateTimeParser::parse('dd/MM/yyyy, ???, hh:m:s', '02/08/2010, yyy, 05:9:7'));
-		$this->assertFalse(CDateTimeParser::parse('yyyy-MM-dd', '2011-12-31', array('hour' => 23, 'minute' => 59, 'second' => 59)));
+		$this->assertFalse(CDateTimeParser::parse('yyyy-MM-dd', '2011-12-31', ['hour' => 23, 'minute' => 59, 'second' => 59]));
 
 		// current locale is not ru_RU.UTF-8
 		$this->assertFalse(CDateTimeParser::parse('21 СЕНТЯБРЯ, 2011, 13:37', 'dd MMMM, yyyy, HH:mm'));

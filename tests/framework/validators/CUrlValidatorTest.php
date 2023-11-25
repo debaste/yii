@@ -6,7 +6,7 @@ class CUrlValidatorTest extends CTestCase
 	public function testEmpty()
 	{
 		$model = new ValidatorTestModel('CUrlValidatorTest');
-		$model->validate(array('url'));
+		$model->validate(['url']);
 		$this->assertArrayHasKey('url', $model->getErrors());
 	}
 
@@ -20,31 +20,31 @@ class CUrlValidatorTest extends CTestCase
 
 	public function providerIDNUrl()
 	{
-		return array(
+		return [
 			// IDN validation enabled
-			array('http://президент.рф/', true, 'http://президент.рф/'),
-			array('http://bücher.de/?get=param', true, 'http://bücher.de/?get=param'),
-			array('http://检查域.cn/', true, 'http://检查域.cn/'),
-			array('http://mañana.com/', true, 'http://mañana.com/'),
-			array('http://☃-⌘.com/', true, 'http://☃-⌘.com/'),
-			array('http://google.com/', true, 'http://google.com/'),
-			array('https://www.yiiframework.com/forum/', true, 'https://www.yiiframework.com/forum/'),
-			array('https://www.yiiframework.com/extensions/', true, 'https://www.yiiframework.com/extensions/'),
-			array('ftp://www.yiiframework.com/', true, false),
-			array('www.yiiframework.com', true, false),
+			['http://президент.рф/', true, 'http://президент.рф/'],
+			['http://bücher.de/?get=param', true, 'http://bücher.de/?get=param'],
+			['http://检查域.cn/', true, 'http://检查域.cn/'],
+			['http://mañana.com/', true, 'http://mañana.com/'],
+			['http://☃-⌘.com/', true, 'http://☃-⌘.com/'],
+			['http://google.com/', true, 'http://google.com/'],
+			['https://www.yiiframework.com/forum/', true, 'https://www.yiiframework.com/forum/'],
+			['https://www.yiiframework.com/extensions/', true, 'https://www.yiiframework.com/extensions/'],
+			['ftp://www.yiiframework.com/', true, false],
+			['www.yiiframework.com', true, false],
 
 			// IDN validation disabled
-			array('http://президент.рф/', false, false),
-			array('http://bücher.de/?get=param', false, false),
-			array('http://检查域.cn/', false, false),
-			array('http://mañana.com/', false, false),
-			array('http://☃-⌘.com/', false, false),
-			array('http://google.com/', false, 'http://google.com/'),
-			array('https://www.yiiframework.com/forum/', false, 'https://www.yiiframework.com/forum/'),
-			array('https://www.yiiframework.com/extensions/', false, 'https://www.yiiframework.com/extensions/'),
-			array('ftp://www.yiiframework.com/', false, false),
-			array('www.yiiframework.com', false, false),
-		);
+			['http://президент.рф/', false, false],
+			['http://bücher.de/?get=param', false, false],
+			['http://检查域.cn/', false, false],
+			['http://mañana.com/', false, false],
+			['http://☃-⌘.com/', false, false],
+			['http://google.com/', false, 'http://google.com/'],
+			['https://www.yiiframework.com/forum/', false, 'https://www.yiiframework.com/forum/'],
+			['https://www.yiiframework.com/extensions/', false, 'https://www.yiiframework.com/extensions/'],
+			['ftp://www.yiiframework.com/', false, false],
+			['www.yiiframework.com', false, false],
+		];
 	}
 
 	/**
@@ -64,23 +64,23 @@ class CUrlValidatorTest extends CTestCase
 
 	public function providerValidSchemes()
 	{
-		return array(
-			array('ftp://yiiframework.com/', array('ftp', 'http', 'https'), 'ftp://yiiframework.com/'),
-			array('ftp://yiiframework.com/', array('http', 'https'), false),
-			array('ftp://yiiframework.com/', array('ftp'), 'ftp://yiiframework.com/'),
+		return [
+			['ftp://yiiframework.com/', ['ftp', 'http', 'https'], 'ftp://yiiframework.com/'],
+			['ftp://yiiframework.com/', ['http', 'https'], false],
+			['ftp://yiiframework.com/', ['ftp'], 'ftp://yiiframework.com/'],
 
-			array('that-s-not-an-url-at-all', array('ftp', 'http', 'https'), false),
-			array('that-s-not-an-url-at-all', array(), false),
-			array('ftp://that-s-not-an-url-at-all', array('ftp'), false),
+			['that-s-not-an-url-at-all', ['ftp', 'http', 'https'], false],
+			['that-s-not-an-url-at-all', [], false],
+			['ftp://that-s-not-an-url-at-all', ['ftp'], false],
 
-			array('http://☹.com/', array('ftp'), false),
-			array('http://☹.com/', array('rsync'), false),
-			array('http://☹.com/', array('http', 'https'), false),
+			['http://☹.com/', ['ftp'], false],
+			['http://☹.com/', ['rsync'], false],
+			['http://☹.com/', ['http', 'https'], false],
 
-			array('rsync://gentoo.org:873/distfiles/', array('rsync', 'http', 'https'), 'rsync://gentoo.org:873/distfiles/'),
-			array('rsync://gentoo.org:873/distfiles/', array('http', 'https'), false),
-			array('rsync://gentoo.org:873/distfiles/', array('rsync'), 'rsync://gentoo.org:873/distfiles/'),
-		);
+			['rsync://gentoo.org:873/distfiles/', ['rsync', 'http', 'https'], 'rsync://gentoo.org:873/distfiles/'],
+			['rsync://gentoo.org:873/distfiles/', ['http', 'https'], false],
+			['rsync://gentoo.org:873/distfiles/', ['rsync'], 'rsync://gentoo.org:873/distfiles/'],
+		];
 	}
 
 	/**
@@ -100,22 +100,22 @@ class CUrlValidatorTest extends CTestCase
 
 	public function providerDefaultScheme()
 	{
-		return array(
-			array('https://yiiframework.com/?get=param', null, 'https://yiiframework.com/?get=param'),
-			array('ftp://yiiframework.com/?get=param', null, false),
-			array('yiiframework.com/?get=param', null, false),
-			array('that-s-not-an-url-at-all', null, false),
+		return [
+			['https://yiiframework.com/?get=param', null, 'https://yiiframework.com/?get=param'],
+			['ftp://yiiframework.com/?get=param', null, false],
+			['yiiframework.com/?get=param', null, false],
+			['that-s-not-an-url-at-all', null, false],
 
-			array('http://yiiframework.com/?get=param', 'http', 'http://yiiframework.com/?get=param'),
-			array('ftp://yiiframework.com/?get=param', 'http', false),
-			array('yiiframework.com/?get=param', 'http', 'http://yiiframework.com/?get=param'),
-			array('that-s-not-an-url-at-all', 'http', false),
+			['http://yiiframework.com/?get=param', 'http', 'http://yiiframework.com/?get=param'],
+			['ftp://yiiframework.com/?get=param', 'http', false],
+			['yiiframework.com/?get=param', 'http', 'http://yiiframework.com/?get=param'],
+			['that-s-not-an-url-at-all', 'http', false],
 
-			array('https://yiiframework.com/?get=param', 'ftp', 'https://yiiframework.com/?get=param'),
-			array('ftp://yiiframework.com/?get=param', 'ftp', false),
-			array('yiiframework.com/?get=param', 'ftp', false),
-			array('that-s-not-an-url-at-all', 'ftp', false),
-		);
+			['https://yiiframework.com/?get=param', 'ftp', 'https://yiiframework.com/?get=param'],
+			['ftp://yiiframework.com/?get=param', 'ftp', false],
+			['yiiframework.com/?get=param', 'ftp', false],
+			['that-s-not-an-url-at-all', 'ftp', false],
+		];
 	}
 
 	/**
@@ -136,27 +136,27 @@ class CUrlValidatorTest extends CTestCase
 
 	public function providerAllowEmpty()
 	{
-		return array(
-			array('https://yiiframework.com/?get=param', false, 'https://yiiframework.com/?get=param'),
-			array('ftp://yiiframework.com/?get=param', false, false),
-			array('yiiframework.com/?get=param', false, false),
-			array('that-s-not-an-url-at-all', false, false),
-			array('http://☹.com/', false, false),
-			array('rsync://gentoo.org:873/distfiles/', false, false),
-			array('https://gentoo.org:8080/distfiles/', false, 'https://gentoo.org:8080/distfiles/'),
-			array(' ', false, false),
-			array('', false, false),
+		return [
+			['https://yiiframework.com/?get=param', false, 'https://yiiframework.com/?get=param'],
+			['ftp://yiiframework.com/?get=param', false, false],
+			['yiiframework.com/?get=param', false, false],
+			['that-s-not-an-url-at-all', false, false],
+			['http://☹.com/', false, false],
+			['rsync://gentoo.org:873/distfiles/', false, false],
+			['https://gentoo.org:8080/distfiles/', false, 'https://gentoo.org:8080/distfiles/'],
+			[' ', false, false],
+			['', false, false],
 
-			array('https://yiiframework.com/?get=param', true, 'https://yiiframework.com/?get=param'),
-			array('ftp://yiiframework.com/?get=param', true, false),
-			array('yiiframework.com/?get=param', true, false),
-			array('that-s-not-an-url-at-all', true, false),
-			array('http://☹.com/', true, false),
-			array('rsync://gentoo.org:873/distfiles/', true, false),
-			array('https://gentoo.org:8080/distfiles/', true, 'https://gentoo.org:8080/distfiles/'),
-			array(' ', true, false),
-			array('', true, ''),
-		);
+			['https://yiiframework.com/?get=param', true, 'https://yiiframework.com/?get=param'],
+			['ftp://yiiframework.com/?get=param', true, false],
+			['yiiframework.com/?get=param', true, false],
+			['that-s-not-an-url-at-all', true, false],
+			['http://☹.com/', true, false],
+			['rsync://gentoo.org:873/distfiles/', true, false],
+			['https://gentoo.org:8080/distfiles/', true, 'https://gentoo.org:8080/distfiles/'],
+			[' ', true, false],
+			['', true, ''],
+		];
 	}
 
 	/**
@@ -180,9 +180,9 @@ class CUrlValidatorTest extends CTestCase
 	public function testArrayValue()
 	{
 		$model=new ValidatorTestModel('CUrlValidatorTest');
-		$model->url=array('https://yiiframework.com/');
-		$model->validate(array('url'));
+		$model->url=['https://yiiframework.com/'];
+		$model->validate(['url']);
 		$this->assertTrue($model->hasErrors('url'));
-		$this->assertEquals(array('Url is not a valid URL.'),$model->getErrors('url'));
+		$this->assertEquals(['Url is not a valid URL.'],$model->getErrors('url'));
 	}
 }

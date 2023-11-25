@@ -25,12 +25,12 @@ class CDbCriteriaTest extends CTestCase {
 		//adding empty array as condition
 		$criteria = new CDbCriteria();
 		$criteria->addCondition('A');
-		$criteria->addCondition(array());
+		$criteria->addCondition([]);
 		$this->assertEquals('A', $criteria->condition);
 
 		//adding array as condition
 		$criteria = new CDbCriteria();
-		$criteria->addCondition(array('A', 'B'));
+		$criteria->addCondition(['A', 'B']);
 		$this->assertEquals('(A) AND (B)', $criteria->condition);
 	}
 
@@ -42,28 +42,28 @@ class CDbCriteriaTest extends CTestCase {
 		CDbCriteria::$paramCount=0;
 		$criteria = new CDbCriteria();
 
-		$criteria->addInCondition('A', array());
+		$criteria->addInCondition('A', []);
 		$this->assertEquals('0=1', $criteria->condition);
 		$this->assertTrue(empty($criteria->params));
 
 		// IN with one parameter should transform to =
 		$criteria = new CDbCriteria();
 
-		$criteria->addInCondition('A', array(1));
+		$criteria->addInCondition('A', [1]);
 		$this->assertEquals('A=:ycp0', $criteria->condition);
 		$this->assertEquals(1, $criteria->params[':ycp0']);
 
 		// IN with null should transform to IS NULL
 		$criteria = new CDbCriteria();
 
-		$criteria->addInCondition('A', array(null));
+		$criteria->addInCondition('A', [null]);
 		$this->assertEquals('A IS NULL', $criteria->condition);
 		$this->assertTrue(empty($criteria->params));
 
 		// IN with many parameters
 		$criteria = new CDbCriteria();
 
-		$criteria->addInCondition('B', array(1, 2, '3'));
+		$criteria->addInCondition('B', [1, 2, '3']);
 		$this->assertEquals('B IN (:ycp1, :ycp2, :ycp3)', $criteria->condition);
 		$this->assertEquals(1, $criteria->params[':ycp1']);
 		$this->assertEquals(2, $criteria->params[':ycp2']);
@@ -79,28 +79,28 @@ class CDbCriteriaTest extends CTestCase {
 		CDbCriteria::$paramCount=0;
 		$criteria = new CDbCriteria();
 
-		$criteria->addNotInCondition('A', array());
+		$criteria->addNotInCondition('A', []);
 		$this->assertEquals('', $criteria->condition);
 		$this->assertTrue(empty($criteria->params));
 
 		// NOT IN with one parameter should transform to !=
 		$criteria = new CDbCriteria();
 
-		$criteria->addNotInCondition('A', array(1));
+		$criteria->addNotInCondition('A', [1]);
 		$this->assertEquals('A!=:ycp0', $criteria->condition);
 		$this->assertEquals(1, $criteria->params[':ycp0']);
 
 		// NOT IN with null should transform to IS NOT NULL
 		$criteria = new CDbCriteria();
 
-		$criteria->addNotInCondition('A', array(null));
+		$criteria->addNotInCondition('A', [null]);
 		$this->assertEquals('A IS NOT NULL', $criteria->condition);
 		$this->assertTrue(empty($criteria->params));
 
 		// NOT IN with many parameters
 		$criteria = new CDbCriteria();
 
-		$criteria->addNotInCondition('B', array(1, 2, '3'));
+		$criteria->addNotInCondition('B', [1, 2, '3']);
 		$this->assertEquals('B NOT IN (:ycp1, :ycp2, :ycp3)', $criteria->condition);
 		$this->assertEquals(1, $criteria->params[':ycp1']);
 		$this->assertEquals(2, $criteria->params[':ycp2']);
@@ -135,7 +135,7 @@ class CDbCriteriaTest extends CTestCase {
 	public function testAddColumnCondition() {
 		CDbCriteria::$paramCount=0;
 		$criteria = new CDbCriteria();
-		$criteria->addColumnCondition(array('A' => 1, 'B' => null, 'C' => '2'));
+		$criteria->addColumnCondition(['A' => 1, 'B' => null, 'C' => '2']);
 
 		$this->assertEquals('A=:ycp0 AND B IS NULL AND C=:ycp1', $criteria->condition);
 		$this->assertEquals(1, $criteria->params[':ycp0']);
@@ -208,11 +208,11 @@ class CDbCriteriaTest extends CTestCase {
 		$this->assertEquals('    value_with_spaces  ', $criteria->params[':ycp10']);
 
 		$criteria = new CDbCriteria();
-		$criteria->compare('A', array());
+		$criteria->compare('A', []);
 		$this->assertEquals('', $criteria->condition);
 
 		$criteria = new CDbCriteria();
-		$criteria->compare('A', array(1, '2'));
+		$criteria->compare('A', [1, '2']);
 		$this->assertEquals('A IN (:ycp11, :ycp12)', $criteria->condition);
 		$this->assertEquals(1, $criteria->params[':ycp11']);
 		$this->assertEquals('2', $criteria->params[':ycp12']);
@@ -257,7 +257,7 @@ class CDbCriteriaTest extends CTestCase {
 
 		$criteria1->mergeWith($criteria2);
 
-		$this->assertEquals(array('a', 'b', 'c', 'd', 'e', 'f'), $criteria1->select);
+		$this->assertEquals(['a', 'b', 'c', 'd', 'e', 'f'], $criteria1->select);
 
 		// conditions
 
@@ -395,18 +395,18 @@ class CDbCriteriaTest extends CTestCase {
 
 		$criteria1->mergeWith($criteria2);
 
-		$this->assertEquals(array('a', 'b'), $criteria1->with);
+		$this->assertEquals(['a', 'b'], $criteria1->with);
 
 		// not empty with are merged (more complex test)
 		$criteria1 = new CDbCriteria;
-		$criteria1->with = array('a', 'b');
+		$criteria1->with = ['a', 'b'];
 
 		$criteria2 = new CDbCriteria;
-		$criteria2->with = array('a', 'c');
+		$criteria2->with = ['a', 'c'];
 
 		$criteria1->mergeWith($criteria2);
 
-		$this->assertEquals(array('a', 'b', 'a', 'c'), $criteria1->with);
+		$this->assertEquals(['a', 'b', 'a', 'c'], $criteria1->with);
 
 		// merging scopes
 		$criteria1=new CDbCriteria;
@@ -417,57 +417,57 @@ class CDbCriteriaTest extends CTestCase {
 
 		$criteria1->mergeWith($criteria2);
 
-		$this->assertEquals(array('scope1','scope2'),$criteria1->scopes);
+		$this->assertEquals(['scope1','scope2'],$criteria1->scopes);
 
 		$criteria1=new CDbCriteria;
 		$criteria1->scopes='scope1';
 
 		$criteria2=new CDbCriteria;
-		$criteria2->scopes=array('scope2'=>1);
+		$criteria2->scopes=['scope2'=>1];
 
 		$criteria1->mergeWith($criteria2);
 
-		$this->assertEquals(array('scope1','scope2'=>1),$criteria1->scopes);
+		$this->assertEquals(['scope1','scope2'=>1],$criteria1->scopes);
 
 		$criteria1=new CDbCriteria;
-		$criteria1->scopes=array('scope1'=>array(1,2));
+		$criteria1->scopes=['scope1'=>[1,2]];
 
 		$criteria2=new CDbCriteria;
-		$criteria2->scopes=array('scope2'=>array(3,4));
+		$criteria2->scopes=['scope2'=>[3,4]];
 
 		$criteria1->mergeWith($criteria2);
 
-		$this->assertEquals(array('scope1'=>array(1,2),'scope2'=>array(3,4)),$criteria1->scopes);
+		$this->assertEquals(['scope1'=>[1,2],'scope2'=>[3,4]],$criteria1->scopes);
 
 		$criteria1=new CDbCriteria;
-		$criteria1->scopes=array('scope'=>array(1,2));
+		$criteria1->scopes=['scope'=>[1,2]];
 
 		$criteria2=new CDbCriteria;
-		$criteria2->scopes=array('scope'=>array(3,4));
+		$criteria2->scopes=['scope'=>[3,4]];
 
 		$criteria1->mergeWith($criteria2);
 
-		$this->assertEquals(array(array('scope'=>array(1,2)),array('scope'=>array(3,4))),$criteria1->scopes);
+		$this->assertEquals([['scope'=>[1,2]],['scope'=>[3,4]]],$criteria1->scopes);
 
 		$criteria1=new CDbCriteria;
-		$criteria1->scopes=array('scope'=>array(1,2),'scope1');
+		$criteria1->scopes=['scope'=>[1,2],'scope1'];
 
 		$criteria2=new CDbCriteria;
-		$criteria2->scopes=array('scope2','scope'=>array(3,4));
+		$criteria2->scopes=['scope2','scope'=>[3,4]];
 
 		$criteria1->mergeWith($criteria2);
 
-		$this->assertEquals(array(array('scope'=>array(1,2)),'scope1','scope2',array('scope'=>array(3,4))),$criteria1->scopes);
+		$this->assertEquals([['scope'=>[1,2]],'scope1','scope2',['scope'=>[3,4]]],$criteria1->scopes);
 
 		$criteria1=new CDbCriteria;
-		$criteria1->scopes=array(array('scope'=>array(1,2)),array('scope'=>array(3,4)));
+		$criteria1->scopes=[['scope'=>[1,2]],['scope'=>[3,4]]];
 
 		$criteria2=new CDbCriteria;
-		$criteria2->scopes=array(array('scope'=>array(5,6)),array('scope'=>array(7,8)));
+		$criteria2->scopes=[['scope'=>[5,6]],['scope'=>[7,8]]];
 
 		$criteria1->mergeWith($criteria2);
 
-		$this->assertEquals(array(array('scope'=>array(1,2)),array('scope'=>array(3,4)),array('scope'=>array(5,6)),array('scope'=>array(7,8))),$criteria1->scopes);
+		$this->assertEquals([['scope'=>[1,2]],['scope'=>[3,4]],['scope'=>[5,6]],['scope'=>[7,8]]],$criteria1->scopes);
 
 		// merging two criteria with parameters
 		$criteria1 = new CDbCriteria;
@@ -513,7 +513,7 @@ class CDbCriteriaTest extends CTestCase {
 		CDbCriteria::$paramCount=0;
 		$criteria1 = new CDbCriteria();
 		$criteria1->condition = 'A=? AND B=?';
-		$criteria1->params = array(0 => 10, 1 => 20);
+		$criteria1->params = [0 => 10, 1 => 20];
 
 		$criteria2 = new CDbCriteria();
 		$criteria2->compare('C', 30);
@@ -532,7 +532,7 @@ class CDbCriteriaTest extends CTestCase {
 
 		$criteria1 = new CDbCriteria();
 		$criteria1->condition = 'A=? AND B=?';
-		$criteria1->params = array(0 => 10, 1 => 20);
+		$criteria1->params = [0 => 10, 1 => 20];
 
 		$criteria2 = new CDbCriteria();
 		$criteria2->compare('C', 30);
@@ -561,7 +561,7 @@ class CDbCriteriaTest extends CTestCase {
 	}
 
 	public function testToArray(){
-		$keys = array('select', 'condition', 'params', 'limit', 'offset', 'order', 'group', 'join', 'having', 'distinct', 'scopes', 'with', 'alias', 'index', 'together');
+		$keys = ['select', 'condition', 'params', 'limit', 'offset', 'order', 'group', 'join', 'having', 'distinct', 'scopes', 'with', 'alias', 'index', 'together'];
 		$criteria = new CDbCriteria();
 		$this->assertEquals($keys, array_keys($criteria->toArray()));
 	}
@@ -622,7 +622,7 @@ class CDbCriteriaTest extends CTestCase {
 	{
 		CDbCriteria::$paramCount=10;
 		$criteria=new CDbCriteria();
-		$criteria->select=array('id','title');
+		$criteria->select=['id','title'];
 		$criteria->condition='id=:postId';
 		$criteria->params['postId']=1;
 		$criteria->compare('authorId',2);

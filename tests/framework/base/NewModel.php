@@ -12,16 +12,16 @@ class NewModel extends CModel
 
 	public function rules()
 	{
-		return array(
-			array('attr2,attr1','numerical','max'=>5),
-			array('attr1','required'),
-			array('attr3', 'unsafe'),
-		);
+		return [
+			['attr2,attr1','numerical','max'=>5],
+			['attr1','required'],
+			['attr3', 'unsafe'],
+		];
 	}
 
 	public function attributeNames()
 	{
-		return array('attr1','attr2');
+		return ['attr1','attr2'];
 	}
 
 }
@@ -32,13 +32,13 @@ class InvalidModel extends CModel
 
 	public function rules()
 	{
-		return array(
-			array('username'),
-		);
+		return [
+			['username'],
+		];
 	}
 
 	public function attributeNames()
 	{
-		return array('username');
+		return ['username'];
 	}
 }

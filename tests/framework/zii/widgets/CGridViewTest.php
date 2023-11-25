@@ -36,14 +36,14 @@ class CGridViewTest extends CTestCase
 	private function getWidgetScript($callback1, $callback2, $callback3, $callback4)
 	{
 		Yii::import('zii.widgets.grid.CGridView');
-		Yii::app()->clientScript->scripts = array();
+		Yii::app()->clientScript->scripts = [];
 		ob_start();
 		$widget = new CGridView(null);
 		$widget->beforeAjaxUpdate = $callback1;
 		$widget->afterAjaxUpdate = $callback2;
 		$widget->ajaxUpdateError = $callback3;
 		$widget->selectionChanged = $callback4;
-		$widget->dataProvider = new CArrayDataProvider(array(1, 2, 3));
+		$widget->dataProvider = new CArrayDataProvider([1, 2, 3]);
 		$widget->init();
 		$widget->registerClientScript();
 		$out = '';

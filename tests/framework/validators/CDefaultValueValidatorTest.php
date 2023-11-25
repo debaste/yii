@@ -16,7 +16,7 @@ class CDefaultValueValidatorTest extends CTestCase
      */
     public function testDefaultValueIsSetWhenSetOnEmptyIsTrue()
     {
-        $model = $this->getModelMock(array('value' => 'foo'));
+        $model = $this->getModelMock(['value' => 'foo']);
         $this->assertTrue($model->validate());
         $this->assertEquals('foo', $model->foo);
 
@@ -33,7 +33,7 @@ class CDefaultValueValidatorTest extends CTestCase
      */
     public function testDefaultValueIsSetWhenSetOnEmptyIsFalse()
     {
-        $model = $this->getModelMock(array('value' => 'foo', 'setOnEmpty' => false));
+        $model = $this->getModelMock(['value' => 'foo', 'setOnEmpty' => false]);
         $model->foo = 'bar';
         $this->assertTrue($model->validate());
         $this->assertEquals('foo', $model->foo);
@@ -46,17 +46,17 @@ class CDefaultValueValidatorTest extends CTestCase
      *
      * @return null
      */
-    protected function getModelMock($params=array())
+    protected function getModelMock($params=[])
     {
-        $rules = array(
-            array('foo', 'default')
-        );
+        $rules = [
+            ['foo', 'default']
+        ];
 
         foreach ($params as $rule => $value) {
             $rules[0][$rule] = $value;
         }
 
-        $stub = $this->getMock('ModelMock', array('rules'));
+        $stub = $this->getMock('ModelMock', ['rules']);
         $stub->expects($this->any())
              ->method('rules')
              ->will($this->returnValue($rules));

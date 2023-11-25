@@ -2,26 +2,26 @@
 
 class CRedisCacheTest extends CTestCase
 {
-	protected $config = array(
+	protected $config = [
 		'class' => 'CRedisCache',
 		'hostname' => 'localhost',
 		'port' => 6379,
 		'database' => 0,
-	);
+	];
 
 	protected function getApplication()
 	{
-		$app=new TestApplication(array(
+		$app=new TestApplication([
 			'id' => 'testapp',
-			'components'=>array(
+			'components'=>[
 				'cache' => $this->config
-			)
-		));
+			]
+		]);
 		$app->cache->flush();
 		return $app;
 	}
 
-	public function setUp()
+	protected function setUp(): void
 	{
 		$dsn = $this->config['hostname'] . ':' .$this->config['port'];
 		if(!@stream_socket_client($dsn, $errorNumber, $errorDescription, 0.5)) {
@@ -46,7 +46,7 @@ class CRedisCacheTest extends CTestCase
 		$app=$this->getApplication();
 		$cache=$app->cache;
 
-		$data=array('abc'=>1,2=>'def');
+		$data=['abc'=>1,2=>'def'];
 		$key='data1';
 
 		$this->assertFalse($cache->get($key));
@@ -64,17 +64,17 @@ class CRedisCacheTest extends CTestCase
 		$key2='multidata2';
 		$data2=34;
 
-		$this->assertEquals($cache->mget(array($key1,$key2)), array($key1=>false,$key2=>false));
+		$this->assertEquals($cache->mget([$key1,$key2]), [$key1=>false,$key2=>false]);
 		$cache->set($key1,$data1);
 		$cache->set($key2,$data2);
-		$this->assertEquals($cache->mget(array($key1,$key2)), array($key1=>$data1,$key2=>$data2));
+		$this->assertEquals($cache->mget([$key1,$key2]), [$key1=>$data1,$key2=>$data2]);
 	}
 
 	public function testArrayAccess()
 	{
 		$app=$this->getApplication();
 		$cache=$app->cache;
-		$data=array('abc'=>1,2=>'def');
+		$data=['abc'=>1,2=>'def'];
 		$key='data2';
 		$cache[$key]=$data;
 		$this->assertTrue($cache->get($key)===$data);
@@ -87,7 +87,7 @@ class CRedisCacheTest extends CTestCase
 	{
 		$app=$this->getApplication();
 		$cache=$app->cache;
-		$data=array('abc'=>1,2=>'def');
+		$data=['abc'=>1,2=>'def'];
 		$key='data3';
 		$cache->set($key,$data,2);
 		$this->assertTrue($cache->get($key)===$data);
@@ -160,7 +160,7 @@ class CRedisCacheTest extends CTestCase
 		$app=$this->getApplication();
 		$cache=$app->cache;
 
-		$data=array('abc'=>'ежик',2=>'def');
+		$data=['abc'=>'ежик',2=>'def'];
 		$key='data1';
 
 		$this->assertFalse($cache->get($key));

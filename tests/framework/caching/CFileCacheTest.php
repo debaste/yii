@@ -2,17 +2,17 @@
 
 class CFileCacheTest extends CTestCase
 {
-	private $cachePathModes=array(
+	private $cachePathModes=[
 		0777,0775,0770,0755,0750,0700
-	);
+	];
 
-	private $cacheFileModes=array(
+	private $cacheFileModes=[
 		0666,0664,0660,0644,0640,0600
-	);
+	];
 
 	private $cachePath;
 
-	public function setUp()
+	protected function setUp(): void
 	{
 		$this->cachePath=Yii::getPathOfAlias('application.runtime.CFileCacheTest');
 		if(!is_dir($this->cachePath) && !(@mkdir($this->cachePath)))
@@ -27,12 +27,12 @@ class CFileCacheTest extends CTestCase
 		foreach ($this->cachePathModes as $testMode)
 		{
 			$this->removeDirectory($this->cachePath);
-			$app=new TestApplication(array(
+			$app=new TestApplication([
 				'id'=>'testApp',
-				'components'=>array(
-					'cache'=>array('class'=>'CFileCache','cachePath'=>$this->cachePath,'cachePathMode'=>$testMode),
-				),
-			));
+				'components'=>[
+					'cache'=>['class'=>'CFileCache','cachePath'=>$this->cachePath,'cachePathMode'=>$testMode],
+				],
+			]);
 			/** @var CFileCache $cache */
 			$cache=$app->cache;
 
@@ -46,12 +46,12 @@ class CFileCacheTest extends CTestCase
 		foreach ($this->cacheFileModes as $testMode)
 		{
 			$this->removeDirectory($this->cachePath);
-			$app=new TestApplication(array(
+			$app=new TestApplication([
 				'id'=>'testApp',
-				'components'=>array(
-					'cache'=>array('class'=>'CFileCache','cachePath'=>$this->cachePath,'cacheFileMode'=>$testMode),
-				),
-			));
+				'components'=>[
+					'cache'=>['class'=>'CFileCache','cachePath'=>$this->cachePath,'cacheFileMode'=>$testMode],
+				],
+			]);
 			/** @var CFileCache $cache */
 			$cache=$app->cache;
 
@@ -69,12 +69,12 @@ class CFileCacheTest extends CTestCase
 	 */
 	public function testEmbedExpiry()
 	{
-		$app=new TestApplication(array(
+		$app=new TestApplication([
 			'id'=>'testApp',
-			'components'=>array(
-				'cache'=>array('class'=>'CFileCache','cachePath'=>$this->cachePath),
-			),
-		));
+			'components'=>[
+				'cache'=>['class'=>'CFileCache','cachePath'=>$this->cachePath],
+			],
+		]);
 		$app->reset();
 		$cache=$app->cache;
 
@@ -91,12 +91,12 @@ class CFileCacheTest extends CTestCase
 		$this->assertEquals(false,$cache->get('testKey2'));
 
 
-		$app=new TestApplication(array(
+		$app=new TestApplication([
 			'id'=>'testApp',
-			'components'=>array(
-				'cache'=>array('class'=>'CFileCache','cachePath'=>$this->cachePath,'embedExpiry'=>true),
-			),
-		));
+			'components'=>[
+				'cache'=>['class'=>'CFileCache','cachePath'=>$this->cachePath,'embedExpiry'=>true],
+			],
+		]);
 		$app->reset();
 		$cache=$app->cache;
 
@@ -113,7 +113,7 @@ class CFileCacheTest extends CTestCase
 		$this->assertEquals(false,$cache->get('testKey6'));
 	}
 
-	public function tearDown()
+	protected function tearDown(): void
 	{
 		$this->removeDirectory($this->cachePath);
 	}

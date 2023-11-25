@@ -11,23 +11,23 @@ class CFileHelperTest extends CTestCase
 	private $file3='..svn';
 	private $file4='non-existent-file';
 
-	protected function setUp()
+	protected function setUp(): void
 	{
 		$this->testDir=Yii::getPathOfAlias('application.runtime.CFileHelper');
 		if(!is_dir($this->testDir) && !(@mkdir($this->testDir)))
 			$this->markTestIncomplete('Unit tests runtime directory should have writable permissions!');
 
 		// create temporary testing data files
-		$filesData=array(
+		$filesData=[
 			'mimeTypes1.php'=>"<?php return array('txa'=>'application/json','txb'=>'another/mime');",
 			'mimeTypes2.php'=>"<?php return array('txt'=>'text/plain','txb'=>'another/mime2');",
-		);
+		];
 		foreach($filesData as $fileName=>$fileData)
 			if(!(@file_put_contents($this->testDir.$fileName,$fileData)))
 				$this->markTestIncomplete('Unit tests runtime directory should have writable permissions!');
 	}
 
-	protected function tearDown()
+	protected function tearDown(): void
 	{
 		if (is_dir($this->testDir))
 			$this->rrmdir($this->testDir);
@@ -61,7 +61,7 @@ class CFileHelperTest extends CTestCase
 		$this->createTestStruct($this->testDir);
 		$src=$this->testDir.DIRECTORY_SEPARATOR.$this->rootDir1;
 		$dst=$this->testDir.DIRECTORY_SEPARATOR.$this->rootDir2;
-		CFileHelper::copyDirectory($src,$dst,array('newDirMode'=>$this->testMode));
+		CFileHelper::copyDirectory($src,$dst,['newDirMode'=>$this->testMode]);
 
 		$subDir2Mode=$this->getMode($dst.DIRECTORY_SEPARATOR.$this->subDir);
 		$expectedMode=sprintf('%o',$this->testMode);
@@ -150,7 +150,7 @@ class CFileHelperTest extends CTestCase
 		$td=$this->testDir.$ds;
 
 		$this->createSymlinkedDirectoriesAndFiles();
-		CFileHelper::removeDirectory($td.'symlinks',array('traverseSymlinks'=>true));
+		CFileHelper::removeDirectory($td.'symlinks',['traverseSymlinks'=>true]);
 
 		$this->assertTrue(!is_dir($td.'symlinks'));
 
@@ -182,7 +182,7 @@ class CFileHelperTest extends CTestCase
 
 		$bd=$this->rootDir1.DIRECTORY_SEPARATOR;
 
-		$files=CFileHelper::findFiles($this->testDir,array('absolutePaths'=>0));
+		$files=CFileHelper::findFiles($this->testDir,['absolutePaths'=>0]);
 
 		$this->assertEquals($bd.'sub'.DIRECTORY_SEPARATOR.'..svn',$files[0]);
 		$this->assertEquals($bd.'sub'.DIRECTORY_SEPARATOR.'.htaccess',$files[1]);

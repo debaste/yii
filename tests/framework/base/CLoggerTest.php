@@ -11,11 +11,11 @@ class CLoggerTest extends CTestCase
 	public function testGetLogs()
 	{
 		$logger=new CLogger();
-		$logs=array(
-			array('message1','debug','application.pages'),
-			array('message2','info','application.config'),
-			array('message3','info','application.pages'),
-		);
+		$logs=[
+			['message1','debug','application.pages'],
+			['message2','info','application.config'],
+			['message3','info','application.pages'],
+		];
 		foreach($logs as $log)
 			$logger->log($log[0],$log[1],$log[2]);
 

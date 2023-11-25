@@ -15,31 +15,31 @@ class ScenariosTestModel extends CFormModel
 
 	public function rules()
 	{
-		return array(
+		return [
 			// scenario1
-			array('title', 'required', 'on'=>'scenario1'),
+			['title', 'required', 'on'=>'scenario1'],
 
 			// scenario1 and scenario2
-			array('firstName', 'required', 'except'=>'scenario3, scenario4'),
+			['firstName', 'required', 'except'=>'scenario3, scenario4'],
 
 			// scenario1, scenario2 and scenario3
-			array('lastName', 'required', 'on'=>array('scenario1', 'scenario2', 'scenario3')),
+			['lastName', 'required', 'on'=>['scenario1', 'scenario2', 'scenario3']],
 
 			// scenario1, scenario2 and scenario3
-			array('patronymic', 'required', 'except'=>array('scenario4')),
+			['patronymic', 'required', 'except'=>['scenario4']],
 
 			// scenario1 and scenario3
-			array('nickName', 'required', 'on'=>array('scenario1', 'scenario2', 'scenario3'), 'except'=>'scenario2'),
+			['nickName', 'required', 'on'=>['scenario1', 'scenario2', 'scenario3'], 'except'=>'scenario2'],
 
 			// scenario1, scenario2, scenario3 and scenario4
-			array('login', 'required'),
+			['login', 'required'],
 
 			// useless rule
-			array('password', 'required', 'on'=>'scenario1,scenario2,scenario3,scenario4',
-				'except'=>array('scenario1', 'scenario2', 'scenario3', 'scenario4')),
+			['password', 'required', 'on'=>'scenario1,scenario2,scenario3,scenario4',
+				'except'=>['scenario1', 'scenario2', 'scenario3', 'scenario4']],
 
 			// scenario2
-			array('birthday', 'required', 'on'=>'scenario2', 'except'=>'scenario3'),
-		);
+			['birthday', 'required', 'on'=>'scenario2', 'except'=>'scenario3'],
+		];
 	}
 }

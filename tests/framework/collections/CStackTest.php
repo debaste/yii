@@ -7,23 +7,23 @@ class CStackTest extends CTestCase
 	public function testConstruct()
 	{
 		$stack = new CStack();
-		$this->assertEquals(array(), $stack->toArray());
-		$stack = new CStack(array(1, 2, 3));
-		$this->assertEquals(array(1, 2, 3), $stack->toArray());
+		$this->assertEquals([], $stack->toArray());
+		$stack = new CStack([1, 2, 3]);
+		$this->assertEquals([1, 2, 3], $stack->toArray());
 	}
 
 	public function testToArray()
 	{
-		$stack = new CStack(array(1, 2, 3));
-		$this->assertEquals(array(1, 2, 3), $stack->toArray());
+		$stack = new CStack([1, 2, 3]);
+		$this->assertEquals([1, 2, 3], $stack->toArray());
 	}
 
 	public function testCopyFrom()
 	{
-		$stack = new CStack(array(1, 2, 3));
-		$data = array(4, 5, 6);
+		$stack = new CStack([1, 2, 3]);
+		$data = [4, 5, 6];
 		$stack->copyFrom($data);
-		$this->assertEquals(array(4, 5, 6), $stack->toArray());
+		$this->assertEquals([4, 5, 6], $stack->toArray());
 	}
 
 	public function testCanNotCopyFromNonTraversableTypes()
@@ -36,21 +36,21 @@ class CStackTest extends CTestCase
 
 	public function testClear()
 	{
-		$stack = new CStack(array(1, 2, 3));
+		$stack = new CStack([1, 2, 3]);
 		$stack->clear();
-		$this->assertEquals(array(), $stack->toArray());
+		$this->assertEquals([], $stack->toArray());
 	}
 
 	public function testContains()
 	{
-		$stack = new CStack(array(1, 2, 3));
+		$stack = new CStack([1, 2, 3]);
 		$this->assertTrue($stack->contains(2));
 		$this->assertFalse($stack->contains(4));
 	}
 
 	public function testPeek()
 	{
-		$stack = new CStack(array(1));
+		$stack = new CStack([1]);
 		$this->assertEquals(1, $stack->peek());
 	}
 
@@ -63,10 +63,10 @@ class CStackTest extends CTestCase
 
 	public function testPop()
 	{
-		$stack = new CStack(array(1, 2, 3));
+		$stack = new CStack([1, 2, 3]);
 		$last = $stack->pop();
 		$this->assertEquals(3, $last);
-		$this->assertEquals(array(1, 2), $stack->toArray());
+		$this->assertEquals([1, 2], $stack->toArray());
 	}
 
 	public function testCanNotPopAnEmptyStack()
@@ -80,12 +80,12 @@ class CStackTest extends CTestCase
 	{
 		$stack = new CStack();
 		$stack->push(1);
-		$this->assertEquals(array(1), $stack->toArray());
+		$this->assertEquals([1], $stack->toArray());
 	}
 
  	public function testGetIterator()
  	{
-		$stack = new CStack(array(1, 2));
+		$stack = new CStack([1, 2]);
 		$this->assertInstanceOf('CStackIterator', $stack->getIterator());
 		$n = 0;
 		$found = 0;
@@ -105,7 +105,7 @@ class CStackTest extends CTestCase
 	{
 		$stack = new CStack();
 		$this->assertEquals(0, $stack->getCount());
-		$stack = new CStack(array(1, 2, 3));
+		$stack = new CStack([1, 2, 3]);
 		$this->assertEquals(3, $stack->getCount());
 	}
 
@@ -113,7 +113,7 @@ class CStackTest extends CTestCase
 	{
 		$stack = new CStack();
 		$this->assertEquals(0, count($stack));
-		$stack = new CStack(array(1, 2, 3));
+		$stack = new CStack([1, 2, 3]);
 		$this->assertEquals(3, count($stack));
 	}
 }

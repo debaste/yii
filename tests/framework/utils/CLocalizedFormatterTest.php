@@ -2,7 +2,7 @@
 
 class CLocalizedFormatterTest extends CTestCase
 {
-	public function tearDown()
+	protected function tearDown(): void
 	{
 		parent::tearDown();
 		Yii::app()->language=null; // reset language to not affect other tests

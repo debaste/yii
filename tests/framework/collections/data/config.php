@@ -1,6 +1,6 @@
 <?php
 
-return array(
+return [
 	'param1'=>'value1',
 	'param2'=>false,
 	'param3'=>123,
@@ -14,4 +14,4 @@ return array(
 			'',
 		),
 	),*/
-);
+];

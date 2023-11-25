@@ -7,7 +7,7 @@
  */
 class CWebUserTest extends CTestCase
 {
-	public function setUp()
+	protected function setUp(): void
 	{
 		Yii::app()->setComponent('authManager', new CPhpAuthManager());
 
@@ -18,7 +18,7 @@ class CWebUserTest extends CTestCase
 		$auth->assign('createPost', 'admin');
 	}
 
-	public function tearDown()
+	protected function tearDown(): void
 	{
 		Yii::app()->session->destroy();
 		Yii::app()->setComponent('authManager', null);
@@ -26,7 +26,7 @@ class CWebUserTest extends CTestCase
 
 	public function booleanProvider()
 	{
-		return array(array(true), array(false));
+		return [[true], [false]];
 	}
 
 	/**

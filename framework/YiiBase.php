@@ -59,13 +59,13 @@ class YiiBase
 	 * If filter function returns true Yii autoloader will be skipped.
 	 * @since 1.1.20
 	 */
-	public static $autoloaderFilters=array();
+	public static $autoloaderFilters=[];
 	/**
 	 * @var array class map used by the Yii autoloading mechanism.
 	 * The array keys are the class names and the array values are the corresponding class file paths.
 	 * @since 1.1.5
 	 */
-	public static $classMap=array();
+	public static $classMap=[];
 	/**
 	 * @var boolean whether to rely on PHP include path to autoload class files. Defaults to true.
 	 * You may set this to be false if your hosting environment doesn't allow changing the PHP
@@ -74,8 +74,8 @@ class YiiBase
 	 */
 	public static $enableIncludePath=true;
 
-	private static $_aliases=array('system'=>YII_PATH,'zii'=>YII_ZII_PATH); // alias => path
-	private static $_imports=array();					// alias => class name or directory
+	private static $_aliases=['system'=>YII_PATH,'zii'=>YII_ZII_PATH]; // alias => path
+	private static $_imports=[];					// alias => class name or directory
 	private static $_includePaths;						// list of include paths
 	private static $_app;
 	private static $_logger;
@@ -190,7 +190,7 @@ class YiiBase
 		if(is_string($config))
 		{
 			$type=$config;
-			$config=array();
+			$config=[];
 		}
 		elseif(isset($config['class']))
 		{
@@ -217,7 +217,7 @@ class YiiBase
 				$class=new ReflectionClass($type);
 				// Note: ReflectionClass::newInstanceArgs() is available for PHP 5.1.3+
 				// $object=$class->newInstanceArgs($args);
-				$object=call_user_func_array(array($class,'newInstance'),$args);
+				$object=call_user_func_array([$class,'newInstance'],$args);
 			}
 		}
 		else
@@ -286,7 +286,7 @@ class YiiBase
 					if(is_file($classFile))
 						require($classFile);
 					else
-						throw new CException(Yii::t('yii','Alias "{alias}" is invalid. Make sure it points to an existing PHP file and the file is readable.',array('{alias}'=>$alias)));
+						throw new CException(Yii::t('yii','Alias "{alias}" is invalid. Make sure it points to an existing PHP file and the file is readable.',['{alias}'=>$alias]));
 					self::$_imports[$alias]=$alias;
 				}
 				else
@@ -300,7 +300,7 @@ class YiiBase
 					return self::$_imports[$alias]=$alias;
 				else
 					throw new CException(Yii::t('yii','Alias "{alias}" is invalid. Make sure it points to an existing directory or file.',
-						array('{alias}'=>$namespace)));
+						['{alias}'=>$namespace]));
 			}
 		}
 
@@ -327,7 +327,7 @@ class YiiBase
 					if(is_file($path.'.php'))
 						require($path.'.php');
 					else
-						throw new CException(Yii::t('yii','Alias "{alias}" is invalid. Make sure it points to an existing PHP file and the file is readable.',array('{alias}'=>$alias)));
+						throw new CException(Yii::t('yii','Alias "{alias}" is invalid. Make sure it points to an existing PHP file and the file is readable.',['{alias}'=>$alias]));
 					self::$_imports[$alias]=$className;
 				}
 				else
@@ -353,7 +353,7 @@ class YiiBase
 		}
 		else
 			throw new CException(Yii::t('yii','Alias "{alias}" is invalid. Make sure it points to an existing directory or file.',
-				array('{alias}'=>$alias)));
+				['{alias}'=>$alias]));
 	}
 
 	/**
@@ -411,7 +411,7 @@ class YiiBase
 			if (is_array($filter)
 				&& isset($filter[0]) && isset($filter[1])
 				&& is_string($filter[0]) && is_string($filter[1])
-				&& true === call_user_func(array($filter[0], $filter[1]), $className)
+				&& true === call_user_func([$filter[0], $filter[1]], $className)
 			)
 			{
 				return true;
@@ -451,10 +451,10 @@ class YiiBase
 						{
 							include($classFile);
 							if(YII_DEBUG && basename(realpath($classFile))!==$className.'.php')
-								throw new CException(Yii::t('yii','Class name "{class}" does not match class file "{file}".', array(
+								throw new CException(Yii::t('yii','Class name "{class}" does not match class file "{file}".', [
 									'{class}'=>$className,
 									'{file}'=>$classFile,
-								)));
+								]));
 							break;
 						}
 					}
@@ -583,7 +583,7 @@ class YiiBase
 	 */
 	public static function powered()
 	{
-		return Yii::t('yii','Powered by {yii}.', array('{yii}'=>'<a href="https://www.yiiframework.com/" rel="external">Yii Framework</a>'));
+		return Yii::t('yii','Powered by {yii}.', ['{yii}'=>'<a href="https://www.yiiframework.com/" rel="external">Yii Framework</a>']);
 	}
 
 	/**
@@ -610,7 +610,7 @@ class YiiBase
 	 * @return string the translated message
 	 * @see CMessageSource
 	 */
-	public static function t($category,$message,$params=array(),$source=null,$language=null)
+	public static function t($category,$message,$params=[],$source=null,$language=null)
 	{
 		if(self::$_app!==null)
 		{
@@ -619,10 +619,10 @@ class YiiBase
 			if(($source=self::$_app->getComponent($source))!==null)
 				$message=$source->translate($category,$message,$language);
 		}
-		if($params===array())
+		if($params===[])
 			return $message;
 		if(!is_array($params))
-			$params=array($params);
+			$params=[$params];
 		if(isset($params[0])) // number choice
 		{
 			if(strpos($message,'|')!==false)
@@ -645,7 +645,7 @@ class YiiBase
 				$params['{n}']=$params[0];
 			unset($params[0]);
 		}
-		return $params!==array() ? strtr($message,$params) : $message;
+		return $params!==[] ? strtr($message,$params) : $message;
 	}
 
 	/**
@@ -667,9 +667,9 @@ class YiiBase
 		}
 		else
 		{
-			spl_autoload_unregister(array('YiiBase','autoload'));
+			spl_autoload_unregister(['YiiBase','autoload']);
 			spl_autoload_register($callback);
-			spl_autoload_register(array('YiiBase','autoload'));
+			spl_autoload_register(['YiiBase','autoload']);
 		}
 	}
 
@@ -678,7 +678,7 @@ class YiiBase
 	 * NOTE, DO NOT MODIFY THIS ARRAY MANUALLY. IF YOU CHANGE OR ADD SOME CORE CLASSES,
 	 * PLEASE RUN 'build autoload' COMMAND TO UPDATE THIS ARRAY.
 	 */
-	private static $_coreClasses=array(
+	private static $_coreClasses=[
 		'CApplication' => '/base/CApplication.php',
 		'CApplicationComponent' => '/base/CApplicationComponent.php',
 		'CBehavior' => '/base/CBehavior.php',
@@ -904,8 +904,8 @@ class YiiBase
 		'CBasePager' => '/web/widgets/pagers/CBasePager.php',
 		'CLinkPager' => '/web/widgets/pagers/CLinkPager.php',
 		'CListPager' => '/web/widgets/pagers/CListPager.php',
-	);
+	];
 }
 
-spl_autoload_register(array('YiiBase','autoload'));
+spl_autoload_register(['YiiBase','autoload']);
 require(YII_PATH.'/base/interfaces.php');

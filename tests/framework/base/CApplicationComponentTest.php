@@ -2,7 +2,7 @@
 
 class CApplicationComponentTest extends CTestCase {
 	public function testInitialization() {
-		$c = $this->getMockForAbstractClass('CApplicationComponent',array('init','getIsInitialized'),'',NULL);
+		$c = $this->getMockForAbstractClass('CApplicationComponent',['init','getIsInitialized'],'',NULL);
 		$c->expects($this->any())
 			->method('getIsInitialized')
 			->will($this->returnValue(FALSE));

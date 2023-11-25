@@ -2,7 +2,7 @@
 
 class CHtmlTest extends CTestCase
 {
-	public function setUp()
+	protected function setUp(): void
 	{
 		// clean up any possible garbage in global clientScript app component
 		Yii::app()->clientScript->reset();
@@ -14,7 +14,7 @@ class CHtmlTest extends CTestCase
 		Yii::app()->request->scriptUrl='/bootstrap.php';
 	}
 
-	public function tearDown()
+	protected function tearDown(): void
 	{
 		// do not keep any garbage in global clientScript app component
 		Yii::app()->clientScript->reset();
@@ -24,11 +24,11 @@ class CHtmlTest extends CTestCase
 
 	public static function providerEncodeArray()
 	{
-		return array(
-				array( array('lessThanExpression'=>'4 < 9'), array('lessThanExpression'=>'4 &lt; 9') ),
-				array( array(array('lessThanExpression'=>'4 < 9')), array(array('lessThanExpression'=>'4 &lt; 9')) ),
-				array( array(array('lessThanExpression'=>'4 < 9'), 'greaterThanExpression'=>'4 > 9'), array(array('lessThanExpression'=>'4 &lt; 9'), 'greaterThanExpression'=>'4 &gt; 9') )
-			);
+		return [
+				[ ['lessThanExpression'=>'4 < 9'], ['lessThanExpression'=>'4 &lt; 9'] ],
+				[ [['lessThanExpression'=>'4 < 9']], [['lessThanExpression'=>'4 &lt; 9']] ],
+				[ [['lessThanExpression'=>'4 < 9'], 'greaterThanExpression'=>'4 > 9'], [['lessThanExpression'=>'4 &lt; 9'], 'greaterThanExpression'=>'4 &gt; 9'] ]
+			];
 	}
 
 	/**
@@ -46,15 +46,15 @@ class CHtmlTest extends CTestCase
 
 	public static function providerAjax()
 	{
-		return array(
-				array(array("url" => "index"), "jQuery.ajax({'url':'index','cache':false});"),
-				array(array("url" => "index", "success" => "function() { this.alert(\"HI\"); }"), "jQuery.ajax({'url':'index','success':function() { this.alert(\"HI\"); },'cache':false});"),
-				array(array("async" => true, "success" => "function() { this.alert(\"HI\"); }"), "jQuery.ajax({'async':true,'success':function() { this.alert(\"HI\"); },'url':location.href,'cache':false});"),
-				array(array("update" =>"#my-div", "success" => "function() { this.alert(\"HI\"); }"), "jQuery.ajax({'success':function() { this.alert(\"HI\"); },'url':location.href,'cache':false});"),
-				array(array("update" =>"#my-div"), "jQuery.ajax({'url':location.href,'cache':false,'success':function(html){jQuery(\"#my-div\").html(html)}});"),
-				array(array("replace" =>"#my-div", "success" => "function() { this.alert(\"HI\"); }"), "jQuery.ajax({'success':function() { this.alert(\"HI\"); },'url':location.href,'cache':false});"),
-				array(array("replace" =>"#my-div"), "jQuery.ajax({'url':location.href,'cache':false,'success':function(html){jQuery(\"#my-div\").replaceWith(html)}});")
-			);
+		return [
+				[["url" => "index"], "jQuery.ajax({'url':'index','cache':false});"],
+				[["url" => "index", "success" => "function() { this.alert(\"HI\"); }"], "jQuery.ajax({'url':'index','success':function() { this.alert(\"HI\"); },'cache':false});"],
+				[["async" => true, "success" => "function() { this.alert(\"HI\"); }"], "jQuery.ajax({'async':true,'success':function() { this.alert(\"HI\"); },'url':location.href,'cache':false});"],
+				[["update" =>"#my-div", "success" => "function() { this.alert(\"HI\"); }"], "jQuery.ajax({'success':function() { this.alert(\"HI\"); },'url':location.href,'cache':false});"],
+				[["update" =>"#my-div"], "jQuery.ajax({'url':location.href,'cache':false,'success':function(html){jQuery(\"#my-div\").html(html)}});"],
+				[["replace" =>"#my-div", "success" => "function() { this.alert(\"HI\"); }"], "jQuery.ajax({'success':function() { this.alert(\"HI\"); },'url':location.href,'cache':false});"],
+				[["replace" =>"#my-div"], "jQuery.ajax({'url':location.href,'cache':false,'success':function(html){jQuery(\"#my-div\").replaceWith(html)}});"]
+			];
 	}
 
 	/**
@@ -72,10 +72,10 @@ class CHtmlTest extends CTestCase
 
 	public static function providerActiveDOMElements()
 	{
-		return array(
-				array(new CHtmlTestModel(array('attr1'=>true)), 'attr1', array(), '<input id="ytCHtmlTestModel_attr1" type="hidden" value="0" name="CHtmlTestModel[attr1]" /><input name="CHtmlTestModel[attr1]" id="CHtmlTestModel_attr1" value="1" type="checkbox" />'),
-				array(new CHtmlTestModel(array('attr1'=>false)), 'attr1', array(), '<input id="ytCHtmlTestModel_attr1" type="hidden" value="0" name="CHtmlTestModel[attr1]" /><input name="CHtmlTestModel[attr1]" id="CHtmlTestModel_attr1" value="1" type="checkbox" />')
-			);
+		return [
+				[new CHtmlTestModel(['attr1'=>true]), 'attr1', [], '<input id="ytCHtmlTestModel_attr1" type="hidden" value="0" name="CHtmlTestModel[attr1]" /><input name="CHtmlTestModel[attr1]" id="CHtmlTestModel_attr1" value="1" type="checkbox" />'],
+				[new CHtmlTestModel(['attr1'=>false]), 'attr1', [], '<input id="ytCHtmlTestModel_attr1" type="hidden" value="0" name="CHtmlTestModel[attr1]" /><input name="CHtmlTestModel[attr1]" id="CHtmlTestModel_attr1" value="1" type="checkbox" />']
+			];
 	}
 
 	/**
@@ -95,15 +95,15 @@ class CHtmlTest extends CTestCase
 
 	public static function providerBeginForm()
 	{
-		return array(
-				array("index", "get", array(), '<form action="index" method="get">'),
-				array("index", "post", array(), '<form action="index" method="post">'),
-				array("index?myFirstParam=3&mySecondParam=true#anchor", "get", array(),
+		return [
+				["index", "get", [], '<form action="index" method="get">'],
+				["index", "post", [], '<form action="index" method="post">'],
+				["index?myFirstParam=3&mySecondParam=true#anchor", "get", [],
 "<form action=\"index?myFirstParam=3&amp;mySecondParam=true#anchor\" method=\"get\">\n".
 "<input type=\"hidden\" value=\"3\" name=\"myFirstParam\" />\n".
-"<input type=\"hidden\" value=\"true\" name=\"mySecondParam\" />"),
+"<input type=\"hidden\" value=\"true\" name=\"mySecondParam\" />"],
 
-			);
+			];
 	}
 
 	/**
@@ -124,11 +124,11 @@ class CHtmlTest extends CTestCase
 
 	public static function providerTextArea()
 	{
-		return array(
-				array("textareaone", '', array(), "<textarea name=\"textareaone\" id=\"textareaone\"></textarea>"),
-				array("textareaone", '', array("id"=>"MyAwesomeTextArea", "dog"=>"Lassie", "class"=>"colorful bright"), "<textarea id=\"MyAwesomeTextArea\" dog=\"Lassie\" class=\"colorful bright\" name=\"textareaone\"></textarea>"),
-				array("textareaone", '', array("id"=>false), "<textarea name=\"textareaone\"></textarea>"),
-			);
+		return [
+				["textareaone", '', [], "<textarea name=\"textareaone\" id=\"textareaone\"></textarea>"],
+				["textareaone", '', ["id"=>"MyAwesomeTextArea", "dog"=>"Lassie", "class"=>"colorful bright"], "<textarea id=\"MyAwesomeTextArea\" dog=\"Lassie\" class=\"colorful bright\" name=\"textareaone\"></textarea>"],
+				["textareaone", '', ["id"=>false], "<textarea name=\"textareaone\"></textarea>"],
+			];
 	}
 
 	/**
@@ -146,14 +146,14 @@ class CHtmlTest extends CTestCase
 
 	public function providerOpenTag()
 	{
-		return array(
-			array('div', array(), '<div>'),
-			array('h1', array('id'=>'title', 'class'=>'red bold'), '<h1 id="title" class="red bold">'),
-			array('ns:tag', array('attr1'=>'attr1value1 attr1value2'), '<ns:tag attr1="attr1value1 attr1value2">'),
-			array('option', array('checked'=>true, 'disabled'=>false, 'defer'=>true), '<option checked="checked" defer="defer">'),
-			array('another-tag', array('some-attr'=>'<>/\\<&', 'encode'=>true), '<another-tag some-attr="&lt;&gt;/\&lt;&amp;">'),
-			array('tag', array('attr-no-encode'=>'<&', 'encode'=>false), '<tag attr-no-encode="<&">'),
-		);
+		return [
+			['div', [], '<div>'],
+			['h1', ['id'=>'title', 'class'=>'red bold'], '<h1 id="title" class="red bold">'],
+			['ns:tag', ['attr1'=>'attr1value1 attr1value2'], '<ns:tag attr1="attr1value1 attr1value2">'],
+			['option', ['checked'=>true, 'disabled'=>false, 'defer'=>true], '<option checked="checked" defer="defer">'],
+			['another-tag', ['some-attr'=>'<>/\\<&', 'encode'=>true], '<another-tag some-attr="&lt;&gt;/\&lt;&amp;">'],
+			['tag', ['attr-no-encode'=>'<&', 'encode'=>false], '<tag attr-no-encode="<&">'],
+		];
 	}
 
 	/**
@@ -170,12 +170,12 @@ class CHtmlTest extends CTestCase
 
 	public static function providerCloseTag()
 	{
-		return array(
-			array('div', '</div>'),
-			array('h1', '</h1>'),
-			array('ns:tag', '</ns:tag>'),
-			array('minus-tag', '</minus-tag>'),
-		);
+		return [
+			['div', '</div>'],
+			['h1', '</h1>'],
+			['ns:tag', '</ns:tag>'],
+			['minus-tag', '</minus-tag>'],
+		];
 	}
 
 	/**
@@ -191,10 +191,10 @@ class CHtmlTest extends CTestCase
 
 	public static function providerCdata()
 	{
-		return array(
-			array('cdata-content', '<![CDATA[cdata-content]]>'),
-			array('123321', '<![CDATA[123321]]>'),
-		);
+		return [
+			['cdata-content', '<![CDATA[cdata-content]]>'],
+			['123321', '<![CDATA[123321]]>'],
+		];
 	}
 
 	/**
@@ -210,18 +210,18 @@ class CHtmlTest extends CTestCase
 
 	public function providerMetaTag()
 	{
-		return array(
-			array('simple-meta-tag', null, null, array(),
-				'<meta content="simple-meta-tag" />'),
-			array('test-name-attr', 'random-name', null, array(),
-				'<meta name="random-name" content="test-name-attr" />'),
-			array('text/html; charset=UTF-8', null, 'Content-Type', array(),
-				'<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />'),
-			array('test-attrs', null, null, array('xhtml-invalid-attr'=>'attr-value'),
-				'<meta xhtml-invalid-attr="attr-value" content="test-attrs" />'),
-			array('complex-test', 'testing-name', 'Content-Type', array('attr1'=>'value2'),
-				'<meta attr1="value2" name="testing-name" http-equiv="Content-Type" content="complex-test" />'),
-		);
+		return [
+			['simple-meta-tag', null, null, [],
+				'<meta content="simple-meta-tag" />'],
+			['test-name-attr', 'random-name', null, [],
+				'<meta name="random-name" content="test-name-attr" />'],
+			['text/html; charset=UTF-8', null, 'Content-Type', [],
+				'<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />'],
+			['test-attrs', null, null, ['xhtml-invalid-attr'=>'attr-value'],
+				'<meta xhtml-invalid-attr="attr-value" content="test-attrs" />'],
+			['complex-test', 'testing-name', 'Content-Type', ['attr1'=>'value2'],
+				'<meta attr1="value2" name="testing-name" http-equiv="Content-Type" content="complex-test" />'],
+		];
 	}
 
 	/**
@@ -240,16 +240,16 @@ class CHtmlTest extends CTestCase
 
 	public function providerLinkTag()
 	{
-		return array(
-			array(null, null, null, null, array(), '<link />'),
-			array('stylesheet', null, null, null, array(), '<link rel="stylesheet" />'),
-			array(null, 'text/css', null, null, array(), '<link type="text/css" />'),
-			array(null, null, '/css/style.css', null, array(), '<link href="/css/style.css" />'),
-			array(null, null, null, 'screen', array(), '<link media="screen" />'),
-			array(null, null, null, null, array('attr'=>'value'), '<link attr="value" />'),
-			array('stylesheet', 'text/css', '/css/style.css', 'screen', array('attr'=>'value'),
-				'<link attr="value" rel="stylesheet" type="text/css" href="/css/style.css" media="screen" />'),
-		);
+		return [
+			[null, null, null, null, [], '<link />'],
+			['stylesheet', null, null, null, [], '<link rel="stylesheet" />'],
+			[null, 'text/css', null, null, [], '<link type="text/css" />'],
+			[null, null, '/css/style.css', null, [], '<link href="/css/style.css" />'],
+			[null, null, null, 'screen', [], '<link media="screen" />'],
+			[null, null, null, null, ['attr'=>'value'], '<link attr="value" />'],
+			['stylesheet', 'text/css', '/css/style.css', 'screen', ['attr'=>'value'],
+				'<link attr="value" rel="stylesheet" type="text/css" href="/css/style.css" media="screen" />'],
+		];
 	}
 
 	/**
@@ -269,12 +269,12 @@ class CHtmlTest extends CTestCase
 
 	public static function providerCssWithoutCdata()
 	{
-		return array(
-			array('h1{font-size:20px;line-height:26px;}', '',
-				"<style type=\"text/css\">\nh1{font-size:20px;line-height:26px;}\n</style>"),
-			array('h2{font-size:16px;line-height:22px;}', 'screen',
-				"<style type=\"text/css\" media=\"screen\">\nh2{font-size:16px;line-height:22px;}\n</style>"),
-		);
+		return [
+			['h1{font-size:20px;line-height:26px;}', '',
+				"<style type=\"text/css\">\nh1{font-size:20px;line-height:26px;}\n</style>"],
+			['h2{font-size:16px;line-height:22px;}', 'screen',
+				"<style type=\"text/css\" media=\"screen\">\nh2{font-size:16px;line-height:22px;}\n</style>"],
+		];
 	}
 
 	/**
@@ -293,12 +293,12 @@ class CHtmlTest extends CTestCase
 	
 	public static function providerCss()
 	{
-		return array(
-			array('h1{font-size:20px;line-height:26px;}', '',
-				"<style type=\"text/css\">\n/*<![CDATA[*/\nh1{font-size:20px;line-height:26px;}\n/*]]>*/\n</style>"),
-			array('h2{font-size:16px;line-height:22px;}', 'screen',
-				"<style type=\"text/css\" media=\"screen\">\n/*<![CDATA[*/\nh2{font-size:16px;line-height:22px;}\n/*]]>*/\n</style>"),
-		);
+		return [
+			['h1{font-size:20px;line-height:26px;}', '',
+				"<style type=\"text/css\">\n/*<![CDATA[*/\nh1{font-size:20px;line-height:26px;}\n/*]]>*/\n</style>"],
+			['h2{font-size:16px;line-height:22px;}', 'screen',
+				"<style type=\"text/css\" media=\"screen\">\n/*<![CDATA[*/\nh2{font-size:16px;line-height:22px;}\n/*]]>*/\n</style>"],
+		];
 	}
 
 	/**
@@ -315,10 +315,10 @@ class CHtmlTest extends CTestCase
 
 	public static function providerCssFile()
 	{
-		return array(
-			array('/css/style.css?a=1&b=2', '', '<link rel="stylesheet" type="text/css" href="/css/style.css?a=1&amp;b=2" />'),
-			array('/css/style.css?c=3&d=4', 'screen', '<link rel="stylesheet" type="text/css" href="/css/style.css?c=3&amp;d=4" media="screen" />'),
-		);
+		return [
+			['/css/style.css?a=1&b=2', '', '<link rel="stylesheet" type="text/css" href="/css/style.css?a=1&amp;b=2" />'],
+			['/css/style.css?c=3&d=4', 'screen', '<link rel="stylesheet" type="text/css" href="/css/style.css?c=3&amp;d=4" media="screen" />'],
+		];
 	}
 
 	/**
@@ -335,11 +335,11 @@ class CHtmlTest extends CTestCase
 
 	public static function providerScript()
 	{
-		return array(
-			array('var a = 10;', "<script type=\"text/javascript\">\n/*<![CDATA[*/\nvar a = 10;\n/*]]>*/\n</script>"),
-			array("\t(function() { var x = 100; })();\n\tvar y = 200;",
-				"<script type=\"text/javascript\">\n/*<![CDATA[*/\n\t(function() { var x = 100; })();\n\tvar y = 200;\n/*]]>*/\n</script>"),
-		);
+		return [
+			['var a = 10;', "<script type=\"text/javascript\">\n/*<![CDATA[*/\nvar a = 10;\n/*]]>*/\n</script>"],
+			["\t(function() { var x = 100; })();\n\tvar y = 200;",
+				"<script type=\"text/javascript\">\n/*<![CDATA[*/\n\t(function() { var x = 100; })();\n\tvar y = 200;\n/*]]>*/\n</script>"],
+		];
 	}
 
 	/**
@@ -355,11 +355,11 @@ class CHtmlTest extends CTestCase
 	
 	public static function providerScriptWithoutCdata()
 	{
-		return array(
-			array('var a = 10;', "<script type=\"text/javascript\">\nvar a = 10;\n</script>"),
-			array("\t(function() { var x = 100; })();\n\tvar y = 200;",
-				"<script type=\"text/javascript\">\n\t(function() { var x = 100; })();\n\tvar y = 200;\n</script>"),
-		);
+		return [
+			['var a = 10;', "<script type=\"text/javascript\">\nvar a = 10;\n</script>"],
+			["\t(function() { var x = 100; })();\n\tvar y = 200;",
+				"<script type=\"text/javascript\">\n\t(function() { var x = 100; })();\n\tvar y = 200;\n</script>"],
+		];
 	}
 
 	/**
@@ -391,23 +391,23 @@ class CHtmlTest extends CTestCase
 
 	public static function providerScriptWithHtmlOptions()
 	{
-		return array(
-			array(
+		return [
+			[
 				'var a = 10;',
-				array('defer'=>true),
+				['defer'=>true],
 				"<script type=\"text/javascript\" defer=\"defer\">\n/*<![CDATA[*/\nvar a = 10;\n/*]]>*/\n</script>"
-			),
-			array(
+			],
+			[
 				'var a = 10;',
-				array('async'=>true),
+				['async'=>true],
 				"<script type=\"text/javascript\" async=\"async\">\n/*<![CDATA[*/\nvar a = 10;\n/*]]>*/\n</script>"
-			),
-			array(
+			],
+			[
 				'var a = 10;',
-				array('async'=>false),
+				['async'=>false],
 				"<script type=\"text/javascript\" async=\"false\">\n/*<![CDATA[*/\nvar a = 10;\n/*]]>*/\n</script>"
-			),
-		);
+			],
+		];
 	}
 
 	/**
@@ -425,11 +425,11 @@ class CHtmlTest extends CTestCase
 
 	public static function providerScriptFile()
 	{
-		return array(
-			array('/js/main.js?a=2&b=4', '<script type="text/javascript" src="/js/main.js?a=2&amp;b=4"></script>'),
-			array('http://company.com/get-user-by-name?name=Василий&lang=ru',
-				'<script type="text/javascript" src="http://company.com/get-user-by-name?name=Василий&amp;lang=ru"></script>'),
-		);
+		return [
+			['/js/main.js?a=2&b=4', '<script type="text/javascript" src="/js/main.js?a=2&amp;b=4"></script>'],
+			['http://company.com/get-user-by-name?name=Василий&lang=ru',
+				'<script type="text/javascript" src="http://company.com/get-user-by-name?name=Василий&amp;lang=ru"></script>'],
+		];
 	}
 
 	/**
@@ -459,23 +459,23 @@ class CHtmlTest extends CTestCase
 
 	public static function providerScriptFileWithHtmlOptions()
 	{
-		return array(
-			array(
+		return [
+			[
 				'/js/main.js?a=2&b=4',
-				array('defer'=>true),
+				['defer'=>true],
 				'<script type="text/javascript" src="/js/main.js?a=2&amp;b=4" defer="defer"></script>'
-			),
-			array(
+			],
+			[
 				'/js/main.js?a=2&b=4',
-				array('async'=>true),
+				['async'=>true],
 				'<script type="text/javascript" src="/js/main.js?a=2&amp;b=4" async="async"></script>'
-			),
-			array(
+			],
+			[
 				'/js/main.js?a=2&b=4',
-				array('onload'=>"some_js_function();"),
+				['onload'=>"some_js_function();"],
 				'<script type="text/javascript" src="/js/main.js?a=2&amp;b=4" onload="some_js_function();"></script>'
-			),
-		);
+			],
+		];
 	}
 
 	/**
@@ -516,13 +516,13 @@ class CHtmlTest extends CTestCase
 
 	public static function providerGetIdByName()
 	{
-		return array(
-			array('ContactForm[name]', 'ContactForm_name'),
-			array('Order[name][first]', 'Order_name_first'),
-			array('Order[name][last]', 'Order_name_last'),
-			array('Recipe[photo][]', 'Recipe_photo'),
-			array('Request title', 'Request_title'),
-		);
+		return [
+			['ContactForm[name]', 'ContactForm_name'],
+			['Order[name][first]', 'Order_name_first'],
+			['Order[name][last]', 'Order_name_last'],
+			['Recipe[photo][]', 'Recipe_photo'],
+			['Request title', 'Request_title'],
+		];
 	}
 
 	/**
@@ -589,75 +589,75 @@ class CHtmlTest extends CTestCase
 
 	public function providerValue()
 	{
-		$result=array(
+		$result=[
 			// $model is array
-			array(array('k1'=>'v1','k2'=>'v2','v3','v4'),'k1',null,'v1'),
-			array(array('k1'=>'v1','k2'=>'v2','v3','v4'),'k2',null,'v2'),
-			array(array('k1'=>'v1','k2'=>'v2','v3','v4'),'k3',null,null),
-			array(array('k1'=>'v1','k2'=>'v2','v3','v4'),'k3','defaultValue','defaultValue'),
+			[['k1'=>'v1','k2'=>'v2','v3','v4'],'k1',null,'v1'],
+			[['k1'=>'v1','k2'=>'v2','v3','v4'],'k2',null,'v2'],
+			[['k1'=>'v1','k2'=>'v2','v3','v4'],'k3',null,null],
+			[['k1'=>'v1','k2'=>'v2','v3','v4'],'k3','defaultValue','defaultValue'],
 
-			array(array('k1'=>'v1','k2'=>'v2','v3','v4'),0,null,'v3'),
-			array(array('k1'=>'v1','k2'=>'v2','v3','v4'),1,null,'v4'),
-			array(array('k1'=>'v1','k2'=>'v2','v3','v4'),2,null,null),
-			array(array('k1'=>'v1','k2'=>'v2','v3','v4'),2,'defaultValue','defaultValue'),
+			[['k1'=>'v1','k2'=>'v2','v3','v4'],0,null,'v3'],
+			[['k1'=>'v1','k2'=>'v2','v3','v4'],1,null,'v4'],
+			[['k1'=>'v1','k2'=>'v2','v3','v4'],2,null,null],
+			[['k1'=>'v1','k2'=>'v2','v3','v4'],2,'defaultValue','defaultValue'],
 
 			// $model is stdClass
-			array((object)array('k1'=>'v1','k2'=>'v2','v3','v4'),'k1',null,'v1'),
-			array((object)array('k1'=>'v1','k2'=>'v2','v3','v4'),'k2',null,'v2'),
-			array((object)array('k1'=>'v1','k2'=>'v2','v3','v4'),'k3',null,null),
-			array((object)array('k1'=>'v1','k2'=>'v2','v3','v4'),'k3','defaultValue','defaultValue'),
+			[(object)['k1'=>'v1','k2'=>'v2','v3','v4'],'k1',null,'v1'],
+			[(object)['k1'=>'v1','k2'=>'v2','v3','v4'],'k2',null,'v2'],
+			[(object)['k1'=>'v1','k2'=>'v2','v3','v4'],'k3',null,null],
+			[(object)['k1'=>'v1','k2'=>'v2','v3','v4'],'k3','defaultValue','defaultValue'],
 
-			array((object)array('k1'=>'v1','k2'=>'v2','v3','v4'),0,null,null),
-			array((object)array('k1'=>'v1','k2'=>'v2','v3','v4'),1,null,null),
-			array((object)array('k1'=>'v1','k2'=>'v2','v3','v4'),2,null,null),
-			array((object)array('k1'=>'v1','k2'=>'v2','v3','v4'),2,'defaultValue','defaultValue'),
+			[(object)['k1'=>'v1','k2'=>'v2','v3','v4'],0,null,null],
+			[(object)['k1'=>'v1','k2'=>'v2','v3','v4'],1,null,null],
+			[(object)['k1'=>'v1','k2'=>'v2','v3','v4'],2,null,null],
+			[(object)['k1'=>'v1','k2'=>'v2','v3','v4'],2,'defaultValue','defaultValue'],
 
 			// static method
-			array(array('k1'=>'v1','k2'=>'v2','v3','v4'),array('CHtmlTest','helperTestValue'),null,'v2'),
-			array((object)array('k1'=>'v1','k2'=>'v2','v3','v4'),array('CHtmlTest','helperTestValue'),null,'v2'),
+			[['k1'=>'v1','k2'=>'v2','v3','v4'],['CHtmlTest','helperTestValue'],null,'v2'],
+			[(object)['k1'=>'v1','k2'=>'v2','v3','v4'],['CHtmlTest','helperTestValue'],null,'v2'],
 
 			// standard PHP functions should not be treated as callables
-			array(array('array_filter'=>'array_filter','sort'=>'sort'),'sort',null,'sort'),
-			array(array('array_filter'=>'array_filter','sort'=>'sort'),'array_map','defaultValue','defaultValue'),
-			array((object)array('array_filter'=>'array_filter','sort'=>'sort'),'sort',null,'sort'),
-			array((object)array('array_filter'=>'array_filter','sort'=>'sort'),'array_map','defaultValue','defaultValue'),
+			[['array_filter'=>'array_filter','sort'=>'sort'],'sort',null,'sort'],
+			[['array_filter'=>'array_filter','sort'=>'sort'],'array_map','defaultValue','defaultValue'],
+			[(object)['array_filter'=>'array_filter','sort'=>'sort'],'sort',null,'sort'],
+			[(object)['array_filter'=>'array_filter','sort'=>'sort'],'array_map','defaultValue','defaultValue'],
 
 			// dot access, array
-			array(array('k1'=>array('k2'=>array('k3'=>'v3')),array('v1','k4'=>'v4')),'k1.k2.k3',null,'v3'),
-			array(array('k1'=>array('k2'=>array('k3'=>'v3')),array('v1','k4'=>'v4')),'0.0',null,'v1'),
-			array(array('k1'=>array('k2'=>array('k3'=>'v3')),array('v1','k4'=>'v4')),'0.k4',null,'v4'),
-			array(array('k1'=>array('k2'=>array('k3'=>'v3')),array('v1','k4'=>'v4')),'0.1',null,null),
+			[['k1'=>['k2'=>['k3'=>'v3']],['v1','k4'=>'v4']],'k1.k2.k3',null,'v3'],
+			[['k1'=>['k2'=>['k3'=>'v3']],['v1','k4'=>'v4']],'0.0',null,'v1'],
+			[['k1'=>['k2'=>['k3'=>'v3']],['v1','k4'=>'v4']],'0.k4',null,'v4'],
+			[['k1'=>['k2'=>['k3'=>'v3']],['v1','k4'=>'v4']],'0.1',null,null],
 
 			// dot access, object
-			array((object)array('k1'=>array('k2'=>array('k3'=>'v3')),array('v1','k4'=>'v4')),'k1.k2.k3',null,'v3'),
-			array((object)array('k1'=>array('k2'=>array('k3'=>'v3')),array('v1','k4'=>'v4')),'0.0',null,null),
-			array((object)array('k1'=>array('k2'=>array('k3'=>'v3')),array('v1','k4'=>'v4')),'0.k4',null,null),
-			array((object)array('k1'=>array('k2'=>array('k3'=>'v3')),array('v1','k4'=>'v4')),'0.1',null,null),
+			[(object)['k1'=>['k2'=>['k3'=>'v3']],['v1','k4'=>'v4']],'k1.k2.k3',null,'v3'],
+			[(object)['k1'=>['k2'=>['k3'=>'v3']],['v1','k4'=>'v4']],'0.0',null,null],
+			[(object)['k1'=>['k2'=>['k3'=>'v3']],['v1','k4'=>'v4']],'0.k4',null,null],
+			[(object)['k1'=>['k2'=>['k3'=>'v3']],['v1','k4'=>'v4']],'0.1',null,null],
 
 			// $attribute parameter is:
 			// 1. null or empty string
 			// 2. not "0" string, 0 integer or 0.0 double/float
 			// 3. empty array doesn't make sense
-			array(array('v1'),null,'defaultValue','defaultValue'),
-			array(array('v1'),"",'defaultValue','defaultValue'),
-			array(array('v1'),"0",'defaultValue','v1'),
-			array(array('v1'),0,'defaultValue','v1'),
-			array(array('v1'),0.0,'defaultValue','v1'),
+			[['v1'],null,'defaultValue','defaultValue'],
+			[['v1'],"",'defaultValue','defaultValue'],
+			[['v1'],"0",'defaultValue','v1'],
+			[['v1'],0,'defaultValue','v1'],
+			[['v1'],0.0,'defaultValue','v1'],
 
 			// Test $model as an array, with null as a key, see: https://github.com/yiisoft/yii/pull/4503#discussion_r1054516859
-			array(array(null=>'v1','k2'=>'v2'),null,'defaultValue','v1'),
-			array(array(null=>'v1','k2'=>'v2'),'','defaultValue','v1'),
-			array(array(''=>'v1','k2'=>'v2'),null,'defaultValue','v1'),
-			array(array(''=>'v1','k2'=>'v2'),'','defaultValue','v1'),
-			array(array(null=>'v1','k2'=>'v2'),'k2','defaultValue','v2'),
-		);
+			[[null=>'v1','k2'=>'v2'],null,'defaultValue','v1'],
+			[[null=>'v1','k2'=>'v2'],'','defaultValue','v1'],
+			[[''=>'v1','k2'=>'v2'],null,'defaultValue','v1'],
+			[[''=>'v1','k2'=>'v2'],'','defaultValue','v1'],
+			[[null=>'v1','k2'=>'v2'],'k2','defaultValue','v2'],
+		];
 
 		// create_function is not supported by CHtml::value(), we're just testing this feature/property
 		if(version_compare(PHP_VERSION,'8.0','<')) {
-			$result=array_merge($result, array(
-				array(array('k1' => 'v1', 'k2' => 'v2', 'v3', 'v4'), create_function('$model', 'return $model["k2"];'), null, null),
-				array((object)array('k1' => 'v1', 'k2' => 'v2', 'v3', 'v4'), create_function('$model', 'return $model->k2;'), null, null),
-			));
+			$result=array_merge($result, [
+				[['k1' => 'v1', 'k2' => 'v2', 'v3', 'v4'], create_function('$model', 'return $model["k2"];'), null, null],
+				[(object)['k1' => 'v1', 'k2' => 'v2', 'v3', 'v4'], create_function('$model', 'return $model->k2;'), null, null],
+			]);
 		}
 
 		if(class_exists('Closure',false))
@@ -691,10 +691,10 @@ class CHtmlTest extends CTestCase
 
 	public static function providerPageStateField()
 	{
-		return array(
-			array('testing-value', '<input type="hidden" name="'.CController::STATE_INPUT_NAME.'" value="testing-value" />'),
-			array('another-testing&value', '<input type="hidden" name="'.CController::STATE_INPUT_NAME.'" value="another-testing&value" />'),
-		);
+		return [
+			['testing-value', '<input type="hidden" name="'.CController::STATE_INPUT_NAME.'" value="testing-value" />'],
+			['another-testing&value', '<input type="hidden" name="'.CController::STATE_INPUT_NAME.'" value="another-testing&value" />'],
+		];
 	}
 
 	/**
@@ -710,16 +710,16 @@ class CHtmlTest extends CTestCase
 
 	public static function providerEncodeDecode()
 	{
-		return array(
-			array(
+		return [
+			[
 				'<h1 class="header" attr=\'value\'>Text header</h1>',
 				'&lt;h1 class=&quot;header&quot; attr=&#039;value&#039;&gt;Text header&lt;/h1&gt;',
-			),
-			array(
+			],
+			[
 				'<p>testing & text</p>',
 				'&lt;p&gt;testing &amp; text&lt;/p&gt;',
-			),
-		);
+			],
+		];
 	}
 
 	/**
@@ -746,18 +746,18 @@ class CHtmlTest extends CTestCase
 
 	public static function providerRefresh()
 	{
-		return array(
-			array(
+		return [
+			[
 				10,
 				'https://yiiframework.com/',
 				'<meta http-equiv="refresh" content="10;url=https://yiiframework.com/" />'."\n",
-			),
-			array(
+			],
+			[
 				15,
-				array('site/index'),
+				['site/index'],
 				'<meta http-equiv="refresh" content="15;url=/bootstrap.php?r=site/index" />'."\n",
-			),
-		);
+			],
+		];
 	}
 
 	/**
@@ -786,20 +786,20 @@ class CHtmlTest extends CTestCase
 		// so we can make expected assertion value more readable by using CHtml::beginForm() because
 		// we are testing stateful feature of the CHtml::statefulForm(), not <form> tag generation
 		// same true for CHtml::pageStateField - it is already tested in another method
-		return array(
-			array(
-				array('site/index'),
+		return [
+			[
+				['site/index'],
 				'post',
-				array(),
-				CHtml::form(array('site/index'), 'post', array())."\n".'<div style="display:none">'.CHtml::pageStateField('').'</div>'
-			),
-			array(
+				[],
+				CHtml::form(['site/index'], 'post', [])."\n".'<div style="display:none">'.CHtml::pageStateField('').'</div>'
+			],
+			[
 				'/some-static/url',
 				'get',
-				array('test-attr'=>'test-value'),
-				CHtml::form('/some-static/url', 'get', array('test-attr'=>'test-value'))."\n".'<div style="display:none">'.CHtml::pageStateField('').'</div>'
-			),
-		);
+				['test-attr'=>'test-value'],
+				CHtml::form('/some-static/url', 'get', ['test-attr'=>'test-value'])."\n".'<div style="display:none">'.CHtml::pageStateField('').'</div>'
+			],
+		];
 	}
 
 	/**
@@ -817,26 +817,26 @@ class CHtmlTest extends CTestCase
 
 	public static function providerMailto()
 	{
-		return array(
-			array(
+		return [
+			[
 				'Drop me a line! ;-)',
 				'admin@example.com',
-				array('class'=>'mail-to-admin'),
+				['class'=>'mail-to-admin'],
 				'<a class="mail-to-admin" href="mailto:admin@example.com">Drop me a line! ;-)</a>',
-			),
-			array(
+			],
+			[
 				'Contact me',
 				'foo@bar.baz',
-				array(),
+				[],
 				'<a href="mailto:foo@bar.baz">Contact me</a>',
-			),
-			array(
+			],
+			[
 				'boss@acme.com',
 				'',
-				array(),
+				[],
 				'<a href="mailto:boss@acme.com">boss@acme.com</a>',
-			),
-		);
+			],
+		];
 	}
 
 	/**
@@ -854,10 +854,10 @@ class CHtmlTest extends CTestCase
 
 	public static function providerImage()
 	{
-		return array(
-			array('/images/logo.png', 'YiiSoft, LLC', array(), '<img src="/images/logo.png" alt="YiiSoft, LLC" />'),
-			array('/img/test.jpg', '', array('class'=>'test-img'), '<img class="test-img" src="/img/test.jpg" alt="" />'),
-		);
+		return [
+			['/images/logo.png', 'YiiSoft, LLC', [], '<img src="/images/logo.png" alt="YiiSoft, LLC" />'],
+			['/img/test.jpg', '', ['class'=>'test-img'], '<img class="test-img" src="/img/test.jpg" alt="" />'],
+		];
 	}
 
 	/**
@@ -875,17 +875,17 @@ class CHtmlTest extends CTestCase
 
 	public function providerActiveLabel()
 	{
-		return array(
-			array(false, 'userName', array(), '<label for="CHtmlTestActiveModel_userName">User Name</label>'),
-			array(false, 'userName', array('for'=>'someTestingInput'), '<label for="someTestingInput">User Name</label>'),
-			array(false, 'userName', array('label'=>'Custom Label'), '<label for="CHtmlTestActiveModel_userName">Custom Label</label>'),
-			array(false, 'userName', array('label'=>false), ''),
-			array(true, 'userName', array(), '<label class="error" for="CHtmlTestActiveModel_userName">User Name</label>'),
-			array(true, 'userName', array('for'=>'someTestingInput'), '<label class="error" for="someTestingInput">User Name</label>'),
-			array(true, 'firstName', array('label'=>'Custom Label'), '<label for="CHtmlTestActiveModel_firstName">Custom Label</label>'),
-			array(true, 'userName', array('label'=>false), ''),
-			array(false, '[1]userName', array('for'=>'customFor'), '<label for="customFor">User Name</label>'),
-		);
+		return [
+			[false, 'userName', [], '<label for="CHtmlTestActiveModel_userName">User Name</label>'],
+			[false, 'userName', ['for'=>'someTestingInput'], '<label for="someTestingInput">User Name</label>'],
+			[false, 'userName', ['label'=>'Custom Label'], '<label for="CHtmlTestActiveModel_userName">Custom Label</label>'],
+			[false, 'userName', ['label'=>false], ''],
+			[true, 'userName', [], '<label class="error" for="CHtmlTestActiveModel_userName">User Name</label>'],
+			[true, 'userName', ['for'=>'someTestingInput'], '<label class="error" for="someTestingInput">User Name</label>'],
+			[true, 'firstName', ['label'=>'Custom Label'], '<label for="CHtmlTestActiveModel_firstName">Custom Label</label>'],
+			[true, 'userName', ['label'=>false], ''],
+			[false, '[1]userName', ['for'=>'customFor'], '<label for="customFor">User Name</label>'],
+		];
 	}
 
 	/**
@@ -906,16 +906,16 @@ class CHtmlTest extends CTestCase
 
 	public function providerActiveLabelEx()
 	{
-		return array(
-			array(false, 'firstName', array(), '<label for="CHtmlTestActiveModel_firstName">First Name</label>'),
-			array(false, 'firstName', array('for'=>'someTestingInput'), '<label for="someTestingInput">First Name</label>'),
-			array(false, 'userName', array('label'=>'Custom Label'), '<label for="CHtmlTestActiveModel_userName" class="required">Custom Label <span class="required">*</span></label>'),
-			array(false, 'userName', array('label'=>false), ''),
-			array(true, 'userName', array(), '<label class="error required" for="CHtmlTestActiveModel_userName">User Name <span class="required">*</span></label>'),
-			array(true, 'userName', array('for'=>'someTestingInput'), '<label class="error required" for="someTestingInput">User Name <span class="required">*</span></label>'),
-			array(true, 'firstName', array('label'=>'Custom Label'), '<label for="CHtmlTestActiveModel_firstName">Custom Label</label>'),
-			array(true, 'firstName', array('label'=>false), ''),
-		);
+		return [
+			[false, 'firstName', [], '<label for="CHtmlTestActiveModel_firstName">First Name</label>'],
+			[false, 'firstName', ['for'=>'someTestingInput'], '<label for="someTestingInput">First Name</label>'],
+			[false, 'userName', ['label'=>'Custom Label'], '<label for="CHtmlTestActiveModel_userName" class="required">Custom Label <span class="required">*</span></label>'],
+			[false, 'userName', ['label'=>false], ''],
+			[true, 'userName', [], '<label class="error required" for="CHtmlTestActiveModel_userName">User Name <span class="required">*</span></label>'],
+			[true, 'userName', ['for'=>'someTestingInput'], '<label class="error required" for="someTestingInput">User Name <span class="required">*</span></label>'],
+			[true, 'firstName', ['label'=>'Custom Label'], '<label for="CHtmlTestActiveModel_firstName">Custom Label</label>'],
+			[true, 'firstName', ['label'=>false], ''],
+		];
 	}
 
 	/**
@@ -936,16 +936,16 @@ class CHtmlTest extends CTestCase
 
 	public function providerActiveTextField()
 	{
-		return array(
-			array(false, 'userName', array('class'=>'user-name-field'),
-				'<input class="user-name-field" name="CHtmlTestActiveModel[userName]" id="CHtmlTestActiveModel_userName" type="text" />'),
-			array(true, 'userName', array('class'=>'user-name-field'),
-				'<input class="user-name-field error" name="CHtmlTestActiveModel[userName]" id="CHtmlTestActiveModel_userName" type="text" />'),
-			array(false, 'firstName', array('class'=>'first-name-field'),
-				'<input class="first-name-field" name="CHtmlTestActiveModel[firstName]" id="CHtmlTestActiveModel_firstName" type="text" />'),
-			array(true, 'firstName', array('class'=>'first-name-field'),
-				'<input class="first-name-field" name="CHtmlTestActiveModel[firstName]" id="CHtmlTestActiveModel_firstName" type="text" />'),
-		);
+		return [
+			[false, 'userName', ['class'=>'user-name-field'],
+				'<input class="user-name-field" name="CHtmlTestActiveModel[userName]" id="CHtmlTestActiveModel_userName" type="text" />'],
+			[true, 'userName', ['class'=>'user-name-field'],
+				'<input class="user-name-field error" name="CHtmlTestActiveModel[userName]" id="CHtmlTestActiveModel_userName" type="text" />'],
+			[false, 'firstName', ['class'=>'first-name-field'],
+				'<input class="first-name-field" name="CHtmlTestActiveModel[firstName]" id="CHtmlTestActiveModel_firstName" type="text" />'],
+			[true, 'firstName', ['class'=>'first-name-field'],
+				'<input class="first-name-field" name="CHtmlTestActiveModel[firstName]" id="CHtmlTestActiveModel_firstName" type="text" />'],
+		];
 	}
 
 	/**
@@ -966,16 +966,16 @@ class CHtmlTest extends CTestCase
 
 	public function providerActiveUrlField()
 	{
-		return array(
-			array(false, 'userName', array('class'=>'test-class-attr'),
-				'<input class="test-class-attr" name="CHtmlTestActiveModel[userName]" id="CHtmlTestActiveModel_userName" type="url" />'),
-			array(true, 'userName', array('another-attr'=>'another-attr-value', 'id'=>'changed-id'),
-				'<input another-attr="another-attr-value" id="changed-id" name="CHtmlTestActiveModel[userName]" type="url" class="error" />'),
-			array(false, 'firstName', array(),
-				'<input name="CHtmlTestActiveModel[firstName]" id="CHtmlTestActiveModel_firstName" type="url" />'),
-			array(true, 'firstName', array('disabled'=>true, 'name'=>'changed-name'),
-				'<input disabled="disabled" name="changed-name" id="changed-name" type="url" />'),
-		);
+		return [
+			[false, 'userName', ['class'=>'test-class-attr'],
+				'<input class="test-class-attr" name="CHtmlTestActiveModel[userName]" id="CHtmlTestActiveModel_userName" type="url" />'],
+			[true, 'userName', ['another-attr'=>'another-attr-value', 'id'=>'changed-id'],
+				'<input another-attr="another-attr-value" id="changed-id" name="CHtmlTestActiveModel[userName]" type="url" class="error" />'],
+			[false, 'firstName', [],
+				'<input name="CHtmlTestActiveModel[firstName]" id="CHtmlTestActiveModel_firstName" type="url" />'],
+			[true, 'firstName', ['disabled'=>true, 'name'=>'changed-name'],
+				'<input disabled="disabled" name="changed-name" id="changed-name" type="url" />'],
+		];
 	}
 
 	/**
@@ -996,13 +996,13 @@ class CHtmlTest extends CTestCase
 
 	public function providerButton()
 	{
-		return array(
-			array('button1', array('name'=>null, 'class'=>'class1'), '<input class="class1" type="button" value="button1" />'),
-			array('button2', array('name'=>'custom-name', 'class'=>'class2'), '<input name="custom-name" class="class2" type="button" value="button2" />'),
-			array('button3', array('type'=>'submit'), '<input type="submit" name="yt0" value="button3" />'),
-			array('button4', array('value'=>'button-value'), '<input value="button-value" name="yt0" type="button" />'),
-			array('button5', array(), '<input name="yt0" type="button" value="button5" />'),
-		);
+		return [
+			['button1', ['name'=>null, 'class'=>'class1'], '<input class="class1" type="button" value="button1" />'],
+			['button2', ['name'=>'custom-name', 'class'=>'class2'], '<input name="custom-name" class="class2" type="button" value="button2" />'],
+			['button3', ['type'=>'submit'], '<input type="submit" name="yt0" value="button3" />'],
+			['button4', ['value'=>'button-value'], '<input value="button-value" name="yt0" type="button" />'],
+			['button5', [], '<input name="yt0" type="button" value="button5" />'],
+		];
 	}
 
 	/**
@@ -1019,13 +1019,13 @@ class CHtmlTest extends CTestCase
 
 	public function providerHtmlButton()
 	{
-		return array(
-			array('button1', array('name'=>null, 'class'=>'class1'), '<button name="yt0" class="class1" type="button">button1</button>'),
-			array('button2', array('name'=>'custom-name', 'class'=>'class2'), '<button name="custom-name" class="class2" type="button">button2</button>'),
-			array('button3', array('type'=>'submit'), '<button type="submit" name="yt0">button3</button>'),
-			array('button4', array('value'=>'button-value'), '<button value="button-value" name="yt0" type="button">button4</button>'),
-			array('button5', array(), '<button name="yt0" type="button">button5</button>'),
-		);
+		return [
+			['button1', ['name'=>null, 'class'=>'class1'], '<button name="yt0" class="class1" type="button">button1</button>'],
+			['button2', ['name'=>'custom-name', 'class'=>'class2'], '<button name="custom-name" class="class2" type="button">button2</button>'],
+			['button3', ['type'=>'submit'], '<button type="submit" name="yt0">button3</button>'],
+			['button4', ['value'=>'button-value'], '<button value="button-value" name="yt0" type="button">button4</button>'],
+			['button5', [], '<button name="yt0" type="button">button5</button>'],
+		];
 	}
 
 	/**
@@ -1042,10 +1042,10 @@ class CHtmlTest extends CTestCase
 
 	public function providerSubmitButton()
 	{
-		return array(
-			array('submit', array(), '<input type="submit" name="yt0" value="submit" />'),
-			array('submit1', array('type'=>'button'), '<input type="submit" name="yt0" value="submit1" />'),
-		);
+		return [
+			['submit', [], '<input type="submit" name="yt0" value="submit" />'],
+			['submit1', ['type'=>'button'], '<input type="submit" name="yt0" value="submit1" />'],
+		];
 	}
 
 	/**
@@ -1062,10 +1062,10 @@ class CHtmlTest extends CTestCase
 
 	public function providerResetButton()
 	{
-		return array(
-			array('reset', array(), '<input type="reset" name="yt0" value="reset" />'),
-			array('reset1', array('type'=>'button'), '<input type="reset" name="yt0" value="reset1" />'),
-		);
+		return [
+			['reset', [], '<input type="reset" name="yt0" value="reset" />'],
+			['reset1', ['type'=>'button'], '<input type="reset" name="yt0" value="reset1" />'],
+		];
 	}
 
 	/**
@@ -1082,11 +1082,11 @@ class CHtmlTest extends CTestCase
 
 	public function providerImageButton()
 	{
-		return array(
-			array('/images/test-image.png', array('src'=>'ignored-src'), '<input src="/images/test-image.png" type="image" name="yt0" />'),
-			array('/images/test-image.jpg', array('type'=>'button'), '<input type="image" src="/images/test-image.jpg" name="yt0" />'),
-			array('/images/test-image.gif', array('value'=>'image'), '<input value="image" src="/images/test-image.gif" type="image" name="yt0" />'),
-		);
+		return [
+			['/images/test-image.png', ['src'=>'ignored-src'], '<input src="/images/test-image.png" type="image" name="yt0" />'],
+			['/images/test-image.jpg', ['type'=>'button'], '<input type="image" src="/images/test-image.jpg" name="yt0" />'],
+			['/images/test-image.gif', ['value'=>'image'], '<input value="image" src="/images/test-image.gif" type="image" name="yt0" />'],
+		];
 	}
 
 	/**
@@ -1103,14 +1103,14 @@ class CHtmlTest extends CTestCase
 
 	public function providerLinkButton()
 	{
-		return array(
-			array('submit', array(), '<a href="#" id="yt0">submit</a>',
-				"jQuery('body').on('click','#yt0',function(){jQuery.yii.submitForm(this,'',{});return false;});"),
-			array('link-button', array(), '<a href="#" id="yt0">link-button</a>',
-				"jQuery('body').on('click','#yt0',function(){jQuery.yii.submitForm(this,'',{});return false;});"),
-			array('link-button', array('href'=>'https://yiiframework.com/'), '<a href="#" id="yt0">link-button</a>',
-				"jQuery('body').on('click','#yt0',function(){jQuery.yii.submitForm(this,'https\\x3A\\x2F\\x2Fyiiframework.com\\x2F',{});return false;});"),
-		);
+		return [
+			['submit', [], '<a href="#" id="yt0">submit</a>',
+				"jQuery('body').on('click','#yt0',function(){jQuery.yii.submitForm(this,'',{});return false;});"],
+			['link-button', [], '<a href="#" id="yt0">link-button</a>',
+				"jQuery('body').on('click','#yt0',function(){jQuery.yii.submitForm(this,'',{});return false;});"],
+			['link-button', ['href'=>'https://yiiframework.com/'], '<a href="#" id="yt0">link-button</a>',
+				"jQuery('body').on('click','#yt0',function(){jQuery.yii.submitForm(this,'https\\x3A\\x2F\\x2Fyiiframework.com\\x2F',{});return false;});"],
+		];
 	}
 
 	/**
@@ -1132,19 +1132,19 @@ class CHtmlTest extends CTestCase
 
 	public function testAjaxCallbacks()
 	{
-		$out=CHtml::ajax(array(
+		$out=CHtml::ajax([
 			'success'=>'js:function() { /* callback */ }',
-		));
+		]);
 		$this->assertTrue(mb_strpos($out,"'success':function() { /* callback */ }", 0, Yii::app()->charset)!==false, "Unexpected JavaScript: ".$out);
 
-		$out=CHtml::ajax(array(
+		$out=CHtml::ajax([
 			'success'=>'function() { /* callback */ }',
-		));
+		]);
 		$this->assertTrue(mb_strpos($out,"'success':function() { /* callback */ }", 0, Yii::app()->charset)!==false, "Unexpected JavaScript: ".$out);
 
-		$out=CHtml::ajax(array(
+		$out=CHtml::ajax([
 			'success'=>new CJavaScriptExpression('function() { /* callback */ }'),
-		));
+		]);
 		$this->assertTrue(mb_strpos($out,"'success':function() { /* callback */ }", 0, Yii::app()->charset)!==false, "Unexpected JavaScript: ".$out);
 	}
 }
@@ -1153,7 +1153,7 @@ class CHtmlTest extends CTestCase
 
 class CHtmlTestModel extends CModel
 {
-	private static $_names=array();
+	private static $_names=[];
 
 	/**
 	 * @property mixed $attr1
@@ -1185,7 +1185,7 @@ class CHtmlTestModel extends CModel
 		if(!isset(self::$_names[$className]))
 		{
 			$class=new ReflectionClass(get_class($this));
-			$names=array();
+			$names=[];
 			foreach($class->getProperties() as $property)
 			{
 				$name=$property->getName();
@@ -1208,15 +1208,15 @@ class CHtmlTestFormModel extends CFormModel
 	public function afterConstruct()
 	{
 		$this->stringAttr='stringAttrValue';
-		$this->arrayAttr=array(
+		$this->arrayAttr=[
 			'k1'=>'v1',
 			'k2'=>'v2',
-			'k3'=>array(
+			'k3'=>[
 				'k4'=>'v4',
 				'k5'=>'v5',
-			),
+			],
 			'k6'=>'v6',
-		);
+		];
 	}
 }
 
@@ -1227,9 +1227,9 @@ class CHtmlTestActiveModel extends CFormModel
 
 	public function rules()
 	{
-		return array(
-			array('userName', 'required'),
-			array('firstName', 'safe'),
-		);
+		return [
+			['userName', 'required'],
+			['firstName', 'safe'],
+		];
 	}
 }

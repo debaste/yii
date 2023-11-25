@@ -9,7 +9,7 @@ class CActiveDataProviderTest extends CTestCase
 	 */
 	private $db;
 
-	public function setUp()
+	protected function setUp(): void
 	{
 		if(!extension_loaded('pdo') || !extension_loaded('pdo_sqlite'))
 			$this->markTestSkipped('PDO and SQLite extensions are required.');
@@ -20,7 +20,7 @@ class CActiveDataProviderTest extends CTestCase
 		CActiveRecord::$db=$this->db;
 	}
 
-	public function tearDown()
+	protected function tearDown(): void
 	{
 		$this->db->active=false;
 	}
@@ -28,30 +28,30 @@ class CActiveDataProviderTest extends CTestCase
 	public function testCountCriteria()
 	{
 		// 1
-		$dataProvider=new CActiveDataProvider('Post',array(
-			'criteria'=>array(
+		$dataProvider=new CActiveDataProvider('Post',[
+			'criteria'=>[
 				'condition'=>'content LIKE "%content%"',
 				'order'=>'create_time DESC',
-				'with'=>array('author'),
-			),
-			'pagination'=>array(
+				'with'=>['author'],
+			],
+			'pagination'=>[
 				'pageSize'=>5,
-			),
-		));
+			],
+		]);
 		$this->assertSame($dataProvider->countCriteria,$dataProvider->criteria);
 		$this->assertEquals(5,$dataProvider->getTotalItemCount(true));
 
 		// 2
-		$dataProvider->setCountCriteria(array(
+		$dataProvider->setCountCriteria([
 			'condition'=>'content LIKE "%content 1%"',
-		));
+		]);
 		$this->assertNotSame($dataProvider->countCriteria,$dataProvider->criteria);
 		$this->assertEquals(1,$dataProvider->getTotalItemCount(true));
 
 		// 3
-		$dataProvider->setCountCriteria(array(
+		$dataProvider->setCountCriteria([
 			'condition'=>'content LIKE "%content%"',
-		));
+		]);
 		$this->assertNotSame($dataProvider->countCriteria,$dataProvider->criteria);
 		$this->assertEquals(5,$dataProvider->getTotalItemCount(true));
 	}

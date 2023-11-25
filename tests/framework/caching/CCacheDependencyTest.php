@@ -17,7 +17,7 @@ class CCacheDependencyTest extends CTestCase
 
     public function testReuseDependentData()
     {
-        MockCacheDependency::$generateDependentDataCallback=array($this,'getCacheDependentData');
+        MockCacheDependency::$generateDependentDataCallback=[$this,'getCacheDependentData'];
         $dependency1=new MockCacheDependency();
         $dependency1->reuseDependentData = true;
         $dependency2=new MockCacheDependency();

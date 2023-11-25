@@ -11,7 +11,7 @@ class CMysql2Test extends CTestCase
 	 */
 	private $db;
 
-	public function setUp()
+	protected function setUp(): void
 	{
 		if(!extension_loaded('pdo') || !extension_loaded('pdo_mysql'))
 			$this->markTestSkipped('PDO and MySQL extensions are required.');
@@ -28,7 +28,7 @@ class CMysql2Test extends CTestCase
 			$this->markTestSkipped("Please read $schemaFile for details on setting up the test environment for MySQL test case.");
 		}
 
-		$tables=array('comments','post_category','posts','categories','profiles','users','items','orders','types');
+		$tables=['comments','post_category','posts','categories','profiles','users','items','orders','types'];
 		foreach($tables as $table)
 			$this->db->createCommand("DROP TABLE IF EXISTS $table CASCADE")->execute();
 
@@ -40,19 +40,19 @@ class CMysql2Test extends CTestCase
 		}
 	}
 
-	public function tearDown()
+	protected function tearDown(): void
 	{
 		$this->db->active=false;
 	}
 
 	public function testCreateTable()
 	{
-		$sql=$this->db->schema->createTable('test',array(
+		$sql=$this->db->schema->createTable('test',[
 			'id'=>'pk',
 			'name'=>'string not null',
 			'desc'=>'text',
 			'primary key (id, name)',
-		),'Engine=InnoDB');
+		],'Engine=InnoDB');
 		$expect="CREATE TABLE `test` (\n"
 			. "\t`id` int(11) NOT NULL AUTO_INCREMENT PRIMARY KEY,\n"
 			. "\t`name` varchar(255) not null,\n"
@@ -118,7 +118,7 @@ class CMysql2Test extends CTestCase
 		$expect='ALTER TABLE `profile` ADD CONSTRAINT `fk_test` FOREIGN KEY (`user_id`, `id`) REFERENCES `users` (`id`, `username`) ON DELETE CASCADE ON UPDATE RESTRICTED';
 		$this->assertEquals($expect, $sql);
 
-		$sql=$this->db->schema->addForeignKey('fk_test', 'profile', array('user_id', 'id'), 'users', array('id','username'),'CASCADE','RESTRICTED');
+		$sql=$this->db->schema->addForeignKey('fk_test', 'profile', ['user_id', 'id'], 'users', ['id','username'],'CASCADE','RESTRICTED');
 		$expect='ALTER TABLE `profile` ADD CONSTRAINT `fk_test` FOREIGN KEY (`user_id`, `id`) REFERENCES `users` (`id`, `username`) ON DELETE CASCADE ON UPDATE RESTRICTED';
 		$this->assertEquals($expect, $sql);
 	}
@@ -140,7 +140,7 @@ class CMysql2Test extends CTestCase
 		$expect='CREATE UNIQUE INDEX `id_pk` ON `test` (`id1`, `id2`)';
 		$this->assertEquals($expect, $sql);
 
-		$sql=$this->db->schema->createIndex('id_pk','test',array('id1','id2'),true);
+		$sql=$this->db->schema->createIndex('id_pk','test',['id1','id2'],true);
 		$expect='CREATE UNIQUE INDEX `id_pk` ON `test` (`id1`, `id2`)';
 		$this->assertEquals($expect, $sql);
 	}
@@ -158,7 +158,7 @@ class CMysql2Test extends CTestCase
 		$expect='ALTER TABLE `table` ADD PRIMARY KEY (`id` )';
 		$this->assertEquals($expect, $sql);
 
-		$sql=$this->db->schema->addPrimaryKey('this-string-is-ignored','table',array('id1','id2'));
+		$sql=$this->db->schema->addPrimaryKey('this-string-is-ignored','table',['id1','id2']);
 		$expect='ALTER TABLE `table` ADD PRIMARY KEY (`id1`, `id2` )';
 		$this->assertEquals($expect, $sql);
 	}

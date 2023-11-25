@@ -15,26 +15,26 @@ class User2 extends CActiveRecord
 
 	public function rules()
 	{
-		return array(
-			array('username, password, email', 'required'),
-			array('username, password', 'match', 'pattern'=>'/^[\d\w_]+$/'),
-			array('email', 'email'),
-			array('username', 'length', 'min'=>3, 'max'=>32),
-			array('password', 'length', 'min'=>6, 'max'=>32),
-		);
+		return [
+			['username, password, email', 'required'],
+			['username, password', 'match', 'pattern'=>'/^[\d\w_]+$/'],
+			['email', 'email'],
+			['username', 'length', 'min'=>3, 'max'=>32],
+			['password', 'length', 'min'=>6, 'max'=>32],
+		];
 	}
 
 	public function relations()
 	{
-		return array(
-			'posts'=>array(self::HAS_MANY,'Post2','author_id'),
-			'friends'=>array(self::MANY_MANY,'User2','test.user_friends(id,friend)'),
+		return [
+			'posts'=>[self::HAS_MANY,'Post2','author_id'],
+			'friends'=>[self::MANY_MANY,'User2','test.user_friends(id,friend)'],
 
 			// CActiveRecord2Test::testIssue2122()
-			'commentsWithParam'=>array(self::HAS_MANY,'Comment2','author_id','on'=>'"commentsWithParam"."post_id">:postId',
-				'params'=>array(':postId'=>1)),
-			'postsWithParam'=>array(self::HAS_MANY,'Post2',array('post_id'=>'id'),'through'=>'commentsWithParam'),
-		);
+			'commentsWithParam'=>[self::HAS_MANY,'Comment2','author_id','on'=>'"commentsWithParam"."post_id">:postId',
+				'params'=>[':postId'=>1]],
+			'postsWithParam'=>[self::HAS_MANY,'Post2',['post_id'=>'id'],'through'=>'commentsWithParam'],
+		];
 	}
 
 	public function tableName()
@@ -59,19 +59,19 @@ class Post2 extends CActiveRecord
 
 	public function relations()
 	{
-		return array(
-			'author'=>array(self::BELONGS_TO,'User2','author_id'),
-			'firstComment'=>array(self::HAS_ONE,'Comment2','post_id','order'=>'"firstComment".content'),
-			'comments'=>array(self::HAS_MANY,'Comment2','post_id','order'=>'comments.content DESC'),
-			'categories'=>array(self::MANY_MANY,'Category2','test.post_category(post_id,category_id)','order'=>'categories.id DESC'),
-		);
+		return [
+			'author'=>[self::BELONGS_TO,'User2','author_id'],
+			'firstComment'=>[self::HAS_ONE,'Comment2','post_id','order'=>'"firstComment".content'],
+			'comments'=>[self::HAS_MANY,'Comment2','post_id','order'=>'comments.content DESC'],
+			'categories'=>[self::MANY_MANY,'Category2','test.post_category(post_id,category_id)','order'=>'categories.id DESC'],
+		];
 	}
 
 	public function rules()
 	{
-		return array(
-			array('title', 'required'),
-		);
+		return [
+			['title', 'required'],
+		];
 	}
 
 	public function tableName()
@@ -124,9 +124,9 @@ class PostExt2 extends CActiveRecord
 
 	public function relations()
 	{
-		return array(
-			'comments'=>array(self::HAS_MANY,'Comment2','post_id','order'=>'comments.content DESC','with'=>array('post'=>array('alias'=>'post'), 'author')),
-		);
+		return [
+			'comments'=>[self::HAS_MANY,'Comment2','post_id','order'=>'comments.content DESC','with'=>['post'=>['alias'=>'post'], 'author']],
+		];
 	}
 }
 
@@ -145,10 +145,10 @@ class Comment2 extends CActiveRecord
 
 	public function relations()
 	{
-		return array(
-			'post'=>array(self::BELONGS_TO,'Post2','post_id'),
-			'author'=>array(self::BELONGS_TO,'User2','author_id'),
-		);
+		return [
+			'post'=>[self::BELONGS_TO,'Post2','post_id'],
+			'author'=>[self::BELONGS_TO,'User2','author_id'],
+		];
 	}
 
 	public function tableName()
@@ -176,12 +176,12 @@ class Category2 extends CActiveRecord
 
 	public function relations()
 	{
-		return array(
-			'posts'=>array(self::MANY_MANY, 'Post2', 'test.post_category(post_id,category_id)'),
-			'parent'=>array(self::BELONGS_TO,'Category2','parent_id'),
-			'children'=>array(self::HAS_MANY,'Category2','parent_id'),
-			'nodes'=>array(self::HAS_MANY,'Category2','parent_id','with'=>array('parent','children')),
-		);
+		return [
+			'posts'=>[self::MANY_MANY, 'Post2', 'test.post_category(post_id,category_id)'],
+			'parent'=>[self::BELONGS_TO,'Category2','parent_id'],
+			'children'=>[self::HAS_MANY,'Category2','parent_id'],
+			'nodes'=>[self::HAS_MANY,'Category2','parent_id','with'=>['parent','children']],
+		];
 	}
 }
 
@@ -199,9 +199,9 @@ class Order2 extends CActiveRecord
 
 	public function relations()
 	{
-		return array(
-			'items'=>array(self::HAS_MANY,'Item2','col1, col2'),
-		);
+		return [
+			'items'=>[self::HAS_MANY,'Item2','col1, col2'],
+		];
 	}
 
 	public function tableName()
@@ -225,9 +225,9 @@ class Item2 extends CActiveRecord
 
 	public function relations()
 	{
-		return array(
-			'order'=>array(self::BELONGS_TO,'Order2','col1, col2','alias'=>'_order'),
-		);
+		return [
+			'order'=>[self::BELONGS_TO,'Order2','col1, col2','alias'=>'_order'],
+		];
 	}
 
 	public function tableName()

@@ -20,12 +20,12 @@ class CAutoCompleteTest extends CTestCase
 
 	private function getWidgetScript($callback)
 	{
-		Yii::app()->clientScript->scripts = array();
+		Yii::app()->clientScript->scripts = [];
 		ob_start();
 		$widget = new CAutoComplete(null);
 		$widget->name = 'test';
 		$widget->highlight = $callback;
-		$widget->data = array(1, 2, 3);
+		$widget->data = [1, 2, 3];
 		$widget->init();
 		$widget->run();
 		$out = '';

@@ -47,7 +47,7 @@ class TestAutoloader extends CTestCase
 		}');
 
 
-		Yii::$autoloaderFilters['smarty2'] = array('SmartyAutoloader', 'exampleFilter');
+		Yii::$autoloaderFilters['smarty2'] = ['SmartyAutoloader', 'exampleFilter'];
 
 		$this->assertTrue(Yii::autoload('SmartyFunctionMeta'));
 		$this->assertTrue(Yii::autoload('Smarty_Function_Meta'));

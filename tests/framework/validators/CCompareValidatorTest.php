@@ -16,7 +16,7 @@ class CCompareValidatorTest extends CTestCase
 	 */
 	public function testValidationErrorsWithEquals()
 	{
-		$model = $this->getModelMock(array('compareAttribute' => 'bar'));
+		$model = $this->getModelMock(['compareAttribute' => 'bar']);
 		$model->foo = 'foo';
 		$model->bar = 'bar';
 
@@ -26,7 +26,7 @@ class CCompareValidatorTest extends CTestCase
 		$this->assertTrue($model->validate());
 
 		// https://github.com/yiisoft/yii/issues/1955
-		$model->foo = array('foo');
+		$model->foo = ['foo'];
 		$this->assertFalse($model->validate());
 		$this->assertTrue($model->hasErrors('foo'));
 
@@ -35,7 +35,7 @@ class CCompareValidatorTest extends CTestCase
 		$validator->operator = '=';
 		$validator->compareAttribute = 'bar';
 		$script = $validator->clientValidateAttribute($model, 'foo');
-		$this->assertInternalType('string', $script);
+		$this->assertIsString($script);
 		$this->assertContains('Foo must be repeated exactly.', $script);
 	}
 
@@ -46,11 +46,11 @@ class CCompareValidatorTest extends CTestCase
 	 */
 	public function testValidationErrorsWithNotEquals()
 	{
-		$model = $this->getModelMock(array(
+		$model = $this->getModelMock([
 			'operator' => '!=',
 			'strict' => true,
 			'compareAttribute' => 'bar',
-		));
+		]);
 		$model->foo = 'foo';
 		$model->bar = 'bar';
 
@@ -65,7 +65,7 @@ class CCompareValidatorTest extends CTestCase
 		$validator->operator = '!=';
 		$validator->compareAttribute = 'bar';
 		$script = $validator->clientValidateAttribute($model, 'foo');
-		$this->assertInternalType('string', $script);
+		$this->assertIsString($script);
 		$this->assertContains('Foo must not be equal to \"{compareValue}\".".replace(\'{compareValue}\', ', $script);
 
 		$validator->message = '{compareAttribute}';
@@ -81,11 +81,11 @@ class CCompareValidatorTest extends CTestCase
 	 */
 	public function testValidationErrorsWitGreaterThan()
 	{
-		$model = $this->getModelMock(array(
+		$model = $this->getModelMock([
 			'operator' => '>',
 			'strict' => true,
 			'compareAttribute' => 'bar',
-		));
+		]);
 		$model->foo = 1;
 		$model->bar = 2;
 
@@ -99,7 +99,7 @@ class CCompareValidatorTest extends CTestCase
 		$validator->operator = '>';
 		$validator->compareAttribute = 'bar';
 		$script = $validator->clientValidateAttribute($model, 'foo');
-		$this->assertInternalType('string', $script);
+		$this->assertIsString($script);
 		$this->assertContains('Foo must be greater than \"{compareValue}\".".replace(\'{compareValue}\', ', $script);
 
 		$validator->message = '{compareAttribute}';
@@ -115,11 +115,11 @@ class CCompareValidatorTest extends CTestCase
 	 */
 	public function testValidationErrorsWitGreaterThanOrEqual()
 	{
-		$model = $this->getModelMock(array(
+		$model = $this->getModelMock([
 			'operator' => '>=',
 			'strict' => true,
 			'compareAttribute' => 'bar',
-		));
+		]);
 		$model->foo = 1;
 		$model->bar = 2;
 
@@ -133,7 +133,7 @@ class CCompareValidatorTest extends CTestCase
 		$validator->operator = '>=';
 		$validator->compareAttribute = 'bar';
 		$script = $validator->clientValidateAttribute($model, 'foo');
-		$this->assertInternalType('string', $script);
+		$this->assertIsString($script);
 		$this->assertContains('Foo must be greater than or equal to \"{compareValue}\".".replace(\'{compareValue}\', ', $script);
 
 		$validator->message = '{compareAttribute}';
@@ -149,11 +149,11 @@ class CCompareValidatorTest extends CTestCase
 	 */
 	public function testValidationErrorsWitLessThan()
 	{
-		$model = $this->getModelMock(array(
+		$model = $this->getModelMock([
 			'operator' => '<',
 			'strict' => true,
 			'compareAttribute' => 'bar',
-		));
+		]);
 		$model->foo = 3;
 		$model->bar = 2;
 
@@ -167,7 +167,7 @@ class CCompareValidatorTest extends CTestCase
 		$validator->operator = '<';
 		$validator->compareAttribute = 'bar';
 		$script = $validator->clientValidateAttribute($model, 'foo');
-		$this->assertInternalType('string', $script);
+		$this->assertIsString($script);
 		$this->assertContains('Foo must be less than \"{compareValue}\".".replace(\'{compareValue}\', ', $script);
 
 		$validator->message = '{compareAttribute}';
@@ -183,11 +183,11 @@ class CCompareValidatorTest extends CTestCase
 	 */
 	public function testValidationErrorsWitLessThanOrEqual()
 	{
-		$model = $this->getModelMock(array(
+		$model = $this->getModelMock([
 			'operator' => '<=',
 			'strict' => true,
 			'compareAttribute' => 'bar',
-		));
+		]);
 		$model->foo = 3;
 		$model->bar = 2;
 
@@ -201,7 +201,7 @@ class CCompareValidatorTest extends CTestCase
 		$validator->operator = '<=';
 		$validator->compareAttribute = 'bar';
 		$script = $validator->clientValidateAttribute($model, 'foo');
-		$this->assertInternalType('string', $script);
+		$this->assertIsString($script);
 		$this->assertContains('Foo must be less than or equal to \"{compareValue}\".".replace(\'{compareValue}\', ', $script);
 
 		$validator->message = '{compareAttribute}';
@@ -215,11 +215,11 @@ class CCompareValidatorTest extends CTestCase
 	 */
 	public function testClientValidateAttributeThrowsExcpetion()
 	{
-		$model = $this->getModelMock(array(
+		$model = $this->getModelMock([
 			'operator' => '<=',
 			'strict' => true,
 			'compareAttribute' => 'bar',
-		));
+		]);
 		$validator = new CCompareValidator;
 		$validator->operator = '}';
 		$validator->clientValidateAttribute($model, 'foo');
@@ -230,11 +230,11 @@ class CCompareValidatorTest extends CTestCase
 	 */
 	public function testValidateThrowsExcpetionforBadOperator()
 	{
-		$model = $this->getModelMock(array(
+		$model = $this->getModelMock([
 			'operator' => ']]',
 			'strict' => true,
 			'compareAttribute' => 'bar',
-		));
+		]);
 		$model->validate();
 	}
 
@@ -245,11 +245,11 @@ class CCompareValidatorTest extends CTestCase
 	 */
 	public function testOverrideCompareValue()
 	{
-		$rules = array(
-			array('foo', 'compare', 'compareValue' => 'hello')
-		);
+		$rules = [
+			['foo', 'compare', 'compareValue' => 'hello']
+		];
 
-		$stub = $this->getMock('ModelMock', array('rules'));
+		$stub = $this->getMock('ModelMock', ['rules']);
 		$stub->expects($this->any())
 			 ->method('rules')
 			 ->will($this->returnValue($rules));
@@ -262,7 +262,7 @@ class CCompareValidatorTest extends CTestCase
 		$validator->operator = '=';
 		$validator->compareValue = 'bar';
 		$script = $validator->clientValidateAttribute($stub, 'foo');
-		$this->assertInternalType('string', $script);
+		$this->assertIsString($script);
 		$this->assertContains('Foo must be repeated exactly', $script);
 	}
 
@@ -273,17 +273,17 @@ class CCompareValidatorTest extends CTestCase
 	 *
 	 * @return null
 	 */
-	protected function getModelMock($params=array())
+	protected function getModelMock($params=[])
 	{
-		$rules = array(
-			array('foo', 'compare')
-		);
+		$rules = [
+			['foo', 'compare']
+		];
 
 		foreach ($params as $rule => $value) {
 			$rules[0][$rule] = $value;
 		}
 
-		$stub = $this->getMock('ModelMock', array('rules'));
+		$stub = $this->getMock('ModelMock', ['rules']);
 		$stub->expects($this->any())
 			 ->method('rules')
 			 ->will($this->returnValue($rules));

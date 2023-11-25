@@ -21,16 +21,16 @@ class CButtonColumnTest extends CTestCase
 	private function getWidgetScript($callback)
 	{
 		Yii::import('zii.widgets.grid.CButtonColumn');
-		Yii::app()->clientScript->scripts = array();
+		Yii::app()->clientScript->scripts = [];
 		ob_start();
 		$grid = new stdClass();
 		$grid->id = 'grid1';
-		$widget = $this->getMock('CButtonColumn', array('initDefaultButtons'), array($grid));
-		$widget->buttons = array(
-			'view' => array(
+		$widget = $this->getMock('CButtonColumn', ['initDefaultButtons'], [$grid]);
+		$widget->buttons = [
+			'view' => [
 				'click'=>$callback,
-			),
-		);
+			],
+		];
 		$widget->init();
 		$out = '';
 		Yii::app()->clientScript->render($out);

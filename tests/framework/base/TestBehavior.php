@@ -7,9 +7,9 @@ class TestBehavior extends CBehavior
  {
  	public function events()
  	{
- 		return array(
+ 		return [
  			'onTestEvent' => 'handleTest',
- 		);
+ 		];
  	}
 
  	public function handleTest($event)

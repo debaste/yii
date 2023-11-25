@@ -6,7 +6,7 @@ class CPostgres2Test extends CTestCase
 {
 	private $db;
 
-	public function setUp()
+	protected function setUp(): void
 	{
 		if(!extension_loaded('pdo') || !extension_loaded('pdo_pgsql'))
 			$this->markTestSkipped('PDO and PostgreSQL extensions are required.');
@@ -24,19 +24,19 @@ class CPostgres2Test extends CTestCase
 		}
 	}
 
-	public function tearDown()
+	protected function tearDown(): void
 	{
 		$this->db->active=false;
 	}
 
 	public function testCreateTable()
 	{
-		$sql=$this->db->schema->createTable('test',array(
+		$sql=$this->db->schema->createTable('test',[
 			'id'=>'pk',
 			'name'=>'string not null',
 			'desc'=>'text',
 			'primary key (id, name)',
-		));
+		]);
 		$expect="CREATE TABLE \"test\" (\n"
 			. "\t\"id\" serial NOT NULL PRIMARY KEY,\n"
 			. "\t\"name\" character varying (255) not null,\n"
@@ -48,14 +48,14 @@ class CPostgres2Test extends CTestCase
 
 	public function testCreateTableBig()
 	{
-		$sql=$this->db->schema->createTable('test',array(
+		$sql=$this->db->schema->createTable('test',[
 			'id'=>'bigpk',
 			'name'=>'string not null',
 			'desc'=>'text',
 			'number'=>'bigint',
 			'number2'=>'bigint not null default 0',
 			'primary key (id, name)',
-		));
+		]);
 		$expect="CREATE TABLE \"test\" (\n"
 			. "\t\"id\" bigserial NOT NULL PRIMARY KEY,\n"
 			. "\t\"name\" character varying (255) not null,\n"
@@ -123,7 +123,7 @@ class CPostgres2Test extends CTestCase
 		$expect='ALTER TABLE "profile" ADD CONSTRAINT "fk_test" FOREIGN KEY ("user_id", "id") REFERENCES "users" ("id", "username") ON DELETE CASCADE ON UPDATE RESTRICTED';
 		$this->assertEquals($expect, $sql);
 
-		$sql=$this->db->schema->addForeignKey('fk_test', 'profile', array('user_id','id'), 'users', array('id','username'),'CASCADE','RESTRICTED');
+		$sql=$this->db->schema->addForeignKey('fk_test', 'profile', ['user_id','id'], 'users', ['id','username'],'CASCADE','RESTRICTED');
 		$expect='ALTER TABLE "profile" ADD CONSTRAINT "fk_test" FOREIGN KEY ("user_id", "id") REFERENCES "users" ("id", "username") ON DELETE CASCADE ON UPDATE RESTRICTED';
 		$this->assertEquals($expect, $sql);
 	}
@@ -146,7 +146,7 @@ class CPostgres2Test extends CTestCase
 		$expect='CREATE UNIQUE INDEX "id_pk" ON "test" ("id1", "id2")';
 		$this->assertEquals($expect, $sql);
 
-		$sql=$this->db->schema->createIndex('id_pk','test',array('id1','id2'),true);
+		$sql=$this->db->schema->createIndex('id_pk','test',['id1','id2'],true);
 		// see https://github.com/yiisoft/yii/issues/3757
 		$expect='CREATE UNIQUE INDEX "id_pk" ON "test" ("id1", "id2")';
 		$this->assertEquals($expect, $sql);

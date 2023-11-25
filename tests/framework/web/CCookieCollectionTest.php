@@ -4,25 +4,25 @@ class CCookieCollectionTest extends CTestCase
 {
 	protected $request;
 	protected $cookies;
-	protected $testCookies=array(
+	protected $testCookies=[
 		'testCookieOne'=>'testValue',
 		'someEmptyCookie'=>'',
 		'IntegerValue'=>1242,
-		'cookieWithOptions'=>array(
+		'cookieWithOptions'=>[
 			'value'=>'options',
 			'httpOnly'=>true,
 			'expire'=>12422,
-		),
-	);
+		],
+	];
 	protected $cookieBefore;
-	public function setUp()
+	protected function setUp(): void
 	{
 		$this->cookieBefore=$_COOKIE;
 		$_COOKIE['testGlobal']='value';
 		$this->request=new TestHttpRequest;
 		$this->cookies=$this->request->cookies;
 	}
-	public function tearDown()
+	protected function tearDown(): void
 	{
 		$_COOKIE=$this->cookieBefore;
 	}
